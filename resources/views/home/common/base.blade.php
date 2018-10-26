@@ -5,9 +5,9 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Home</title>
-    <meta name="keywords" content="">
-    <meta name="description" content="">
+    <title>有趣的灵魂中文小说网 - @yield('title')</title>
+    <meta name="keywords" content="各种类型的小说，玄幻奇幻，武侠仙侠，都市言情，历史军事，科幻灵异，网游竞技，女频频道">
+    <meta name="description" content="各种类型的小说，热血，奇异，幽默等各种需求都可满足于你">
     <link rel="stylesheet" type="text/css" href="{{ asset('/static/css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/static/css/nprogress.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/static/css/style.css') }}">
