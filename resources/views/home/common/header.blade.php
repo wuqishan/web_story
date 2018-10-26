@@ -32,7 +32,7 @@
                         </span>
                     </div>
                 </form>
-                {{ $routeName = \Illuminate\Support\Facades\Route::currentRouteName() }}
+                <!--{{ $routeName = \Illuminate\Support\Facades\Route::currentRouteName() }}-->
                 <ul class="nav navbar-nav navbar-right">
                     <li @if($routeName == 'index') class="active" @endif><a data-cont="首页" title="首页" href="{{ route('index') }}">首页</a></li>
                     <li @if($routeName == 'article-index' && request()->category_id == 1) class="active" @endif><a data-cont="玄幻奇幻" title="玄幻奇幻" href="{{ route('article-index', ['category_id' => 1]) }}">玄幻奇幻</a></li>
