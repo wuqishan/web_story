@@ -1,5 +1,5 @@
 @extends('home.common.base')
-@section('title'){{  }}@endsection
+{{--@section('title'){{ $title }}@endsection--}}
 
 @section('content')
     @include('home.common.header')

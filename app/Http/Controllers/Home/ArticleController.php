@@ -14,6 +14,8 @@ class ArticleController extends  Controller
         $results['book_update'] = $service->get($params, ['last_update', 'desc'], 20);
         $results['book_popular'] = $service->get($params, ['view', 'desc'], 15);
 
+        $results = '首页';
+
         return view('home.article.index', ['results' => $results]);
     }
 
@@ -27,6 +29,8 @@ class ArticleController extends  Controller
             0,
             ['title', 'unique_code']
         );
+
+        $results = '首页';
 
         return view('home.article.chapter', ['results' => $results]);
     }
