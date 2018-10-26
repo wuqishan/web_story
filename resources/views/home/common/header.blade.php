@@ -18,8 +18,8 @@
                             class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
                 </button>
                 <h1 class="logo hvr-bounce-in">
-                    <a href="#" title="木庄网络博客">
-                        <img src="{{ asset('/static/images/201610171329086541.png') }}" alt="木庄网络博客">
+                    <a href="{{ route('index') }}" title="">
+                        <img src="{{ asset('/static/images/logo.jpg') }}" alt="">
                     </a>
                 </h1>
             </div>
@@ -33,14 +33,14 @@
                     </div>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a data-cont="首页" title="首页" href="index.html">首页</a></li>
-                    <li><a data-cont="玄幻奇幻" title="玄幻奇幻" href="{{ route('article-list', ['category_id' => 1]) }}">玄幻奇幻</a></li>
-                    <li><a data-cont="武侠仙侠" title="武侠仙侠" href="{{ route('article-list', ['category_id' => 2]) }}">武侠仙侠</a></li>
-                    <li><a data-cont="都市言情" title="都市言情" href="{{ route('article-list', ['category_id' => 3]) }}">都市言情</a></li>
-                    <li><a data-cont="历史军事" title="历史军事" href="{{ route('article-list', ['category_id' => 4]) }}">历史军事</a></li>
-                    <li><a data-cont="科幻灵异" title="科幻灵异" href="{{ route('article-list', ['category_id' => 5]) }}">科幻灵异</a></li>
-                    <li><a data-cont="网游竞技" title="网游竞技" href="{{ route('article-list', ['category_id' => 6]) }}">网游竞技</a></li>
-                    <li><a data-cont="女频频道" title="女频频道" href="{{ route('article-list', ['category_id' => 7]) }}">女频频道</a></li>
+                    <li><a data-cont="首页" title="首页" href="{{ route('index') }}">首页</a></li>
+                    <li><a data-cont="玄幻奇幻" title="玄幻奇幻" href="{{ route('article-index', ['category_id' => 1]) }}">玄幻奇幻</a></li>
+                    <li><a data-cont="武侠仙侠" title="武侠仙侠" href="{{ route('article-index', ['category_id' => 2]) }}">武侠仙侠</a></li>
+                    <li><a data-cont="都市言情" title="都市言情" href="{{ route('article-index', ['category_id' => 3]) }}">都市言情</a></li>
+                    <li><a data-cont="历史军事" title="历史军事" href="{{ route('article-index', ['category_id' => 4]) }}">历史军事</a></li>
+                    <li><a data-cont="科幻灵异" title="科幻灵异" href="{{ route('article-index', ['category_id' => 5]) }}">科幻灵异</a></li>
+                    <li><a data-cont="网游竞技" title="网游竞技" href="{{ route('article-index', ['category_id' => 6]) }}">网游竞技</a></li>
+                    <li><a data-cont="女频频道" title="女频频道" href="{{ route('article-index', ['category_id' => 7]) }}">女频频道</a></li>
                 </ul>
             </div>
         </div>

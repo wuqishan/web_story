@@ -13,13 +13,13 @@
                     </ol>
                     <div class="carousel-inner" role="listbox">
                         <div class="item active">
-                            <a href="#" target="_blank" title="木庄网络博客源码">
-                                <img src="{{ asset('/static/images/201610181557196870.jpg') }}" alt="木庄网络博客源码" class="img-responsive">
+                            <a href="#" target="_blank" title="aaa">
+                                <img src="{{ asset('/static/images/banner1.jpg') }}" alt="aaa" class="img-responsive">
                             </a>
                         </div>
                         <div class="item">
-                            <a href="#" target="_blank" title="专业网站建设">
-                                <img src="{{ asset('/static/images/201610241227558789.jpg') }}" alt="专业网站建设" class="img-responsive">
+                            <a href="#" target="_blank" title="aaa">
+                                <img src="{{ asset('/static/images/banner2.jpg') }}" alt="aaa" class="img-responsive">
                             </a>
                         </div>
                     </div>
@@ -32,33 +32,14 @@
                         <span class="sr-only">下一个</span>
                     </a>
                 </div>
-                {{--<article class="excerpt-minic excerpt-minic-index">--}}
-                    {{--<h2>--}}
-                        {{--<span class="red">【推荐】</span>--}}
-                        {{--<a target="_blank" href="#" title="用DTcms做一个独立博客网站（响应式模板）">用DTcms做一个独立博客网站（响应式模板）</a>--}}
-                    {{--</h2>--}}
-                    {{--<p class="note">用DTcms做一个独立博客网站（响应式模板），采用DTcms V4.0正式版（MSSQL）。开发环境：SQL2008R2+VS2010。DTcms--}}
-                        {{--V4.0正式版功能修复和优化：1、favicon.ico图标后台上传。（解决要换图标时要连FTP或者开服务器的麻烦）--}}
-                    {{--</p>--}}
-                {{--</article>--}}
-                <div class="title">
-                    <h3>最新发布</h3>
-                    <div class="more">
-                        <a href="#" title="MZ-NetBlog主题">MZ-NetBlog主题</a>
-                        <a href="#" title="IT技术笔记">IT技术笔记</a>
-                        <a href="#" title="源码分享">源码分享</a>
-                        <a href="#" title="靠谱网赚">靠谱网赚</a>
-                        <a href="#" title="资讯分享">资讯分享</a>
-                    </div>
-                </div>
                 <article class="excerpt excerpt-1" style="">
-                    <a class="focus" href="#" title="用DTcms做一个独立博客网站（响应式模板）" target="_blank">
+                    <a class="focus" href="#" title="xxxx" target="_blank">
                         <img class="thumb" src="{{ asset('/static/images/201610181739277776.jpg') }}" style="display: inline;">
                     </a>
                     <header>
-                        <a class="cat" href="#" title="MZ-NetBlog主题">MZ-NetBlog主题<i></i></a>
+                        <a class="cat" href="#" title="MZ-NetBlog主题">aaaaa<i></i></a>
                         <h2>
-                            <a href="#" title="用DTcms做一个独立博客网站（响应式模板）" target="_blank">用DTcms做一个独立博客网站（响应式模板）</a>
+                            <a href="#" title="xxx" target="_blank">xxxx</a>
                         </h2>
                     </header>
                     <p class="meta">
@@ -75,47 +56,9 @@
                         </a>
                     </p>
                     <p class="note">
-                        用DTcms做一个独立博客网站（响应式模板），采用DTcms V4.0正式版（MSSQL）。开发环境：SQL2008R2+VS2010。
+                        xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                     </p>
                 </article>
-
-                <article class="excerpt excerpt-1" style="">
-                    <a class="focus" href="#" title="用DTcms做一个独立博客网站（响应式模板）" target="_blank">
-                        <img class="thumb" src="{{ asset('/static/images/201610181739277776.jpg') }}" style="display: inline;">
-                    </a>
-                    <header>
-                        <a class="cat" href="#" title="MZ-NetBlog主题">MZ-NetBlog主题<i></i></a>
-                        <h2>
-                            <a href="#" title="用DTcms做一个独立博客网站（响应式模板）" target="_blank">用DTcms做一个独立博客网站（响应式模板）</a>
-                        </h2>
-                    </header>
-                    <p class="meta">
-                        <time class="time">
-                            <i class="glyphicon glyphicon-time"></i>
-                            2016-10-14
-                        </time>
-                        <span class="views">
-                            <i class="glyphicon glyphicon-eye-open"></i>
-                            216
-                        </span>
-                        <a class="comment" href="##comment" title="评论" target="_blank">
-                            <i class="glyphicon glyphicon-comment"></i> 4
-                        </a>
-                    </p>
-                    <p class="note">
-                        用DTcms做一个独立博客网站（响应式模板），采用DTcms V4.0正式版（MSSQL）。开发环境：SQL2008R2+VS2010。
-                    </p>
-                </article>
-
-                <nav class="pagination" style="display: none;">
-                    <ul>
-                        <li class="prev-page"></li>
-                        <li class="active"><span>1</span></li>
-                        <li><a href="?page=2">2</a></li>
-                        <li class="next-page"><a href="?page=2">下一页</a></li>
-                        <li><span>共 2 页</span></li>
-                    </ul>
-                </nav>
             </div>
         </div>
         {{--<div class="tlinks">Collect from <a href="http://www.cssmoban.com/">企业网站模板</a></div>--}}
@@ -123,39 +66,42 @@
             <div class="fixed">
                 <div class="widget widget-tabs">
                     <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#notice" aria-controls="notice" role="tab"
-                                                                  data-toggle="tab">统计信息</a></li>
-                        <li role="presentation"><a href="#contact" aria-controls="contact" role="tab"
-                                                   data-toggle="tab">联系站长</a></li>
+                        <li role="presentation" class="active">
+                            <a href="#notice" aria-controls="notice" role="tab" data-toggle="tab">
+                                统计信息
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#contact" aria-controls="contact" role="tab" data-toggle="tab">联系站长
+                            </a>
+                        </li>
                     </ul>
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane contact active" id="notice">
-                            <h2>日志总数:
-                                888篇
+                            <h2>
+                                日志总数: 888篇
                             </h2>
-                            <h2>网站运行:
-                                <span id="sitetime">88天 </span></h2>
+                            <h2>
+                                网站运行: <span id="sitetime">88天 </span></h2>
                         </div>
                         <div role="tabpanel" class="tab-pane contact" id="contact">
                             <h2>
                                 QQ:
-                                <a href="" target="_blank">1174955828</a>
+                                <a href="#" target="_blank" data-toggle="tooltip" rel="nofollow" data-placement="bottom" data-original-title="1174955828" draggable="false">1174955828</a>
                             </h2>
                             <h2>
                                 Email:
-                                <a href="#" target="_blank">
-                                    13262693729@163.com
-                                </a>
+                                <a href="#" target="_blank" data-toggle="tooltip" rel="nofollow" data-placement="bottom" data-original-title="13262693729@163.com" draggable="false">13262693729@163.com</a>
                             </h2>
                         </div>
                     </div>
                 </div>
                 <div class="widget widget_search">
-                    <form class="navbar-form" action="/Search" method="post">
+                    <form class="navbar-form" action="#" method="post">
                         <div class="input-group">
                             <input type="text" name="keyword" class="form-control" size="35" placeholder="请输入关键字" maxlength="15" autocomplete="off">
                             <span class="input-group-btn">
-                                <button class="btn btn-default btn-search" name="search" type="submit">搜索</button>
+                                <button class="btn btn-default btn-search" name="search" type="button">搜索</button>
                             </span>
                         </div>
                     </form>
@@ -165,11 +111,11 @@
                 <h3>最新评论文章</h3>
                 <ul>
                     <li>
-                        <a title="用DTcms做一个独立博客网站（响应式模板）" href="#">
+                        <a title="xxx" href="#">
                             <span class="thumbnail">
                                 <img class="thumb" src="{{ asset('/static/images/201610181739277776.jpg') }}" style="display: block;">
                             </span>
-                            <span class="text">用DTcms做一个独立博客网站（响应式模板）</span><span class="muted">
+                            <span class="text">xxxxxxxxxxxxxxxxxxxxxx</span><span class="muted">
                                 <i class="glyphicon glyphicon-time"></i> 2016-11-01
                             </span>
                             <span class="muted">
@@ -178,11 +124,11 @@
                         </a>
                     </li>
                     <li>
-                        <a title="用DTcms做一个独立博客网站（响应式模板）" href="#">
+                        <a title="xxx" href="#">
                             <span class="thumbnail">
                                 <img class="thumb" src="{{ asset('/static/images/201610181739277776.jpg') }}" style="display: block;">
                             </span>
-                            <span class="text">用DTcms做一个独立博客网站（响应式模板）</span><span class="muted">
+                            <span class="text">xxxxxxxxxxxxxxxxxxxxxxxxx</span><span class="muted">
                                 <i class="glyphicon glyphicon-time"></i> 2016-11-01
                             </span>
                             <span class="muted">
@@ -191,11 +137,11 @@
                         </a>
                     </li>
                     <li>
-                        <a title="用DTcms做一个独立博客网站（响应式模板）" href="#">
+                        <a title="xxxxxx" href="#">
                             <span class="thumbnail">
                                 <img class="thumb" src="{{ asset('/static/images/201610181739277776.jpg') }}" style="display: block;">
                             </span>
-                            <span class="text">用DTcms做一个独立博客网站（响应式模板）</span><span class="muted">
+                            <span class="text">xxxxxxxxxxxxxxxx</span><span class="muted">
                                 <i class="glyphicon glyphicon-time"></i> 2016-11-01
                             </span>
                             <span class="muted">
@@ -204,11 +150,11 @@
                         </a>
                     </li>
                     <li>
-                        <a title="用DTcms做一个独立博客网站（响应式模板）" href="#">
+                        <a title="xxxx" href="#">
                             <span class="thumbnail">
                                 <img class="thumb" src="{{ asset('/static/images/201610181739277776.jpg') }}" style="display: block;">
                             </span>
-                            <span class="text">用DTcms做一个独立博客网站（响应式模板）</span><span class="muted">
+                            <span class="text">xxxxxx</span><span class="muted">
                                 <i class="glyphicon glyphicon-time"></i> 2016-11-01
                             </span>
                             <span class="muted">

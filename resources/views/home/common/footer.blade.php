@@ -1,7 +1,7 @@
 <footer class="footer">
     <div class="container">
         <p>
-            Copyright &copy; 2016.Company name All rights reserved.More Templates - Collect from
+            Copyright &copy; 2018. 皖ICP备18012899号-1
         </p>
     </div>
     <div id="gotop">

@@ -24,7 +24,7 @@
     <script src="{{ asset('/static/js/selectivizr-min.js') }}" type="text/javascript"></script>
     <![endif]-->
     <!--[if lt IE 9]>
-    <script>window.location.href = 'upgrade-browser.html';</script>
+    <script>alert("浏览器版本过低");</script>
     <![endif]-->
 
     @yield('otherStaticFirst')
