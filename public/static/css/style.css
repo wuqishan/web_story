@@ -1325,7 +1325,7 @@ body,input,button,textarea,select {
     color:#AAA;
 }
 .widget_hot li a {
-    padding:10px 15px 10px 150px;
+    padding:10px 15px 10px 100px;
     color:#888;
     border-bottom:solid 1px #eee;
     overflow:hidden;
@@ -1342,7 +1342,7 @@ body,input,button,textarea,select {
 }
 .widget_hot .thumbnail {
     float:left;
-    margin-left:-135px;
+    margin-left:-85px;
     border:none;
     margin-bottom:0;
 }

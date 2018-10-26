@@ -32,15 +32,16 @@
                         </span>
                     </div>
                 </form>
+                {{ $routeName = \Illuminate\Support\Facades\Route::currentRouteName() }}
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a data-cont="首页" title="首页" href="{{ route('index') }}">首页</a></li>
-                    <li><a data-cont="玄幻奇幻" title="玄幻奇幻" href="{{ route('article-index', ['category_id' => 1]) }}">玄幻奇幻</a></li>
-                    <li><a data-cont="武侠仙侠" title="武侠仙侠" href="{{ route('article-index', ['category_id' => 2]) }}">武侠仙侠</a></li>
-                    <li><a data-cont="都市言情" title="都市言情" href="{{ route('article-index', ['category_id' => 3]) }}">都市言情</a></li>
-                    <li><a data-cont="历史军事" title="历史军事" href="{{ route('article-index', ['category_id' => 4]) }}">历史军事</a></li>
-                    <li><a data-cont="科幻灵异" title="科幻灵异" href="{{ route('article-index', ['category_id' => 5]) }}">科幻灵异</a></li>
-                    <li><a data-cont="网游竞技" title="网游竞技" href="{{ route('article-index', ['category_id' => 6]) }}">网游竞技</a></li>
-                    <li><a data-cont="女频频道" title="女频频道" href="{{ route('article-index', ['category_id' => 7]) }}">女频频道</a></li>
+                    <li @if($routeName == 'index') class="active" @endif><a data-cont="首页" title="首页" href="{{ route('index') }}">首页</a></li>
+                    <li @if($routeName == 'article-index' && request()->category_id == 1) class="active" @endif><a data-cont="玄幻奇幻" title="玄幻奇幻" href="{{ route('article-index', ['category_id' => 1]) }}">玄幻奇幻</a></li>
+                    <li @if($routeName == 'article-index' && request()->category_id == 2) class="active" @endif><a data-cont="武侠仙侠" title="武侠仙侠" href="{{ route('article-index', ['category_id' => 2]) }}">武侠仙侠</a></li>
+                    <li @if($routeName == 'article-index' && request()->category_id == 3) class="active" @endif><a data-cont="都市言情" title="都市言情" href="{{ route('article-index', ['category_id' => 3]) }}">都市言情</a></li>
+                    <li @if($routeName == 'article-index' && request()->category_id == 4) class="active" @endif><a data-cont="历史军事" title="历史军事" href="{{ route('article-index', ['category_id' => 4]) }}">历史军事</a></li>
+                    <li @if($routeName == 'article-index' && request()->category_id == 5) class="active" @endif><a data-cont="科幻灵异" title="科幻灵异" href="{{ route('article-index', ['category_id' => 5]) }}">科幻灵异</a></li>
+                    <li @if($routeName == 'article-index' && request()->category_id == 6) class="active" @endif><a data-cont="网游竞技" title="网游竞技" href="{{ route('article-index', ['category_id' => 6]) }}">网游竞技</a></li>
+                    <li @if($routeName == 'article-index' && request()->category_id == 7) class="active" @endif><a data-cont="女频频道" title="女频频道" href="{{ route('article-index', ['category_id' => 7]) }}">女频频道</a></li>
                 </ul>
             </div>
         </div>

@@ -113,7 +113,7 @@
                     <li>
                         <a title="xxx" href="#">
                             <span class="thumbnail">
-                                <img class="thumb" src="{{ asset('/static/images/201610181739277776.jpg') }}" style="display: block;">
+                                <img class="thumb" src="{{ asset('/static/images/a.png') }}" style="display: block;">
                             </span>
                             <span class="text">xxxxxxxxxxxxxxxxxxxxxx</span><span class="muted">
                                 <i class="glyphicon glyphicon-time"></i> 2016-11-01
@@ -126,7 +126,7 @@
                     <li>
                         <a title="xxx" href="#">
                             <span class="thumbnail">
-                                <img class="thumb" src="{{ asset('/static/images/201610181739277776.jpg') }}" style="display: block;">
+                                <img class="thumb" src="{{ asset('/static/images/a.png') }}" style="display: block;">
                             </span>
                             <span class="text">xxxxxxxxxxxxxxxxxxxxxxxxx</span><span class="muted">
                                 <i class="glyphicon glyphicon-time"></i> 2016-11-01
@@ -139,7 +139,7 @@
                     <li>
                         <a title="xxxxxx" href="#">
                             <span class="thumbnail">
-                                <img class="thumb" src="{{ asset('/static/images/201610181739277776.jpg') }}" style="display: block;">
+                                <img class="thumb" src="{{ asset('/static/images/a.png') }}" style="display: block;">
                             </span>
                             <span class="text">xxxxxxxxxxxxxxxx</span><span class="muted">
                                 <i class="glyphicon glyphicon-time"></i> 2016-11-01
@@ -152,7 +152,7 @@
                     <li>
                         <a title="xxxx" href="#">
                             <span class="thumbnail">
-                                <img class="thumb" src="{{ asset('/static/images/201610181739277776.jpg') }}" style="display: block;">
+                                <img class="thumb" src="{{ asset('/static/images/a.png') }}" style="display: block;">
                             </span>
                             <span class="text">xxxxxx</span><span class="muted">
                                 <i class="glyphicon glyphicon-time"></i> 2016-11-01
@@ -166,7 +166,7 @@
             </div>
             <div class="widget widget_sentence">
                 <a href="#" target="_blank" rel="nofollow" title="">
-                    <img style="width: 100%" src="{{ asset('/static/images//201610241224221511.jpg') }}">
+                    <img style="width: 100%" src="{{ asset('/static/images/ad2.png') }}">
                 </a>
             </div>
             <div class="widget widget_sentence">
