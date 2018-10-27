@@ -40,15 +40,6 @@ class CheckChapterList extends Command
      */
     public function handle()
     {
-        /*
-         *
-         * update bqg_book set bqg_book.newest_chapter = (
-                SELECT bqg_chapter.unique_code FROM bqg_chapter where bqg_chapter.book_unique_code = bqg_book.unique_code order by bqg_chapter.orderby desc limit 1
-            );
-
-         *
-         */
-
         $bookId = $this->argument('book_id');
         if (! empty($bookId)) {
             $books = Book::orderBy("id", "asc")

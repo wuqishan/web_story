@@ -43,8 +43,8 @@ class SpiderUpdateChapter extends Command
     {
         $books = Book::all()->toArray();
 
+        $updateChapterService = new UpdateChapterService();
         foreach ($books as $book) {
-            $updateChapterService = new UpdateChapterService();
             $updateChapterService->getChapter($book['url'], $book['newest_chapter']);
         }
     }

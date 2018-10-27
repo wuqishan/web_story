@@ -14,7 +14,7 @@ class UpdateChapterService extends SpiderService
      * @param $book_url
      * @param string $newest_chapter
      */
-    public function getChapter($book_url, $newest_chapter = '')
+    public function getChapter($book)
     {
         $ql = $this->spider($book_url);
 
@@ -29,7 +29,7 @@ class UpdateChapterService extends SpiderService
             $temp['url'] = $this->urlJoin($temp['url']);
             return $temp;
         });
-
+        $new_chapter = 0;
         if (! empty($data)) {
             $run_at = false;
             $length = count($data);
@@ -58,7 +58,7 @@ class UpdateChapterService extends SpiderService
                     if (! $run_at) {
                         if ($newest_chapter == $temp['unique_code']) {
                             $this->updateNextUniqueCode($temp);
-                            echo "更新next code";
+                            echo "更新当前章节的下一章节唯一码\n";
                             $run_at = true;
 
                         }
@@ -72,7 +72,7 @@ class UpdateChapterService extends SpiderService
                 if ($k === $length - 1) {
                     Book::where('unique_code', $temp['book_unique_code'])->update(['newest_chapter' => $temp['unique_code']]);
                 }
-
+                echo "当前爬取 《{$book_title}》 的 （{$temp['title']}）；目前该书新增 " . (++$new_chapter) . "章\n";
                 Chapter::insert($temp);
             }
         }
@@ -105,5 +105,21 @@ class UpdateChapterService extends SpiderService
         }
 
         return true;
+    }
+
+    /**
+     * 根据章节唯一码获取章节
+     *
+     * @param $chapter_unique_code
+     * @return array
+     */
+    public function getChapterFromUniqueCode($chapter_unique_code)
+    {
+        $chapter = Chapter::where('unique_code', $chapter_unique_code)->first();
+        if (! empty($chapter)) {
+            $chapter = $chapter->toArray();
+        }
+
+        return (array) $chapter;
     }
 }

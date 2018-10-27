@@ -9,6 +9,8 @@ use App\Models\CheckBookInfo;
 
 class UpdateBookService extends SpiderService
 {
+
+    public $calc_book = 0;
     /**
      * 传入book列表的url，更新book数据
      *
@@ -42,6 +44,7 @@ class UpdateBookService extends SpiderService
             foreach ($urls as $url) {
                 $this->getBookDetail($url, $category_id);
             }
+            echo "此次入库书籍 {$this->calc_book} 本\n";
         }
     }
 
@@ -88,10 +91,9 @@ class UpdateBookService extends SpiderService
         if (strpos($delete_book_unique_code_str, $temp['unique_code']) !== true) {
             $book = Book::where('unique_code', $temp['unique_code'])->first();
             if (empty($book)) {
-//                echo "嘿嘿，这本书没有\n";
+                echo "Title: {$temp['title']} 入库,目前已有 {$this->calc_book} 本新书入库\n";
                 Book::insert($temp);
-            } else {
-//                echo "很遗憾，这本书已经有了\n";
+                $this->calc_book++;
             }
         }
     }

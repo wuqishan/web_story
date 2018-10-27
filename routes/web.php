@@ -11,6 +11,9 @@
 |
 */
 
+Route::get('/user/login', 'UserController@login')->name('login');
+Route::post('/user/dologin', 'UserController@doLogin')->name('do_login');
+
 Route::group(['namespace' => 'Home'], function () {
     Route::get('/', 'IndexController@index')->name('index');
 
@@ -21,7 +24,7 @@ Route::group(['namespace' => 'Home'], function () {
     Route::get('/updateView', 'ArticleController@updateView')->name('update-view');
 });
 
-Route::group(['namespace' => 'Update', 'prefix' => 'update'], function () {
+Route::group(['namespace' => 'Update', 'prefix' => 'update', 'middleware' => ['check.update']], function () {
     Route::get('/book', 'BookController@index')->name('update-book-index');
     Route::get('/chapter', 'ChapterController@index')->name('update-chapter-index');
     Route::get('/chapter/update', 'ChapterController@updateMethod')->name('update-chapter-update');

@@ -47,7 +47,7 @@ class SpiderBookImage extends Command
         $books = Book::all()->toArray();
         if (! empty($books)) {
             foreach ($books as $key => $book) {
-                if (! empty($book['image_origin_url'])) {
+                if (empty($book['image_local_url']) && ! empty($book['image_origin_url'])) {
                     $ext = substr($book['image_origin_url'], strrpos($book['image_origin_url'], '.'));
                     if (empty($ext)) {
                         $ext = '.jpg';
@@ -56,12 +56,10 @@ class SpiderBookImage extends Command
                     $db_full_path = $save_db_path . $book['unique_code'] . $ext;
                     $content = HttpHelper::send($book['image_origin_url']);
                     if ($content) {
-                        echo "共有 " . count($books) . " 本书，目前保存到：" . $key . "\n";
+                        echo "共有 " . count($books) . " 本书，目前保存到：" . ($key + 1) . "\n";
                         @file_put_contents($full_path, $content);
                         Book::where('unique_code', $book['unique_code'])->update(['image_local_url' => $db_full_path]);
                     }
-
-//                    echo $save_db_path;exit;
                 }
             }
         }

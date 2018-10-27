@@ -4,8 +4,57 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2a79ea716672b7e26a8fb881638f3422",
+    "content-hash": "e9387433e5c510a2ed586789505c981e",
     "packages": [
+        {
+            "name": "ares333/php-curl",
+            "version": "v4.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ares333/php-curl.git",
+                "reference": "434324e110526c2fc02235f737ba556eab2327fc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ares333/php-curl/zipball/434324e110526c2fc02235f737ba556eab2327fc",
+                "reference": "434324e110526c2fc02235f737ba556eab2327fc",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ares333\\Curl\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Ares",
+                    "homepage": "http://phpdr.net"
+                }
+            ],
+            "description": "The best php curl library.",
+            "keywords": [
+                "PHP cURL",
+                "aysnc http",
+                "curl",
+                "curlmulti"
+            ],
+            "time": "2018-06-19T04:43:51+00:00"
+        },
         {
             "name": "dnoegel/php-xdg-base-dir",
             "version": "0.1",
@@ -751,6 +800,52 @@
                 "spider"
             ],
             "time": "2018-10-15T10:52:12+00:00"
+        },
+        {
+            "name": "jaeger/querylist-curl-multi",
+            "version": "4.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jae-jae/QueryList-CurlMulti.git",
+                "reference": "6f9bec5198cdafc56ffcc2e047374c76a08b153a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jae-jae/QueryList-CurlMulti/zipball/6f9bec5198cdafc56ffcc2e047374c76a08b153a",
+                "reference": "6f9bec5198cdafc56ffcc2e047374c76a08b153a",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "ares333/php-curl": "^4.2",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "jaeger/querylist": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "QL\\Ext\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jaeger",
+                    "email": "JaegerCode@gmail.com"
+                }
+            ],
+            "description": "QueryList Plugin: Curl multi threading. QueryList Curl多线程插件",
+            "time": "2018-10-16T07:13:30+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",

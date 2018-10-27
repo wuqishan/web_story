@@ -48,8 +48,8 @@ class SpiderUpdateBook extends Command
             7 => 'https://www.xbiquge6.com/xclass/7/1.html'
         ] ;
 
+        $updateBookService = new UpdateBookService();
         foreach ($book_urls as $key => $url) {
-            $updateBookService = new UpdateBookService();
             $updateBookService->getBook($key, $url);
         }
     }

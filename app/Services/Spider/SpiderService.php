@@ -4,6 +4,7 @@ namespace App\Services\Spider;
 
 use App\Services\Service;
 use QL\QueryList;
+use QL\Ext\CurlMulti;
 
 class SpiderService extends Service
 {
@@ -15,6 +16,7 @@ class SpiderService extends Service
         parent::__construct();
 
         $this->ql = QueryList::getInstance();
+        $this->ql->use(CurlMulti::class);
     }
 
     public function getHeader()
