@@ -49,19 +49,19 @@ class BookService extends Service
 
     public function formatter($books, $flag = true)
     {
+        $defaultImg = '/book/author/images/default.jpg';
         if (! empty($books)) {
-            $prefixImg = '/author';
             if ($flag) {
                 foreach ($books as $k => $v) {
-                    if (! empty($v['image_local_url'])) {
-                        $v['image_local_url'] = $prefixImg . trim($v['image_local_url'], '.');
+                    if (empty($v['image_local_url'])) {
+                        $v['image_local_url'] = $defaultImg;
                     }
                     $v['description'] = strip_tags($v['description']);
                     $books[$k] = $v;
                 }
             } else {
-                if (! empty($books['image_local_url'])) {
-                    $books['image_local_url'] = $prefixImg . trim($books['image_local_url'], '.');
+                if (empty($books['image_local_url'])) {
+                    $books['image_local_url'] = $defaultImg;
                 }
                 $books['description'] = strip_tags($books['description']);
             }

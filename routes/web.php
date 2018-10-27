@@ -20,3 +20,9 @@ Route::group(['namespace' => 'Home'], function () {
 
     Route::get('/updateView', 'ArticleController@updateView')->name('update-view');
 });
+
+Route::group(['namespace' => 'Update', 'prefix' => 'update'], function () {
+    Route::get('/book', 'BookController@index')->name('update-book-index');
+    Route::get('/chapter', 'ChapterController@index')->name('update-chapter-index');
+    Route::get('/chapter/update', 'ChapterController@updateMethod')->name('update-chapter-update');
+});
