@@ -44,12 +44,12 @@ class CheckChapterList extends Command
         if (! empty($bookId)) {
             $books = Book::orderBy("id", "asc")
                 ->where('id', $bookId)
-                ->select(['id', 'title', 'unique_code', 'newest_chapter', 'url'])
+                ->select(['id', 'title', 'unique_code', 'newest_chapter', 'url', 'category_id'])
                 ->get()
                 ->toArray();
         } else {
             $books = Book::orderBy("id", "asc")
-                ->select(['id', 'title', 'unique_code', 'newest_chapter', 'url'])
+                ->select(['id', 'title', 'unique_code', 'newest_chapter', 'url', 'category_id'])
                 ->get()
                 ->toArray();
         }
@@ -57,8 +57,19 @@ class CheckChapterList extends Command
 
         $errors = [];
         $booksNumber = count($books);
+        $chapterModel = new Chapter();
         foreach ($books as $key => $book) {
-            $chapter = Chapter::where('book_unique_code', $book['unique_code'])
+            // category_id 异常
+            if ($book['category_id'] < 1 || $book['category_id'] > 7) {
+                echo "书本分类异常不在 1 - 7范围\n";
+                $errors[] = [
+                    'msg' => '书本分类异常不在 1 - 7范围',
+                    'data' => $book
+                ];
+                continue;
+            }
+
+            $chapter = $chapterModel->setTable($book['category_id'])->where('book_unique_code', $book['unique_code'])
                 ->orderBy('orderby', 'asc')
                 ->select(['id', 'title', 'unique_code', 'prev_unique_code', 'next_unique_code', 'orderby'])
                 ->get()
@@ -66,6 +77,8 @@ class CheckChapterList extends Command
             $count = count($chapter);
             for ($i = 0; $i < $count; $i++) {
                 $error = ['data' => [], 'msg' => ''];
+
+                // 排序异常
                 if ($i != $chapter[$i]['orderby']) {
                     echo "排序数据异常\n";
                     $error['msg'] = "排序数据异常";
@@ -74,6 +87,8 @@ class CheckChapterList extends Command
                     break;
                 }
                 if ($i > 0 && $i < $count - 1) {
+
+                    // 链表异常
                     if (
                         $chapter[$i - 1]['next_unique_code'] != $chapter[$i]['unique_code'] ||
                         $chapter[$i - 1]['unique_code'] != $chapter[$i]['prev_unique_code'] ||
@@ -87,6 +102,8 @@ class CheckChapterList extends Command
                         break;
                     }
                 }
+
+                // 最新文章异常
                 if ($i == $count - 1) {
                     if ($chapter[$i]['unique_code'] != $book['newest_chapter']) {
                         $error['msg'] = "最新文章异常\n";
@@ -108,6 +125,7 @@ class CheckChapterList extends Command
                     CheckBookInfo::insert([
                         'book_title' => $v['data']['title'],
                         'book_id' => $v['data']['id'],
+                        'book_category_id' => $v['data']['category_id'],
                         'book_url' => $v['data']['url'],
                         'book_unique_code' => $v['data']['unique_code'],
                         'newest_chapter' => $v['data']['newest_chapter'],

@@ -1,0 +1,27 @@
+/***** font family *****/
+body, div, p, span, i, label, input, h1, h2, h3, h4, h5, h6, button {
+    font-family: "Microsoft YaHei UI", "微软雅黑";
+}
+
+.margin-left-20 {
+    margin-left: 20px;
+}
+
+.treeview-menu li a {
+    padding-left:30px;
+}
+.treeview-item .icon {
+    margin-right: 10px;
+}
+
+.form-control-feedback {
+    color: #c82333;
+}
+
+.toggle label {
+    margin-bottom: 0px;
+}
+
+.weight-normal {
+    font-weight: normal;
+}

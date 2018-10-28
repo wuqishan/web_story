@@ -22,7 +22,7 @@ class ArticleController extends  Controller
         $params['unique_code'] = $request->unique_code;
         $results['book'] = $service->getOne($params);
         $results['chapter'] = $chapterService->get(
-            ['book_unique_code' => $results['book']['unique_code']],
+            ['book_unique_code' => $results['book']['unique_code'], 'category_id' => $results['book']['category_id']],
             ['orderby', 'asc'],
             0,
             ['title', 'unique_code']
@@ -44,10 +44,12 @@ class ArticleController extends  Controller
         if ($request->ajax()) {
             $type = $request->get('type');
             $id = $request->get('id');
+            $category_id = $request->get('category_id');
+
             if ($type == 'book') {
                 (new BookService())->updateView($id);
             } else if ($type == 'chapter') {
-                (new ChapterService())->updateView($id);
+                (new ChapterService())->updateView($id, $category_id);
             }
         }
     }

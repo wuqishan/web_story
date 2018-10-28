@@ -8,19 +8,22 @@ class BookService extends Service
 {
     public function get($params, $sort = [], $limit = 0)
     {
-        $bookModel = new Book();
+        $results['length'] = $this->_length;
+        $results['list'] = [];
+
+        $model = new Book();
         if (isset($params['category_id']) && intval($params['category_id']) > 0) {
-            $bookModel = $bookModel->where('category_id', intval($params['category_id']));
+            $model = $model->where('category_id', intval($params['category_id']));
         }
         if (! empty($params['sort'])) {
-            $bookModel = $bookModel->orderBy($sort[0], $sort[1]);
+            $model = $model->orderBy($sort[0], $sort[1]);
         }
 
         if (intval($limit) > 0) {
-            $bookModel = $bookModel->limit(intval($limit));
+            $model = $model->limit(intval($limit));
         }
 
-        $books = $bookModel->get();
+        $books = $model->get();
         if (! empty($books)) {
             $books = $books->toArray();
         }

@@ -40,4 +40,14 @@
     </section>
     @include('home.common.footer')
 @endsection
-
+@section('otherStaticSecond')
+    <script>
+        $(function () {
+            $.ajax({
+                url: '{{ route('update-view') }}',
+                type: 'get',
+                data: {'type': 'chapter', 'id': '{{ $results['chapter']['id'] }}', 'category_id': '{{ $results['chapter']['category_id'] }}'}
+            });
+        });
+    </script>
+@endsection

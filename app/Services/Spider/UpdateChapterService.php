@@ -3,8 +3,11 @@
 namespace App\Services\Spider;
 
 
+use App\Helper\ToolsHelper;
 use App\Models\Book;
 use App\Models\Chapter;
+use App\Models\ChapterContent;
+use Illuminate\Support\Facades\DB;
 
 class UpdateChapterService extends SpiderService
 {
@@ -12,9 +15,10 @@ class UpdateChapterService extends SpiderService
      * 传入book的url，更新该book的章节数据
      *
      * @param $book_url
-     * @param string $newest_chapter
+     * @param $newest_chapter
+     * @param $category_id
      */
-    public function getChapter($book)
+    public function getChapter($book_url, $newest_chapter, $category_id)
     {
         $ql = $this->spider($book_url);
 
@@ -30,6 +34,8 @@ class UpdateChapterService extends SpiderService
             return $temp;
         });
         $new_chapter = 0;
+        $chapterModel = new Chapter();
+        $chapterContentModel = new ChapterContent();
         if (! empty($data)) {
             $run_at = false;
             $length = count($data);
@@ -40,6 +46,7 @@ class UpdateChapterService extends SpiderService
                 $temp['view'] = 0;
                 $temp['url'] = $v['url'];
                 $temp['orderby'] = $k;
+                $temp['category_id'] = $category_id;
                 $temp['created_at'] = date('Y-m-d H:i:s');
                 $temp['updated_at'] = date('Y-m-d H:i:s');
                 if ($k === 0) {
@@ -65,15 +72,22 @@ class UpdateChapterService extends SpiderService
                         continue;
                     }
                 }
-                $temp['content'] = $this->getContent($temp['url']);
-                $temp['content'] = mb_substr($temp['content'], 0, 30);
 
                 // 更新book最新更新的章节
                 if ($k === $length - 1) {
                     Book::where('unique_code', $temp['book_unique_code'])->update(['newest_chapter' => $temp['unique_code']]);
                 }
-                echo "当前爬取 《{$book_title}》 的 （{$temp['title']}）；目前该书新增 " . (++$new_chapter) . "章\n";
-                Chapter::insert($temp);
+                $content['content'] = $this->getContent($temp['url']);
+                $temp['number_of_words'] = ToolsHelper::calcWords($content['content']);
+
+
+                DB::table('chapter_' . $category_id)->insertGetId($temp);
+//                $chapterModel->setTable($category_id);
+//                $content['id'] = $chapterModel->insertGetId($temp);
+                $content['id'] = DB::table('chapter_' . $category_id)->insertGetId($temp);
+                DB::table('chapter_content_' . $category_id)->insert($content);
+
+                echo "id = {$content['id']}, category_id = {$category_id}, 当前爬取 《{$book_title}》 的 （{$temp['title']}）；目前该书新增 " . (++$new_chapter) . "章\n";
             }
         }
     }
@@ -101,25 +115,12 @@ class UpdateChapterService extends SpiderService
     public function updateNextUniqueCode($record)
     {
         if (! empty($record['next_unique_code'])) {
-            Chapter::where('unique_code', $record['unique_code'])->update(['next_unique_code' => $record['next_unique_code']]);
+//            Chapter::where('unique_code', $record['unique_code'])->update(['next_unique_code' => $record['next_unique_code']]);
+            DB::table('chapter_' . $record['category_id'])->where('unique_code', $record['unique_code'])->update(['next_unique_code' => $record['next_unique_code']]);
+
+//            Chapter::where('unique_code', $record['unique_code'])->update(['next_unique_code' => $record['next_unique_code']]);
         }
 
         return true;
-    }
-
-    /**
-     * 根据章节唯一码获取章节
-     *
-     * @param $chapter_unique_code
-     * @return array
-     */
-    public function getChapterFromUniqueCode($chapter_unique_code)
-    {
-        $chapter = Chapter::where('unique_code', $chapter_unique_code)->first();
-        if (! empty($chapter)) {
-            $chapter = $chapter->toArray();
-        }
-
-        return (array) $chapter;
     }
 }

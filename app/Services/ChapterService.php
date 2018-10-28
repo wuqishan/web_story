@@ -3,12 +3,15 @@
 namespace App\Services;
 
 use App\Models\Chapter;
+use App\Models\ChapterContent;
 
 class ChapterService extends Service
 {
     public function get($params, $sort = [], $limit = 0, $select = [])
     {
         $chapterModel = new Chapter();
+        $chapterModel = $chapterModel->setTable($params['category_id']);
+
         if (isset($params['book_unique_code'])) {
             $chapterModel = $chapterModel->where('book_unique_code', $params['book_unique_code']);
         }
@@ -36,34 +39,44 @@ class ChapterService extends Service
     public function getOne($params)
     {
         $chapter = [];
+        $category_id = intval($params['category_id']);
+        $chapterModel = new Chapter();
+        $chapterModel = $chapterModel->setTable($category_id);
+
+        $chapterContentModel = new ChapterContent();
+        $chapterContentModel = $chapterContentModel->setTable($category_id);
+
         if (isset($params['id']) && intval($params['id']) > 0) {
-            $chapter = Chapter::where('id', intval($params['id']))->first()->toArray();
+            $chapter = $chapterModel->where('id', intval($params['id']))->first()->toArray();
         }
         if (isset($params['unique_code'])) {
-            $chapter = Chapter::where('unique_code', $params['unique_code'])->first()->toArray();
+            $chapter = $chapterModel->where('unique_code', $params['unique_code'])->first()->toArray();
         }
-        
+
+        if (! empty($chapter)) {
+            $chapterContent = $chapterContentModel->where('id', $chapter['id'])->first()->toArray();
+            $chapter['content'] = $chapterContent['content'];
+        }
+
         return (array) $chapter;
     }
 
-    public function updateView($id, $v = 1)
+    /**
+     * @param $id
+     * @param integer $category_id
+     * @param integer $v
+     * @return mixed
+     */
+    public function updateView($id,$category_id, $v = 1)
     {
-        return Chapter::where('id', $id)->increment('view', $v);
+        $chapterModel = new Chapter();
+        $chapterModel = $chapterModel->setTable($category_id);
+
+        return $chapterModel->where('id', $id)->increment('view', $v);
     }
 
     public function formatter($chapter)
     {
-        if (! empty($chapter)) {
-//            $prefixImg = '/author';
-//            foreach ($chapter as $k => $v) {
-//                if (! empty($v['image_local_url'])) {
-//                    $v['image_local_url'] = $prefixImg . trim($v['image_local_url'], '.');
-//                }
-//                $v['description'] = strip_tags($v['description']);
-//                $chapter[$k] = $v;
-//            }
-        }
-
         return $chapter;
     }
 }

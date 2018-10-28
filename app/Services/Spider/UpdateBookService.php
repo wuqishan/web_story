@@ -94,6 +94,10 @@ class UpdateBookService extends SpiderService
                 echo "Title: {$temp['title']} 入库,目前已有 {$this->calc_book} 本新书入库\n";
                 Book::insert($temp);
                 $this->calc_book++;
+            } else {
+                echo "更新 category  {$book->category_id} to {$category_id}\n";
+                $book->category_id = $category_id;
+                $book->save();
             }
         }
     }

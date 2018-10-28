@@ -15,7 +15,7 @@ class SpiderUpdateChapter extends Command
      *
      * @var string
      */
-    protected $signature = 'command:spider-chapter {book_id?}';
+    protected $signature = 'command:spider-chapter {category_id?}';
 
     /**
      * The console command description.
@@ -41,11 +41,18 @@ class SpiderUpdateChapter extends Command
      */
     public function handle()
     {
-        $books = Book::all()->toArray();
+        $category_id = (int) $this->argument('category_id');
+        if ($category_id > 0) {
+            $books = Book::where('category_id', $category_id)->get()->toArray();
+        } else {
+            $books = Book::all()->toArray();
+        }
 
         $updateChapterService = new UpdateChapterService();
         foreach ($books as $book) {
-            $updateChapterService->getChapter($book['url'], $book['newest_chapter']);
+            if (intval($book['category_id']) >= 1 && intval($book['category_id']) <= 7) {
+                $updateChapterService->getChapter($book['url'], $book['newest_chapter'], $book['category_id']);
+            }
         }
     }
 }
