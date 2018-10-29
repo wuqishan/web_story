@@ -112,8 +112,8 @@ class SpiderUpdateBook2 extends Command
                             echo "该书已存在！更新 category_id {$book->category_id} to {$category_id}\n";
                             $book->category_id = $category_id;
                             $book->save();
-                        }else {
-//                            echo "当前分类：{$category_id}, 该分类下书籍：{$category_book_number}, 当前为第 {$current_book}, 书名: 《{$temp['title']}》 已经存在！！！\n";
+                        } else {
+                            echo "当前分类：{$category_id}, 该分类书籍：{$current_book} / {$category_book_number}, 书名: 《{$temp['title']}》 已经存在！！！\n";
                         }
                     }
                 }

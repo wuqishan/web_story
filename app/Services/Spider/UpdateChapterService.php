@@ -34,8 +34,6 @@ class UpdateChapterService extends SpiderService
             return $temp;
         });
         $new_chapter = 0;
-        $chapterModel = new Chapter();
-        $chapterContentModel = new ChapterContent();
         if (! empty($data)) {
             $run_at = false;
             $length = count($data);
@@ -115,10 +113,8 @@ class UpdateChapterService extends SpiderService
     public function updateNextUniqueCode($record)
     {
         if (! empty($record['next_unique_code'])) {
-//            Chapter::where('unique_code', $record['unique_code'])->update(['next_unique_code' => $record['next_unique_code']]);
             DB::table('chapter_' . $record['category_id'])->where('unique_code', $record['unique_code'])->update(['next_unique_code' => $record['next_unique_code']]);
 
-//            Chapter::where('unique_code', $record['unique_code'])->update(['next_unique_code' => $record['next_unique_code']]);
         }
 
         return true;
