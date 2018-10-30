@@ -40,17 +40,13 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     ]);
 
     // 书本
-    Route::get('/book', 'BookController@index')->name('book-index');
-    Route::get('/book/{book_id}', 'BookController@edit')->name('book-edit');
-    Route::post('/book/{book_id}', 'BookController@update')->name('book-update');
+    Route::get('/book', 'BookController@index')->name('book.index');
+    Route::get('/book/{book_id}', 'BookController@edit')->name('book.edit');
+    Route::post('/book/{book_id}', 'BookController@update')->name('book.update');
 
     // 章节
-    Route::get('/chapter', 'ChapterController@index')->name('chapter-index');
-    Route::get('/chapter/{chapter_id}/{category_id}', 'ChapterController@edit')->name('chapter-edit');
-    Route::post('/chapter/{chapter_id}/{category_id}', 'ChapterController@update')->name('chapter-update');
-
-    Route::resource('goods_import', 'GoodsImportController');
-    Route::resource('goods_export', 'GoodsExportController');
-
+    Route::get('/chapter/{book_unique_code}', 'ChapterController@index')->name('chapter.index');
+    Route::get('/chapter/{chapter_id}/{category_id}', 'ChapterController@edit')->name('chapter.edit');
+    Route::post('/chapter/{chapter_id}/{category_id}', 'ChapterController@update')->name('chapter.update');
 
 });

@@ -35,6 +35,7 @@
 <!-- The javascript plugin to display page loading on top-->
 <script src="{{ asset('/static/admin/js/plugins/pace.min.js') }}"></script>
 <script src="{{ asset('/static/admin/js/plugins/jquery.form.js') }}"></script>
+<script src="{{ asset('/static/admin/js/plugins/select2.min.js') }}"></script>
 <script src="{{ asset('/static/admin/js/plugins/bootstrap-datepicker.js') }}"></script>
 <script src="{{ asset('/static/admin/js/layer/layer.js') }}"></script>
 

@@ -6,29 +6,35 @@ use App\Models\Book;
 
 class BookService extends Service
 {
-    public function get($params, $sort = [], $limit = 0)
+    public function get($params = [])
     {
-        $results['length'] = $this->_length;
-        $results['list'] = [];
-
         $model = new Book();
         if (isset($params['category_id']) && intval($params['category_id']) > 0) {
             $model = $model->where('category_id', intval($params['category_id']));
         }
+        if (isset($params['title']) && ! empty($params['title'])) {
+            $params['title'] = trim($params['title']);
+            $model = $model->where('title', 'like', "%". strip_tags($params['title']) ."%");
+        }
+        if (isset($params['finished']) && intval($params['finished']) > 0) {
+            $model = $model->where('finished', intval($params['finished']));
+        }
         if (! empty($params['sort'])) {
-            $model = $model->orderBy($sort[0], $sort[1]);
+            $model = $model->orderBy($params['sort'][0], $params['sort'][1]);
         }
 
-        if (intval($limit) > 0) {
-            $model = $model->limit(intval($limit));
+        $results['list'] = [];
+        $results['length'] = $this->_length;
+        $results['page'] = $this->_page;
+        $results['offset'] = $this->_offset;
+        $results['total'] = $model->count();
+        $dataModel = $model->offset($this->_offset)->limit($this->_length)->get();
+        if (! empty($dataModel)) {
+            $results['list'] = $dataModel->toArray();
         }
+        $results['list'] = $this->formatter($results['list']);
 
-        $books = $model->get();
-        if (! empty($books)) {
-            $books = $books->toArray();
-        }
-        $books = $this->formatter((array) $books);
-        return (array) $books;
+        return $results;
     }
 
     public function getOne($params)

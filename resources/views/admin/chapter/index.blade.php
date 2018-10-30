@@ -8,13 +8,13 @@
     <main class="app-content">
         <div class="app-title">
             <div>
-                <h1><i class="fa fa-th-list"></i> 商品列表</h1>
+                <h1><i class="fa fa-th-list"></i> 章节列表</h1>
                 <p>仓库中所有商品种类管理</p>
             </div>
             <ul class="app-breadcrumb breadcrumb side">
                 <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-                <li class="breadcrumb-item">商品管理</li>
-                <li class="breadcrumb-item active"><a href="#">商品列表</a></li>
+                <li class="breadcrumb-item">章节管理</li>
+                <li class="breadcrumb-item active"><a href="#">章节列表</a></li>
             </ul>
         </div>
         <div class="row">
@@ -59,11 +59,9 @@
                             <thead>
                             <tr>
                                 <th>标题</th>
-                                <th>作者</th>
-                                <th>分类</th>
-                                <th>最近更新日期</th>
                                 <th>点击数</th>
-                                <th>是否完本</th>
+                                <th>本章节字数</th>
+                                <th>排序</th>
                                 <th>源网站</th>
                                 <th>操作</th>
                             </tr>
@@ -73,16 +71,14 @@
                                     @foreach($results['data']['list'] as $v)
                                         <tr>
                                             <td>{{ $v['title'] }}</td>
-                                            <td>{{ $v['author'] }}</td>
-                                            <td>{{ $v['category_id'] }}</td>
-                                            <td>{{ $v['last_update'] }}</td>
                                             <td>{{ $v['view'] }}</td>
-                                            <td>{{ $v['finished'] }}</td>
+                                            <td>{{ $v['number_of_words'] }}</td>
+                                            <td>{{ $v['orderby'] }}</td>
                                             <td>
                                                 <a target="_blank" href="{{ $v['url'] }}">源网站</a>
                                             </td>
                                             <td width="120">
-                                                <a target="_blank" href="{{ route('admin.chapter.index', ['book_unique_code' => $v['unique_code']]) }}"><i class="fa fa-clone" aria-hidden="true"></i> 章节列表</a>
+                                                <a href=""><i class="fa fa-clone" aria-hidden="true"></i> 详细内容</a>
                                             </td>
                                         </tr>
                                     @endforeach

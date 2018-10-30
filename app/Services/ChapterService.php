@@ -7,33 +7,40 @@ use App\Models\ChapterContent;
 
 class ChapterService extends Service
 {
-    public function get($params, $sort = [], $limit = 0, $select = [])
+    public function get($book_unique_code, $category_id, $params)
     {
-        $chapterModel = new Chapter();
-        $chapterModel = $chapterModel->setTable($params['category_id']);
-
-        if (isset($params['book_unique_code'])) {
-            $chapterModel = $chapterModel->where('book_unique_code', $params['book_unique_code']);
+        $model = new Chapter();
+        $model = $model->setTable($category_id);
+        $model = $model->where('book_unique_code', trim($book_unique_code));
+        if (isset($params['lte_number_of_words']) && intval($params['lte_number_of_words']) > 0) {
+            $model = $model->where('number_of_words', '<=', intval($params['lte_number_of_words']));
         }
-        if (! empty($sort)) {
-            $chapterModel = $chapterModel->orderBy($sort[0], $sort[1]);
+        if (isset($params['gte_number_of_words']) && intval($params['gte_number_of_words']) > 0) {
+            $model = $model->where('number_of_words', '>=', intval($params['gte_number_of_words']));
         }
-
-        if (intval($limit) > 0) {
-            $chapterModel = $chapterModel->limit(intval($limit));
-        }
-
-        if (! empty($select) > 0) {
-            $chapterModel = $chapterModel->select($select);
+        if (isset($params['title']) && ! empty($params['title'])) {
+            $params['title'] = trim($params['title']);
+            $model = $model->where('title', 'like', "%". strip_tags($params['title']) ."%");
         }
 
-        $chapter = $chapterModel->get();
-        if (! empty($chapter)) {
-            $chapter = $chapter->toArray();
+        if (! empty($params['sort'])) {
+            $model = $model->orderBy($params['sort'][0], $params['sort'][1]);
+        } else {
+            $model = $model->orderBy('orderby', 'asc');
         }
-        $chapter = $this->formatter((array) $chapter);
 
-        return (array) $chapter;
+        $results['list'] = [];
+        $results['length'] = $this->_length;
+        $results['page'] = $this->_page;
+        $results['offset'] = $this->_offset;
+        $results['total'] = $model->count();
+        $dataModel = $model->offset($this->_offset)->limit($this->_length)->get();
+        if (! empty($dataModel)) {
+            $results['list'] = $dataModel->toArray();
+        }
+        $results['list'] = $this->formatter($results['list']);
+
+        return $results;
     }
 
     public function getOne($params)

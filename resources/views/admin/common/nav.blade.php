@@ -22,10 +22,10 @@
                 <i class="treeview-indicator fa fa-angle-right"></i>
             </a>
             <ul class="treeview-menu">
-                <li><a class="treeview-item" data-nav="admin.goods.index" href="{{ route('admin.goods.index') }}"><i class="icon fa fa-circle-o"></i> 小说列表</a></li>
-                <li><a class="treeview-item" data-nav="admin.goods_import.index" href="{{ route('admin.goods_import.index') }}"><i class="icon fa fa-circle-o"></i> 进库列表</a></li>
-                <li><a class="treeview-item" data-nav="admin.goods_export.index" href="{{ route('admin.goods_export.index') }}"><i class="icon fa fa-circle-o"></i> 出库列表</a></li>
-                <li><a class="treeview-item" data-nav="admin.category.index" href="{{ route('admin.category.index') }}"><i class="icon fa fa-circle-o"></i> 分类管理</a></li>
+                <li><a class="treeview-item" data-nav="admin.book.index" href="{{ route('admin.book.index') }}"><i class="icon fa fa-circle-o"></i> 小说列表</a></li>
+                {{--<li><a class="treeview-item" data-nav="admin.goods_import.index" href="{{ route('admin.goods_import.index') }}"><i class="icon fa fa-circle-o"></i> 进库列表</a></li>--}}
+                {{--<li><a class="treeview-item" data-nav="admin.goods_export.index" href="{{ route('admin.goods_export.index') }}"><i class="icon fa fa-circle-o"></i> 出库列表</a></li>--}}
+                {{--<li><a class="treeview-item" data-nav="admin.category.index" href="{{ route('admin.category.index') }}"><i class="icon fa fa-circle-o"></i> 分类管理</a></li>--}}
             </ul>
         </li>
 
