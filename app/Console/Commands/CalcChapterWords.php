@@ -23,7 +23,7 @@ class CalcChapterWords extends Command
      *
      * @var string
      */
-    protected $description = '计算章节多少字数';
+    protected $description = '一次性使用---计算章节多少字数';
 
     /**
      * Create a new command instance.
