@@ -31,6 +31,25 @@ class PagingHelper
         return $paginator;
     }
 
+    /**
+     * 初始化显示每页显示多少条数据
+     *
+     * @return string
+     */
+    public static function pageNumber()
+    {
+        $pageNumber = [6, 10, 20, 30, 50, 100, 300, 500, 1000, 2000, 3000, 5000];
 
+        $options = [];
+        foreach ($pageNumber as $v) {
+            $selected = '';
+            if (request()->get('length') == $v) {
+                $selected = 'selected';
+            }
+            $options[] = "<option value='{$v}' {$selected}>{$v}</option>";
+        }
+
+        return '<select class="page_number">' . implode('', $options) . '</select>';
+    }
 }
 

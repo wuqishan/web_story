@@ -7,30 +7,40 @@ use App\Models\CheckBookInfo;
 
 class CheckBookInfoService extends Service
 {
-    public function get($params, $sort = [], $limit = 0, $select = [])
+    public function get($params = [])
     {
-        $mode = new CheckBookInfo();
-        if (isset($params['book_id'])) {
-            $mode = $mode->where('book_id', intval($params['book_id']));
+        $model = new CheckBookInfo();
+        if (isset($params['book_category_id']) && intval($params['book_category_id']) > 0) {
+            $model = $model->where('book_category_id', intval($params['book_category_id']));
         }
-        if (isset($params['status'])) {
-            $mode = $mode->where('status', intval($params['status']));
+        if (isset($params['book_title']) && ! empty($params['book_title'])) {
+            $params['book_title'] = trim($params['book_title']);
+            $model = $model->where('book_title', 'like', "%". strip_tags($params['book_title']) ."%");
         }
-        if (! empty($sort)) {
-            $mode = $mode->orderBy($sort[0], $sort[1]);
+        if (isset($params['status']) && intval($params['status']) > 0) {
+            $model = $model->where('status', intval($params['status']));
+        }
+        if (isset($params['method']) && intval($params['method']) > 0) {
+            $model = $model->where('method', intval($params['method']));
+        }
+        if (! empty($params['sort'])) {
+            $model = $model->orderBy($params['sort'][0], $params['sort'][1]);
+        } else {
+            $model = $model->orderBy('id', 'desc');
         }
 
-        if (! empty($select) > 0) {
-            $mode = $mode->select($select);
+        $results['list'] = [];
+        $results['length'] = $this->_length;
+        $results['page'] = $this->_page;
+        $results['offset'] = $this->_offset;
+        $results['total'] = $model->count();
+        $dataModel = $model->offset($this->_offset)->limit($this->_length)->get();
+        if (! empty($dataModel)) {
+            $results['list'] = $dataModel->toArray();
         }
+        $results['list'] = $this->formatter($results['list']);
 
-        $data = $mode->get();
-        if (! empty($data)) {
-            $data = $data->toArray();
-        }
-        $data = $this->formatter((array) $data);
-
-        return (array) $data;
+        return $results;
     }
 
     public function getOne($params)

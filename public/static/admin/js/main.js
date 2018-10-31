@@ -7,7 +7,18 @@
 	$('[data-toggle="sidebar"]').click(function(event) {
 		event.preventDefault();
 		$('.app').toggleClass('sidenav-toggled');
+
+		if ($('.app').hasClass('sidenav-toggled')) {
+			$.cookie('sidenav_toggled', 'open')
+		} else {
+            $.cookie('sidenav_toggled', 'close');
+		}
 	});
+	if ($.cookie('sidenav_toggled') == 'open') {
+        $('.app').addClass('sidenav-toggled')
+	} else {
+        $('.app').removeClass('sidenav-toggled')
+	}
 
 	// Activate sidebar treeview toggle
 	$("[data-toggle='treeview']").click(function(event) {
@@ -35,5 +46,23 @@
 			$(this).addClass('active');
 			return true;
 		}
+    });
+
+	// 切换每页显示多少条数据
+	$(".page_number").change(function () {
+		var length = $(this).val();
+		var currentUrl = location.href;
+        currentUrl = currentUrl.replace('#', '');
+        var lengthParam = $.get_url_param('length');
+        if (lengthParam == null) {
+            if (currentUrl.indexOf('?') > -1) {
+                location.href = currentUrl + '&length=' + length;
+            } else {
+                location.href = currentUrl + '?length=' + length;
+            }
+		} else {
+            location.href = currentUrl.replace('length=' + lengthParam, 'length=' + length);
+		}
+
     });
 })();

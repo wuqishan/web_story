@@ -49,4 +49,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::get('/chapter/{chapter_id}/{category_id}', 'ChapterController@edit')->name('chapter.edit');
     Route::post('/chapter/{chapter_id}/{category_id}', 'ChapterController@update')->name('chapter.update');
 
+    // 检测信息
+    Route::get('/check_info', 'CheckInfoController@index')->name('check_info.index');
+//    Route::get('/check_info/{chapter_id}/{category_id}', 'ChapterController@edit')->name('chapter.edit');
 });

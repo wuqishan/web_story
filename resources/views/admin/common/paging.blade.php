@@ -20,7 +20,11 @@
                 <a href="{{ $pagingHelper->getNextUrl() }}" class="btn btn-secondary weight-normal">下一页</a>
             @endif
 
-            <a href="#" class="btn btn-secondary weight-normal">共 {{ $pagingHelper->getTotalItems() }} 条数据</a>
+            <a href="javascript:void(0);" class="btn btn-secondary weight-normal">
+                每页显示 {!! \App\Helper\PagingHelper::pageNumber() !!} 条
+            </a>
+
+            <a href="javascript:void(0);" class="btn btn-secondary weight-normal">共 {{ $pagingHelper->getTotalItems() }} 条数据</a>
         </div>
     </div>
 </div>

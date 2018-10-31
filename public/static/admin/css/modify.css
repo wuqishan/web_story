@@ -3,6 +3,11 @@ body, div, p, span, i, label, input, h1, h2, h3, h4, h5, h6, button {
     font-family: "Microsoft YaHei UI", "微软雅黑";
 }
 
+p.margin-top-8 {
+    margin-top: 8px;
+    font-style: normal;
+}
+
 .margin-left-20 {
     margin-left: 20px;
 }
@@ -24,4 +29,17 @@ body, div, p, span, i, label, input, h1, h2, h3, h4, h5, h6, button {
 
 .weight-normal {
     font-weight: normal;
+}
+.page_number {
+    border-radius: 5px;
+    text-align:center;
+    text-align-last:center;
+}
+.page_number option {
+    text-align: center;
+}
+
+.form-group .data-range {
+    display: inline-block;
+    width: 45%;
 }

@@ -8,13 +8,12 @@
     <main class="app-content">
         <div class="app-title">
             <div>
-                <h1><i class="fa fa-th-list"></i> 商品列表</h1>
-                <p>仓库中所有商品种类管理</p>
+                <h1><i class="fa fa-th-list"></i> 小说列表</h1>
             </div>
             <ul class="app-breadcrumb breadcrumb side">
                 <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-                <li class="breadcrumb-item">商品管理</li>
-                <li class="breadcrumb-item active"><a href="#">商品列表</a></li>
+                <li class="breadcrumb-item">小说管理</li>
+                <li class="breadcrumb-item active"><a href="#">小说列表</a></li>
             </ul>
         </div>
         <div class="row">
@@ -52,6 +51,7 @@
                             <div class="form-group col-md-1 align-self-end">
                                 <a class="btn btn-outline-secondary pull-right" href="{{ route('admin.book.index') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>重置</a>
                             </div>
+                            <input type="hidden" name="length" value="{{ request()->get('length') }}">
                         </form>
                     </div>
                     <div class="tile-body">

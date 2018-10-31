@@ -8,8 +8,11 @@
     <main class="app-content">
         <div class="app-title">
             <div>
-                <h1><i class="fa fa-th-list"></i> 章节列表</h1>
-                <p>仓库中所有商品种类管理</p>
+                <h1><i class="fa fa-th-list"></i> 《{{ $results['book']['title'] }}》 章节列表</h1>
+                <p class="margin-top-8">
+                    作者：{{ $results['book']['author'] }}&nbsp;&nbsp;&nbsp;&nbsp;
+                    最近更新时间：{{ $results['book']['last_update'] }}
+                </p>
             </div>
             <ul class="app-breadcrumb breadcrumb side">
                 <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -21,37 +24,24 @@
             <div class="col-md-12">
                 <div class="tile">
                     <div class="tile-body">
-                        <form class="row" id="search-form" action="{{ route('admin.book.index') }}" method="get">
+                        <form class="row" id="search-form" action="{{ route('admin.chapter.index', ['book_unique_code' => $results['book']['unique_code']]) }}" method="get">
                             <div class="form-group col-md-2">
                                 <input class="form-control" autocomplete="off" type="text" name="title" value="{{ request()->get('title') }}" placeholder="标题">
                             </div>
-                            <div class="form-group col-md-2">
-                                <select class="form-control" name="category_id">
-                                    <option value="">选择书本分类</option>
-                                    <option @if(request()->get('category_id') == 1) selected @endif value="1">玄幻奇幻</option>
-                                    <option @if(request()->get('category_id') == 2) selected @endif value="2">武侠仙侠</option>
-                                    <option @if(request()->get('category_id') == 3) selected @endif value="3">都市言情</option>
-                                    <option @if(request()->get('category_id') == 4) selected @endif value="4">历史军事</option>
-                                    <option @if(request()->get('category_id') == 5) selected @endif value="5">科幻灵异</option>
-                                    <option @if(request()->get('category_id') == 6) selected @endif value="6">网游竞技</option>
-                                    <option @if(request()->get('category_id') == 7) selected @endif value="7">女频频道</option>
-                                </select>
+                            <div class="form-group col-md-3">
+                                <input class="form-control data-range" autocomplete="off" type="text" name="gte_number_of_words" value="{{ request()->get('gte_number_of_words') }}" placeholder="最小字数">
+                                -
+                                <input class="form-control data-range" autocomplete="off" type="text" name="lte_number_of_words" value="{{ request()->get('lte_number_of_words') }}" placeholder="最大字数">
                             </div>
-                            <div class="form-group col-md-2">
-                                <select class="form-control" name="finished">
-                                    <option value="">选择完本状态</option>
-                                    <option @if(request()->get('finished') == '0') selected @endif value="0">未完本</option>
-                                    <option @if(request()->get('finished') == '1') selected @endif value="1">完本</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-5">
                             </div>
                             <div class="form-group col-md-1 align-self-end">
                                 <a class="btn btn-outline-info pull-right" href="javascript:$('#search-form').submit();"><i class="fa fa-fw fa-lg fa-check-circle"></i>搜索</a>
                             </div>
                             <div class="form-group col-md-1 align-self-end">
-                                <a class="btn btn-outline-secondary pull-right" href="{{ route('admin.book.index') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>重置</a>
+                                <a class="btn btn-outline-secondary pull-right" href="{{ route('admin.chapter.index', ['book_unique_code' => $results['book']['unique_code']]) }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>重置</a>
                             </div>
+                            <input type="hidden" name="length" value="{{ request()->get('length') }}">
                         </form>
                     </div>
                     <div class="tile-body">
@@ -96,26 +86,5 @@
 @section('otherStaticSecond')
     <script type="text/javascript">
 
-        function del_record(id)
-        {
-            layer.confirm('确定删除该条记录？', {
-                skin: 'layui-layer-molv',
-                btn: ['确定','取消']
-            }, function() {
-                $.ajax({
-                    'url': "/admin/goods/" + id,
-                    'type': 'post',
-                    'data': {'_method': 'DELETE', '_token': '{{ csrf_token() }}'},
-                    'dataType': 'json',
-                    'success': function (results) {
-                        if (results.status) {
-                            layer.msg('删除成功！', {'anim': -1, 'time': 4,}, function () {
-                                location.href = '{{ route('admin.book.index') }}'
-                            });
-                        }
-                    }
-                });
-            });
-        }
     </script>
 @endsection

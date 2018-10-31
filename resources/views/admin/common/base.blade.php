@@ -18,7 +18,7 @@
     {{-- 全局变量 --}}
     <script type="text/javascript">
         // 当前路由名称
-        var routeName = '{{ \App\Helper\NavHelper::highlight() }}';
+        var routeName = '{{ request()->route()->getName() }}';
         // 筛选使用
         var formData = {};
     </script>
@@ -32,6 +32,7 @@
 <script src="{{ asset('/static/admin/js/jquery-3.2.1.min.js') }}"></script>
 <script src="{{ asset('/static/admin/js/popper.min.js') }}"></script>
 <script src="{{ asset('/static/admin/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('/static/admin/js/jquery.cookie.js') }}"></script>
 <!-- The javascript plugin to display page loading on top-->
 <script src="{{ asset('/static/admin/js/plugins/pace.min.js') }}"></script>
 <script src="{{ asset('/static/admin/js/plugins/jquery.form.js') }}"></script>

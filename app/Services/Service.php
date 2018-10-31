@@ -10,7 +10,10 @@ class Service
 
     public function __construct()
     {
-        $this->_length = request()->get('length', 6);
+        $this->_length = intval(request()->get('length'));
+        if ($this->_length <= 0) {
+            $this->_length = 6;
+        }
         $this->_page = request()->get('page', 1);
         $this->_offset = ($this->_page - 1) * $this->_length;
     }
