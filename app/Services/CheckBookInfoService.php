@@ -43,11 +43,11 @@ class CheckBookInfoService extends Service
         return $results;
     }
 
-    public function getOne($params)
+    public function getOne($id)
     {
         $checkBookInfo = [];
-        if (isset($params['id']) && intval($params['id']) > 0) {
-            $checkBookInfo = CheckBookInfo::where('id', intval($params['id']))->first()->toArray();
+        if (intval($id) > 0) {
+            $checkBookInfo = CheckBookInfo::where('id', intval($id))->first()->toArray();
         }
         
         return (array) $checkBookInfo;
@@ -63,9 +63,9 @@ class CheckBookInfoService extends Service
 
     public function formatter($data)
     {
-        if (! empty($data)) {
-
-        }
+//        if (! empty($data)) {
+//
+//        }
 
         return $data;
     }

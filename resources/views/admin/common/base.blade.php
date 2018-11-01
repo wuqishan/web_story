@@ -18,7 +18,7 @@
     {{-- 全局变量 --}}
     <script type="text/javascript">
         // 当前路由名称
-        var routeName = '{{ request()->route()->getName() }}';
+        var routeName = '{{ \App\Helper\NavHelper::highlight() }}';
         // 筛选使用
         var formData = {};
     </script>

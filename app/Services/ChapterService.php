@@ -7,7 +7,7 @@ use App\Models\ChapterContent;
 
 class ChapterService extends Service
 {
-    public function get($book_unique_code, $category_id, $params)
+    public function get($book_unique_code, $category_id, $params = [])
     {
         $model = new Chapter();
         $model = $model->setTable($category_id);
@@ -23,7 +23,7 @@ class ChapterService extends Service
             $model = $model->where('title', 'like', "%". strip_tags($params['title']) ."%");
         }
 
-        if (! empty($params['sort'])) {
+        if (isset($params['sort']) && ! empty($params['sort'])) {
             $model = $model->orderBy($params['sort'][0], $params['sort'][1]);
         } else {
             $model = $model->orderBy('orderby', 'asc');
@@ -43,7 +43,7 @@ class ChapterService extends Service
         return $results;
     }
 
-    public function getOne($params)
+    public function getOne($params, $withContent = false)
     {
         $chapter = [];
         $category_id = intval($params['category_id']);
@@ -60,7 +60,7 @@ class ChapterService extends Service
             $chapter = $chapterModel->where('unique_code', $params['unique_code'])->first()->toArray();
         }
 
-        if (! empty($chapter)) {
+        if (! empty($chapter) && $withContent) {
             $chapterContent = $chapterContentModel->where('id', $chapter['id'])->first()->toArray();
             $chapter['content'] = $chapterContent['content'];
         }
@@ -74,12 +74,20 @@ class ChapterService extends Service
      * @param integer $v
      * @return mixed
      */
-    public function updateView($id,$category_id, $v = 1)
+    public function updateView($id, $category_id, $v = 1)
     {
         $chapterModel = new Chapter();
         $chapterModel = $chapterModel->setTable($category_id);
 
         return $chapterModel->where('id', $id)->increment('view', $v);
+    }
+
+    public function updateNumberOfWords($id, $category_id, $number_of_words)
+    {
+        $chapterModel = new Chapter();
+        $chapterModel = $chapterModel->setTable($category_id);
+
+        return $chapterModel->where('id', $id)->update(['number_of_words' => $number_of_words]);
     }
 
     public function formatter($chapter)

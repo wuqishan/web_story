@@ -79,7 +79,7 @@ class SpiderUpdateContent extends Command
                             // 插入content数据表
                             $temp['id'] = $chapter_id;
                             $temp['content'] = $ql->find('#content')->html();
-                            $temp['content'] ='<div id="content">' . $temp['content'] . '</div>';
+                            $temp['content'] = '<div id="content">' . $temp['content'] . '</div>';
                             DB::table('chapter_content_' . $category_id)->insert($temp);
                             // 更新chapter数据表的字数字段
                             $number_of_words = ToolsHelper::calcWords($temp['content']);

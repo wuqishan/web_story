@@ -38,7 +38,9 @@
                         </form>
                     </div>
                     <div class="tile-footer">
-                        <button class="btn btn-primary submit" type="button">Submit</button>
+                        <div class="row d-print-none mt-2">
+                            <div class="col-12 text-right"><a class="btn btn-primary submit" href="javascript:void(0);" target="_blank">提 交</a></div>
+                        </div>
                     </div>
                 </div>
             </div>

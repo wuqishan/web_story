@@ -57,6 +57,11 @@ class CategoryService extends Service
         return $results;
     }
 
+    public function delete($id)
+    {
+        return Category::destroy($id);
+    }
+
     public function formatter($rows)
     {
 

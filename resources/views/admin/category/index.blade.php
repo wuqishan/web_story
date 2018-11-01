@@ -53,8 +53,10 @@
                                         <td>{{ $v['name'] }}</td>
                                         <td>{{ $v['url'] }}</td>
                                         <td><a href="{{ $v['url'] }}">查看</a> </td>
-                                        <td width="120">
-                                            <a target="_blank" href="{{ route('admin.category.edit', ['category_id' => $v['id']]) }}"><i class="fa fa-edit" aria-hidden="true"></i> 编辑</a>
+                                        <td width="130">
+                                            <a href="{{ route('admin.category.edit', ['category_id' => $v['id']]) }}"><i class="fa fa-edit" aria-hidden="true"></i> 编辑</a>
+                                            &nbsp;&nbsp;
+                                            <a href="javascript:del_record('{{ route('admin.category.destroy', ['category_id' => $v['id']]) }}', '{{ route('admin.category.index') }}');"><i class="fa fa-trash-o" aria-hidden="true"></i> 删除</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -70,6 +72,26 @@
 
 @section('otherStaticSecond')
     <script type="text/javascript">
-
+        function del_record(url, gotoUrl)
+        {
+            layer.confirm('确定删除该条记录？', {
+                skin: 'layui-layer-molv',
+                btn: ['确定','取消']
+            }, function() {
+                $.ajax({
+                    'url': url,
+                    'type': 'post',
+                    'data': {'_method': 'DELETE', '_token': '{{ csrf_token() }}'},
+                    'dataType': 'json',
+                    'success': function (results) {
+                        if (results.status) {
+                            layer.msg('删除成功！', {'anim': -1, 'time': 4,}, function () {
+                                location.href = gotoUrl;
+                            });
+                        }
+                    }
+                });
+            });
+        }
     </script>
 @endsection

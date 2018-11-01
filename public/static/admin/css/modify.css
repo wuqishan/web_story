@@ -3,6 +3,16 @@ body, div, p, span, i, label, input, h1, h2, h3, h4, h5, h6, button {
     font-family: "Microsoft YaHei UI", "微软雅黑";
 }
 
+.font-red{
+    font-weight: bold;
+    color: #c82333;
+}
+
+.font-green {
+    font-weight: bold;
+    color: darkgreen;
+}
+
 p.margin-top-8 {
     margin-top: 8px;
     font-style: normal;
@@ -42,4 +52,19 @@ p.margin-top-8 {
 .form-group .data-range {
     display: inline-block;
     width: 45%;
+}
+
+table.table-info-small th {
+    background-color: #eeeeee;
+    text-align: right;
+}
+
+table.table-info-small th, table.table-info-small td {
+    padding: 8px;
+}
+
+.chapter-title {
+    text-align: center;
+    padding-bottom: 30px;
+    border-bottom: #ccc 1px solid;
 }

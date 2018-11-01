@@ -102,7 +102,7 @@
                                             </td>
                                             <td>{{ $v['created_at'] }}</td>
                                             <td width="120">
-                                                <a href=""><i class="fa fa-clone" aria-hidden="true"></i> 详细内容</a>
+                                                <a href="{{ route('admin.check_info.detail', ['check_info_id' => $v['id']]) }}"><i class="fa fa-clone" aria-hidden="true"></i> 详细内容</a>
                                             </td>
                                         </tr>
                                     @endforeach

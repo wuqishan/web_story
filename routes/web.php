@@ -24,12 +24,6 @@ Route::group(['namespace' => 'Home'], function () {
     Route::get('/updateView', 'ArticleController@updateView')->name('update-view');
 });
 
-Route::group(['namespace' => 'Update', 'prefix' => 'update', 'middleware' => ['check.update']], function () {
-    Route::get('/book', 'BookController@index')->name('update-book-index');
-    Route::get('/chapter', 'ChapterController@index')->name('update-chapter-index');
-    Route::get('/chapter/update', 'ChapterController@updateMethod')->name('update-chapter-update');
-});
-
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
 
     Route::get('/', 'IndexController@index')->name('admin.index');
@@ -41,15 +35,20 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
 
     // 书本
     Route::get('/book', 'BookController@index')->name('book.index');
-    Route::get('/book/{book_id}', 'BookController@edit')->name('book.edit');
-    Route::post('/book/{book_id}', 'BookController@update')->name('book.update');
+//    Route::get('/book/{book_id}', 'BookController@edit')->name('book.edit');
+//    Route::post('/book/{book_id}', 'BookController@update')->name('book.update');
 
     // 章节
     Route::get('/chapter/{book_unique_code}', 'ChapterController@index')->name('chapter.index');
-    Route::get('/chapter/{chapter_id}/{category_id}', 'ChapterController@edit')->name('chapter.edit');
-    Route::post('/chapter/{chapter_id}/{category_id}', 'ChapterController@update')->name('chapter.update');
+//    Route::get('/chapter/{chapter_id}/{category_id}', 'ChapterController@edit')->name('chapter.edit');
+//    Route::post('/chapter/{chapter_id}/{category_id}', 'ChapterController@update')->name('chapter.update');
+
+    // 内容
+    Route::post('/content/update', 'ChapterContentController@updateContent')->name('content.update');
+    Route::get('/content/detail/{content_id}/{category_id}', 'ChapterContentController@detail')->name('content.detail');
 
     // 检测信息
     Route::get('/check_info', 'CheckInfoController@index')->name('check_info.index');
-//    Route::get('/check_info/{chapter_id}/{category_id}', 'ChapterController@edit')->name('chapter.edit');
+    Route::get('/check_info/detail/{check_info_id}', 'CheckInfoController@detail')->name('check_info.detail');
+    Route::post('/check_info/{check_info_id}/{method_id}/update', 'CheckInfoController@methodUpdate')->name('check_info.method.change');
 });
