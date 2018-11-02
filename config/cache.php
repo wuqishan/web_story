@@ -17,6 +17,8 @@ return [
 
     'default' => env('CACHE_DRIVER', 'file'),
 
+    // 是否开启缓存
+    'status' => env('CACHE_START', false),
     /*
     |--------------------------------------------------------------------------
     | Cache Stores

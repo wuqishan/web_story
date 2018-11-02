@@ -68,7 +68,7 @@
                                                 <a target="_blank" href="{{ $v['url'] }}">源网站</a>
                                             </td>
                                             <td width="120">
-                                                <a href=""><i class="fa fa-clone" aria-hidden="true"></i> 详细内容</a>
+                                                <a href="{{ route('admin.content.detail', ['content_id' => $v['id'], 'category_id' => $v['category_id']]) }}"><i class="fa fa-clone" aria-hidden="true"></i> 详细内容</a>
                                             </td>
                                         </tr>
                                     @endforeach

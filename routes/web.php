@@ -11,8 +11,10 @@
 |
 */
 
-Route::get('/user/login', 'UserController@login')->name('login');
-Route::post('/user/dologin', 'UserController@doLogin')->name('do_login');
+// 登陆
+Route::get('/admin/user/login', 'Admin\UserController@login')->name('admin.user.login');
+Route::post('/admin/user/dologin', 'Admin\UserController@doLogin')->name('admin.user.do_login');
+Route::get('/admin/user/logout', 'Admin\UserController@logout')->name('admin.user.logout');
 
 Route::group(['namespace' => 'Home'], function () {
     Route::get('/', 'IndexController@index')->name('index');
@@ -24,7 +26,9 @@ Route::group(['namespace' => 'Home'], function () {
     Route::get('/updateView', 'ArticleController@updateView')->name('update-view');
 });
 
-Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'login.check'], function () {
+
+
 
     Route::get('/', 'IndexController@index')->name('admin.index');
 
@@ -51,4 +55,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::get('/check_info', 'CheckInfoController@index')->name('check_info.index');
     Route::get('/check_info/detail/{check_info_id}', 'CheckInfoController@detail')->name('check_info.detail');
     Route::post('/check_info/{check_info_id}/{method_id}/update', 'CheckInfoController@methodUpdate')->name('check_info.method.change');
+
+    // 图片检测
+    Route::get('/image', 'ImageController@index')->name('image.index');
 });

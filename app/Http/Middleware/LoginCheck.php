@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class CheckUpdate
+class LoginCheck
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class CheckUpdate
     public function handle($request, Closure $next)
     {
         if (empty(session('user'))) {
-            return redirect()->route('login');
+            return redirect()->route('admin.user.login');
         }
 
         return $next($request);
