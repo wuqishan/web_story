@@ -32,4 +32,12 @@ class ToolsHelper
     {
         return mb_substr($str, $start, $length);
     }
+
+    public static function getImageExt($image_url)
+    {
+        $ext = substr($image_url, strrpos($image_url, '.') + 1);
+        $ext = preg_replace('/^(\w+)\??.*/', '$1', $ext);
+
+        return $ext;
+    }
 }

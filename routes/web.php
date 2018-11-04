@@ -58,4 +58,6 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
 
     // 图片检测
     Route::get('/image', 'ImageController@index')->name('image.index');
+    Route::post('/image/check', 'ImageController@check')->name('image.check');
+    Route::post('/image/update', 'ImageController@update')->name('image.update');
 });

@@ -43,16 +43,13 @@
                                     <option @if(request()->get('finished') == '1') selected @endif value="1">完本</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-5">
                             </div>
                             <div class="form-group col-md-1 align-self-end">
                                 <a class="btn btn-outline-info pull-right" href="javascript:$('#search-form').submit();"><i class="fa fa-fw fa-lg fa-check-circle"></i>搜索</a>
                             </div>
                             <div class="form-group col-md-1 align-self-end">
                                 <a class="btn btn-outline-secondary pull-right" href="{{ route('admin.book.index') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>重置</a>
-                            </div>
-                            <div class="form-group col-md-2 align-self-end">
-                                <a class="btn btn-outline-success pull-right" href="{{ route('admin.category.create') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>检测图片</a>
                             </div>
                             <input type="hidden" name="length" value="{{ request()->get('length') }}">
                         </form>
@@ -77,7 +74,7 @@
                                         <tr>
                                             <td>{{ $v['title'] }}</td>
                                             <td>{{ $v['author'] }}</td>
-                                            <td>{{ $v['category_id'] }}</td>
+                                            <td>{{ \App\Models\Category::categoryMap($v['category_id']) }}</td>
                                             <td>{{ $v['last_update'] }}</td>
                                             <td>{{ $v['view'] }}</td>
                                             <td>{{ \App\Models\Book::$finishedMap[$v['finished']] }}</td>

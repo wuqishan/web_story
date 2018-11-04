@@ -2,36 +2,80 @@
 
 namespace App\Services;
 
+use App\Helper\HttpHelper;
+use App\Helper\ToolsHelper;
+use App\Models\Book;
+
 class ImageService extends Service
 {
+
     public function get($params = [])
     {
-        $model = new Book();
-        if (isset($params['category_id']) && intval($params['category_id']) > 0) {
-            $model = $model->where('category_id', intval($params['category_id']));
-        }
-        if (isset($params['title']) && ! empty($params['title'])) {
-            $params['title'] = trim($params['title']);
-            $model = $model->where('title', 'like', "%". strip_tags($params['title']) ."%");
-        }
-        if (isset($params['finished']) && intval($params['finished']) > 0) {
-            $model = $model->where('finished', intval($params['finished']));
-        }
-        if (! empty($params['sort'])) {
-            $model = $model->orderBy($params['sort'][0], $params['sort'][1]);
-        }
 
-        $results['list'] = [];
-        $results['length'] = $this->_length;
-        $results['page'] = $this->_page;
-        $results['offset'] = $this->_offset;
-        $results['total'] = $model->count();
-        $dataModel = $model->offset($this->_offset)->limit($this->_length)->get();
-        if (! empty($dataModel)) {
-            $results['list'] = $dataModel->toArray();
+    }
+
+    /**
+     * @return array
+     */
+    public function check()
+    {
+        $results = ['book_number' => 0, 'without_image_book_number' => 0];
+        $books = Book::all(['id', 'image_local_url'])->toArray();
+
+        $results['book_number'] = count($books);
+        $results['without_image_book_number'] = 0;
+        foreach ($books as $book) {
+            if (empty($book['image_local_url']) || ! file_exists(public_path($book['image_local_url']))) {
+                $results['without_image_book_number']++;
+            }
         }
-        $results['list'] = $this->formatter($results['list']);
 
         return $results;
+    }
+
+    public function update()
+    {
+        $save_path = '/book/author/images/';
+        $results = ['book_number' => 0, 'without_image_book_number' => 0];
+        $books = Book::all(['id', 'image_local_url', 'image_origin_url', 'unique_code'])->toArray();
+
+        $need_update = [];
+        $results['update'] = 1;
+        $results['book_number'] = count($books);
+        $results['without_image_book_number'] = 0;
+        foreach ($books as $book) {
+            if (empty($book['image_local_url']) || ! file_exists(public_path($book['image_local_url']))) {
+                $need_update[] = $book;
+                $results['without_image_book_number']++;
+            }
+        }
+
+        // 未更新的小于30张的可以使用该方法，否则建议使用命令行工具更新
+        if ($results['without_image_book_number'] < 30 && $results['without_image_book_number'] > 0) {
+            $results['update'] = 2;
+
+            foreach ($need_update as $book) {
+                $save_db_path = $this->download($book['image_origin_url'], $save_path, $book['unique_code']);
+                Book::where('id', $book['id'])->update(['image_local_url' => $save_db_path]);
+            }
+        }
+
+        if ($results['without_image_book_number'] == 0) {
+            $results['update'] = 3;
+        }
+
+        return $results;
+    }
+
+    public function download($image_url, $save_path, $save_name)
+    {
+        $full_path = public_path($save_path);
+        $ext = ToolsHelper::getImageExt($image_url);
+        if (! empty($ext)) {
+            $image = HttpHelper::send($image_url);
+            @file_put_contents($full_path . $save_name . '.' . $ext, $image);
+        }
+
+        return $save_path . $save_name . '.' . $ext;
     }
 }

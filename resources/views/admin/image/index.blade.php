@@ -24,7 +24,7 @@
                             <div class="form-group col-md-2">
                                 <input class="form-control" autocomplete="off" type="text" name="title" value="{{ request()->get('title') }}" placeholder="标题">
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-5">
                             </div>
                             <div class="form-group col-md-1 align-self-end">
                                 <a class="btn btn-outline-info pull-right" href="javascript:$('#search-form').submit();"><i class="fa fa-fw fa-lg fa-check-circle"></i>搜索</a>
@@ -32,40 +32,29 @@
                             <div class="form-group col-md-1 align-self-end">
                                 <a class="btn btn-outline-secondary pull-right" href="{{ route('admin.book.index') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>重置</a>
                             </div>
-                            <div class="form-group col-md-2 align-self-end">
-                                <a class="btn btn-outline-success pull-right" href="{{ route('admin.category.create') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>检测图片</a>
-                            </div>
                         </form>
                     </div>
                     <div class="tile-body">
                         <table class="table">
                             <thead>
                             <tr>
-                                <th>标题</th>
-                                <th>作者</th>
-                                <th>分类</th>
-                                <th width="165">最近更新日期</th>
-                                <th width="70">点击数</th>
-                                <th width="55">完本</th>
-                                <th width="70">源网站</th>
-                                <th width="120">操作</th>
+                                <th>功能</th>
+                                <th>书本数量</th>
+                                <th>简介</th>
+                                <th width="135">操作</th>
                             </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>
-                                        <a target="_blank" href="">源网站</a>
-                                    </td>
-                                    <td>
-                                        <a href=""><i class="fa fa-clone" aria-hidden="true"></i> 章节列表</a>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>图片检测</td>
+                                <td>{{ $results['book']['total'] }}</td>
+                                <td>检测小说封面图片是否已下载</td>
+                                <td>
+                                    <a href="javascript:checkImage();"><i class="fa fa-check" aria-hidden="true"></i> 检测</a>
+                                    &nbsp;
+                                    <a href="javascript:updateImage();"><i class="fa fa-cloud-download" aria-hidden="true"></i> 更新</a>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -79,7 +68,34 @@
     <script type="text/javascript">
         function checkImage()
         {
+            var loadIndex = layer.load(2);
+            $.post('{{ route('admin.image.check') }}', {'_token': '{{ csrf_token() }}'}, function(results) {
+                if (results) {
+                    layer.close(loadIndex);
+                    var msg = '检测结束,结果如下：<br>' +
+                        '共有书本：'+results['book_number'] + ' 本<br>'  +
+                        '没有封面的书本：' + results['without_image_book_number'] + ' 本';
+                    layer.alert(msg, {icon: 6});
+                }
+            }, 'json');
+        }
 
+        function updateImage()
+        {
+            var loadIndex = layer.load(2);
+            $.post('{{ route('admin.image.update') }}', {'_token': '{{ csrf_token() }}'}, function(results) {
+                layer.close(loadIndex);
+                if (results.update == 2) {
+                    var msg = '更新结果如下：<br>' +
+                        '共有书本：'+results['book_number'] + ' 本<br>'  +
+                        '本次更新书本：' + results['without_image_book_number'] + ' 本';
+                } else if (results.update == 1) {
+                    var msg = '待更新封面的书本过多，不建议此处更新!';
+                } else if (results.update == 3) {
+                    var msg = '待更新封面的书本数量为 0，不做处理!';
+                }
+                layer.alert(msg, {icon: 6});
+            }, 'json');
         }
     </script>
 @endsection
