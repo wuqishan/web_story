@@ -31,33 +31,25 @@
                         <span class="sr-only">下一个</span>
                     </a>
                 </div>
-                <article class="excerpt excerpt-1" style="">
-                    <a class="focus" href="#" title="xxxx" target="_blank">
-                        <img class="thumb" src="{{ asset('/static/images/201610181739277776.jpg') }}" style="display: inline;">
-                    </a>
-                    <header>
-                        <a class="cat" href="#" title="MZ-NetBlog主题">aaaaa<i></i></a>
-                        <h2>
-                            <a href="#" title="xxx" target="_blank">xxxx</a>
-                        </h2>
-                    </header>
-                    <p class="meta">
-                        <time class="time">
-                            <i class="glyphicon glyphicon-time"></i>
-                            2016-10-14
-                        </time>
-                        <span class="views">
-                            <i class="glyphicon glyphicon-eye-open"></i>
-                            216
-                        </span>
-                        <a class="comment" href="##comment" title="评论" target="_blank">
-                            <i class="glyphicon glyphicon-comment"></i> 4
+                @foreach($results['book_update']['list'] as $v)
+                    <article class="excerpt excerpt-1">
+                        <a class="focus" href="{{ route('chapter-list', ['unique_code' => $v['unique_code']]) }}" data-toggle="tooltip" title="" target="_blank">
+                            <img class="thumb" src="{{ $v['image_local_url'] }}" style="display: inline;">
                         </a>
-                    </p>
-                    <p class="note">
-                        xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                    </p>
-                </article>
+                        <header>
+                            <h2>
+                                <a href="{{ route('chapter-list', ['unique_code' => $v['unique_code']]) }}" title="{{ $v['title'] }}" target="_blank">{{ $v['title'] }}</a>
+                            </h2>
+                        </header>
+                        <p class="meta">
+                            <time class="time"><i class="glyphicon glyphicon-time"></i> {{ $v['last_update'] }}</time>
+                            <span class="views"><i class="glyphicon glyphicon-eye-open"></i> {{ $v['view'] }}</span>
+                        </p>
+                        <p class="note">{{ $v['description'] }}</p>
+                    </article>
+                @endforeach
+
+                @include('home.common.paging', ['data' => $results['book_update']])
             </div>
         </div>
         {{--<div class="tlinks">Collect from <a href="http://www.cssmoban.com/">企业网站模板</a></div>--}}
@@ -107,60 +99,22 @@
                 </div>
             </div>
             <div class="widget widget_hot">
-                <h3>最新评论文章</h3>
+                <h3>点击排行榜</h3>
                 <ul>
-                    <li>
-                        <a title="xxx" href="#">
+                    @foreach($results['book_popular']['list'] as $v)
+                        <li>
+                            <a href="{{ route('chapter-list', ['unique_code' => $v['unique_code']]) }}" target="_blank" title="{{ $v['title'] }}">
                             <span class="thumbnail">
-                                <img class="thumb" src="{{ asset('/static/images/a.png') }}" style="display: block;">
+                                <img class="thumb" src="{{ $v['image_local_url'] }}" alt="{{ $v['title'] }}" style="display: block;">
                             </span>
-                            <span class="text">xxxxxxxxxxxxxxxxxxxxxx</span><span class="muted">
-                                <i class="glyphicon glyphicon-time"></i> 2016-11-01
+                                <span class="text">{{ $v['title'] }}</span>
+                                <span class="muted"><i class="glyphicon glyphicon-time"></i>
+                                    {{ $v['last_update'] }}
                             </span>
-                            <span class="muted">
-                                <i class="glyphicon glyphicon-eye-open"></i>88
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a title="xxx" href="#">
-                            <span class="thumbnail">
-                                <img class="thumb" src="{{ asset('/static/images/a.png') }}" style="display: block;">
-                            </span>
-                            <span class="text">xxxxxxxxxxxxxxxxxxxxxxxxx</span><span class="muted">
-                                <i class="glyphicon glyphicon-time"></i> 2016-11-01
-                            </span>
-                            <span class="muted">
-                                <i class="glyphicon glyphicon-eye-open"></i>88
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a title="xxxxxx" href="#">
-                            <span class="thumbnail">
-                                <img class="thumb" src="{{ asset('/static/images/a.png') }}" style="display: block;">
-                            </span>
-                            <span class="text">xxxxxxxxxxxxxxxx</span><span class="muted">
-                                <i class="glyphicon glyphicon-time"></i> 2016-11-01
-                            </span>
-                            <span class="muted">
-                                <i class="glyphicon glyphicon-eye-open"></i>88
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a title="xxxx" href="#">
-                            <span class="thumbnail">
-                                <img class="thumb" src="{{ asset('/static/images/a.png') }}" style="display: block;">
-                            </span>
-                            <span class="text">xxxxxx</span><span class="muted">
-                                <i class="glyphicon glyphicon-time"></i> 2016-11-01
-                            </span>
-                            <span class="muted">
-                                <i class="glyphicon glyphicon-eye-open"></i>88
-                            </span>
-                        </a>
-                    </li>
+                                <span class="muted"><i class="glyphicon glyphicon-eye-open"></i> {{ $v['view'] }}</span>
+                            </a>
+                        </li>
+                    @endforeach
                 </ul>
             </div>
             <div class="widget widget_sentence">

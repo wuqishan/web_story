@@ -172,11 +172,14 @@ body,input,button,textarea,select {
     .container {
         margin:0 15px;
     }
-}.header {
- }.header-topbar {
+}
+.header {
+ }
+
+.header-topbar {
       margin:10px 0px 5px;
       color:#999;
-  }
+ }
 .header-topbar a {
     color:#999;
 }
@@ -414,7 +417,7 @@ body,input,button,textarea,select {
 }.content-wrap {
      width:100%;
      float:left;
-     min-height:1000px;
+     min-height:600px;
  }
 .content {
     position:relative;
@@ -429,6 +432,26 @@ body,input,button,textarea,select {
     /*margin-right:380px;*/
     /*margin-bottom:15px;*/
 /*}*/
+
+#paging-nav {
+    text-align: center;
+}
+#paging-nav > ul{
+    display: inline-block;
+}
+li.page-go-to-val > a {
+    padding: 0px;
+    height: 31px;
+}
+li.page-go-to-val > a > input {
+    /*border: none;*/
+    height: 29px;
+    width: 35px;
+    padding: 0px;
+    display: inline-block;
+    line-height: 30px;
+    text-align: center;
+}
 
 @media (max-width:1000px) {
     .content {

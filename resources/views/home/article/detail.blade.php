@@ -15,11 +15,11 @@
                     </header>
                     <p style="text-align: center; margin-top: 10px;">
                         <span>
-                            <a href="@if(empty($results['chapter']['prev_unique_code'])){{ 'javascript:void(0);' }}@else{{ route('chapter-detail', ['unique_code' => $results['chapter']['prev_unique_code']]) }}@endif">上一页</a>
+                            <a href="@if(empty($results['chapter']['prev_unique_code'])){{ 'javascript:void(0);' }}@else{{ route('chapter-detail', ['category_id' => $results['chapter']['category_id'], 'unique_code' => $results['chapter']['prev_unique_code']]) }}@endif">上一页</a>
                             &nbsp;&nbsp;&nbsp;
                             <a href="{{ route('chapter-list', ['unique_code' => $results['chapter']['book_unique_code']]) }}">目录</a>
                             &nbsp;&nbsp;&nbsp;
-                            <a href="@if(empty($results['chapter']['next_unique_code'])){{ 'javascript:void(0);' }}@else{{ route('chapter-detail', ['unique_code' => $results['chapter']['next_unique_code']]) }}@endif">下一页</a>
+                            <a href="@if(empty($results['chapter']['next_unique_code'])){{ 'javascript:void(0);' }}@else{{ route('chapter-detail', ['category_id' => $results['chapter']['category_id'], 'unique_code' => $results['chapter']['next_unique_code']]) }}@endif">下一页</a>
                         </span>
                     </p>
                 </article>
@@ -27,11 +27,11 @@
                     {!! $results['chapter']['content'] !!}
                     <p style="text-align: center; margin-top: 10px;">
                         <span>
-                            <a href="@if(empty($results['chapter']['prev_unique_code'])){{ 'javascript:void(0);' }}@else{{ route('chapter-detail', ['unique_code' => $results['chapter']['prev_unique_code']]) }}@endif">上一页</a>
+                            <a href="@if(empty($results['chapter']['prev_unique_code'])){{ 'javascript:void(0);' }}@else{{ route('chapter-detail', ['category_id' => $results['chapter']['category_id'], 'unique_code' => $results['chapter']['prev_unique_code']]) }}@endif">上一页</a>
                             &nbsp;&nbsp;&nbsp;
                             <a href="{{ route('chapter-list', ['unique_code' => $results['chapter']['book_unique_code']]) }}">目录</a>
                             &nbsp;&nbsp;&nbsp;
-                            <a href="@if(empty($results['chapter']['next_unique_code'])){{ 'javascript:void(0);' }}@else{{ route('chapter-detail', ['unique_code' => $results['chapter']['next_unique_code']]) }}@endif">下一页</a>
+                            <a href="@if(empty($results['chapter']['next_unique_code'])){{ 'javascript:void(0);' }}@else{{ route('chapter-detail', ['category_id' => $results['chapter']['category_id'], 'unique_code' => $results['chapter']['next_unique_code']]) }}@endif">下一页</a>
                         </span>
                     </p>
                 </article>

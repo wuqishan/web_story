@@ -21,6 +21,8 @@ class BookService extends Service
         }
         if (! empty($params['sort'])) {
             $model = $model->orderBy($params['sort'][0], $params['sort'][1]);
+        } else {
+            $model = $model->orderBy('id', 'desc');
         }
 
         $results['list'] = [];

@@ -24,13 +24,50 @@
                     <p class="note">{{ $results['book']['description'] }}</p>
                 </article>
                 <article class="chapter-list excerpt-1" style="padding: 20px">
-                    @foreach($results['chapter'] as $v)
-                        <p>
-                            <a href="{{ route('chapter-detail', ['unique_code' => $v['unique_code']]) }}" target="_blank">
-                                {{ $v['title'] }}
-                            </a>
-                        </p>
-                    @endforeach
+                    @if(\App\Helper\ToolsHelper::isMobile())
+                        @foreach($results['chapter']['list'] as $v)
+                            <p>
+                                <a href="{{ route('chapter-detail', ['category_id' => $v['category_id'], 'unique_code' => $v['unique_code']]) }}" target="_blank">
+                                    {{ $v['title'] }}
+                                </a>
+                            </p>
+                        @endforeach
+                    @else
+                        <table class="table table-bordered">
+                            @for($i = 0; $i < count($results['chapter']['list']); $i += 3)
+                                <tr>
+                                    <td>
+                                        @if(isset($results['chapter']['list'][$i]))
+                                        <p>
+                                            <a href="{{ route('chapter-detail', ['category_id' => $results['chapter']['list'][$i]['category_id'], 'unique_code' => $results['chapter']['list'][$i]['unique_code']]) }}" target="_blank">
+                                                {{ $results['chapter']['list'][$i]['title'] }}
+                                            </a>
+                                        </p>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if(isset($results['chapter']['list'][$i + 1]))
+                                        <p>
+                                            <a href="{{ route('chapter-detail', ['category_id' => $results['chapter']['list'][$i + 1]['category_id'], 'unique_code' => $results['chapter']['list'][$i + 1]['unique_code']]) }}" target="_blank">
+                                                {{ $results['chapter']['list'][$i + 1]['title'] }}
+                                            </a>
+                                        </p>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if(isset($results['chapter']['list'][$i + 2]))
+                                        <p>
+                                            <a href="{{ route('chapter-detail', ['category_id' => $results['chapter']['list'][$i + 2]['category_id'], 'unique_code' => $results['chapter']['list'][$i + 2]['unique_code']]) }}" target="_blank">
+                                                {{ $results['chapter']['list'][$i + 2]['title'] }}
+                                            </a>
+                                        </p>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endfor
+                        </table>
+                    @endif
+                    @include('home.common.paging', ['data' => $results['chapter']])
                 </article>
             </div>
         </div>

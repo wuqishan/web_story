@@ -21,20 +21,20 @@ class ArticleController extends  Controller
     {
         $params['unique_code'] = $request->unique_code;
         $results['book'] = $service->getOne($params);
-        $results['chapter'] = $chapterService->get(
-            ['book_unique_code' => $results['book']['unique_code'], 'category_id' => $results['book']['category_id']],
-            ['orderby', 'asc'],
-            0,
-            ['title', 'unique_code']
-        );
+
+        // 显示30条每页
+        $chapterService->_length = 30;
+        $chapterService->_offset = ($chapterService->_page - 1) * $chapterService->_length;
+        $results['chapter'] = $chapterService->get($results['book']['unique_code'], $results['book']['category_id']);
 
         return view('home.article.chapter', ['results' => $results]);
     }
 
     public function detail(Request $request, ChapterService $service)
     {
+        $params['category_id'] = $request->category_id;
         $params['unique_code'] = $request->unique_code;
-        $results['chapter'] = $service->getOne($params);
+        $results['chapter'] = $service->getOne($params, true);
 
         return view('home.article.detail', ['results' => $results]);
     }

@@ -17,9 +17,20 @@ class PagingHelper
     {
         $currentPage = request()->get('page', 1);
         $requestUri = request()->getRequestUri();
-        $urlPattern = preg_replace("/(\?|&)page=\d*/", '\1page=(:num)', $requestUri);
-
+        if (preg_match("/(\?|&)page=\d*/", $requestUri)) {
+            $urlPattern = preg_replace("/(\?|&)page=\d*/", '\1page=(:num)', $requestUri);
+        } else {
+            if (strpos($requestUri, '?') === false) {
+                $urlPattern = $requestUri . '?page=(:num)';
+            } else {
+                $urlPattern = $requestUri . '&page=(:num)';
+            }
+        }
         $paginator = new Paginator($total, $pageNumber, $currentPage, $urlPattern);
+
+        if (ToolsHelper::isMobile()) {
+            $maxPageShow = 4;
+        }
         $paginator->setMaxPagesToShow($maxPageShow);
 
         return $paginator;
