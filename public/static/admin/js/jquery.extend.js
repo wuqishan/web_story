@@ -32,7 +32,6 @@ $.extend({
             'hiddenName': settings.hiddenName,
             'multiple': settings.multiple ? 'multiple' : ''
         };
-        settings.formData.name = settings.inputName;
         $.sys_upload_img_template(templateOptions);
 
         let htmlTemplate = '<div class="upload-img-box upload-img-show" id="upload-img-show-{{id}}">' +

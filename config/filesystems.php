@@ -64,6 +64,19 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        'banner' => [
+            'driver' => 'local',
+            'root' => base_path('public/admin/images/banner'),
+            'url' => '/admin/images/banner/',
+            'visibility' => 'public',
+        ],
+
+        'logo' => [
+            'driver' => 'local',
+            'root' => base_path('public/admin/images/logo'),
+            'url' => '/admin/images/logo/',
+            'visibility' => 'public',
+        ],
     ],
 
 ];

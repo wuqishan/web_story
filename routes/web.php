@@ -29,12 +29,20 @@ Route::group(['namespace' => 'Home'], function () {
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'login.check'], function () {
 
 
-
     Route::get('/', 'IndexController@index')->name('admin.index');
+
+    // 附件
+//    Route::get('upload/delete/{id}', 'UploadController@delete')->name('upload.delete');
+//    Route::post('upload', 'UploadController@upload')->name('upload');
 
     // 分类
     Route::resource('category', 'CategoryController', [
         'parameters' => ['category' => 'category_id']
+    ]);
+
+    // 友情链接
+    Route::resource('friend_link', 'FriendLinkController', [
+        'parameters' => ['friend_link' => 'friend_link_id']
     ]);
 
     // 书本
@@ -60,4 +68,11 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
     Route::get('/image', 'ImageController@index')->name('image.index');
     Route::post('/image/check', 'ImageController@check')->name('image.check');
     Route::post('/image/update', 'ImageController@update')->name('image.update');
+
+    // 设置
+    Route::get('/setting/banner', 'SettingController@banner')->name('setting.banner');
+    Route::post('/setting/banner', 'SettingController@banner')->name('setting.banner.post');
+    Route::delete('/setting/delete', 'SettingController@delete')->name('setting.delete');
+    Route::get('/setting/logo', 'SettingController@logo')->name('setting.logo');
+    Route::post('/setting/logo', 'SettingController@logo')->name('setting.logo.post');
 });

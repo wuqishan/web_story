@@ -12,4 +12,9 @@ return [
     'admin.check_info.detail' => 'admin.check_info.index',
 
     'admin.image.index' => 'admin.image.index',
+
+
+    'admin.friend_link.create' => 'admin.friend_link.index',
+    'admin.friend_link.edit' => 'admin.friend_link.index',
+
 ];
