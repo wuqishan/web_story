@@ -188,6 +188,7 @@ $.extend({
             'data': {}
         };
         let settings = $.extend(optionDefault, option);
+        $(settings.formSelector).find('.form-control-feedback').text('');
         $(settings.formSelector).ajaxSubmit({
             url: settings.url,
             type: 'post',

@@ -29,7 +29,7 @@ Route::group(['namespace' => 'Home'], function () {
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'login.check'], function () {
 
 
-    Route::get('/', 'IndexController@index')->name('admin.index');
+    Route::get('/index', 'IndexController@index')->name('admin.index');
 
     // 附件
 //    Route::get('upload/delete/{id}', 'UploadController@delete')->name('upload.delete');
@@ -43,6 +43,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
     // 友情链接
     Route::resource('friend_link', 'FriendLinkController', [
         'parameters' => ['friend_link' => 'friend_link_id']
+    ]);
+
+    Route::resource('common_article', 'CommonArticleController', [
+        'parameters' => ['common_article' => 'common_article_id']
     ]);
 
     // 书本

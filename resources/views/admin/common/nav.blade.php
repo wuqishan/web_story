@@ -9,7 +9,7 @@
     </div>
     <ul class="app-menu" id="app-menu">
         <li>
-            <a class="app-menu__item" href="index.html">
+            <a class="app-menu__item" href="{{ route('admin.admin.index') }}">
                 <i class="app-menu__icon fa fa-dashboard"></i>
                 <span class="app-menu__label">Dashboard</span>
             </a>
@@ -69,6 +69,7 @@
                 <li><a class="treeview-item" data-nav="admin.setting.banner" href="{{ route('admin.setting.banner') }}"><i class="icon fa fa-circle-o"></i> 首页Banner轮播</a></li>
                 <li><a class="treeview-item" data-nav="admin.setting.logo" href="{{ route('admin.setting.logo') }}"><i class="icon fa fa-circle-o"></i> 网站Logo</a></li>
                 <li><a class="treeview-item" data-nav="admin.friend_link.index" href="{{ route('admin.friend_link.index') }}"><i class="icon fa fa-circle-o"></i> 友情链接</a></li>
+                <li><a class="treeview-item" data-nav="admin.common_article.index" href="{{ route('admin.common_article.index') }}"><i class="icon fa fa-circle-o"></i> 网站文章</a></li>
                 {{--<li><a class="treeview-item" data-nav="admin.goods_export.index" href="{{ route('admin.goods_export.index') }}"><i class="icon fa fa-circle-o"></i> 出库列表</a></li>--}}
                 {{--<li><a class="treeview-item" data-nav="admin.category.index" href="{{ route('admin.category.index') }}"><i class="icon fa fa-circle-o"></i> 分类管理</a></li>--}}
             </ul>

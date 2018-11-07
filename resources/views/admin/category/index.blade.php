@@ -20,14 +20,14 @@
             <div class="col-md-12">
                 <div class="tile">
                     <div class="tile-body">
-                        <form class="row">
+                        <form class="row" action="{{ route('admin.category.index') }}" method="get" id="search-from">
                             <div class="form-group col-md-3">
                                 <input class="form-control" type="text" name="name" value="{{ request()->get('name') }}" placeholder="名称">
                             </div>
                             <div class="form-group col-md-6">
                             </div>
                             <div class="form-group col-md-1 align-self-end">
-                                <a class="btn btn-outline-info pull-right" href="{{ route('admin.category.index') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>搜索</a>
+                                <a class="btn btn-outline-info pull-right" href="javascript:$('#search-from').submit();"><i class="fa fa-fw fa-lg fa-check-circle"></i>搜索</a>
                             </div>
                             <div class="form-group col-md-1 align-self-end">
                                 <a class="btn btn-outline-secondary pull-right" href="{{ route('admin.category.index') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>重置</a>
