@@ -10,9 +10,14 @@ class ArticleController extends  Controller
 {
     public function index(Request $request, BookService $service)
     {
+        $params['title'] = $request->get('keyword', null);
         $params['category_id'] = $request->category_id;
-        $results['book_update'] = $service->get($params, ['last_update', 'desc'], 20);
-        $results['book_popular'] = $service->get($params, ['view', 'desc'], 15);
+
+        $params['sort'] = ['last_update', 'desc'];
+        $results['book_update'] = $service->get($params);
+
+        $params['sort'] = ['view', 'desc'];
+        $results['book_popular'] = $service->get($params);
 
         return view('home.article.index', ['results' => $results]);
     }

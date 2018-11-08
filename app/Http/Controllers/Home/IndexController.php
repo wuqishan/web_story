@@ -9,16 +9,13 @@ class IndexController extends  Controller
 {
     public function index(Request $request, BookService $service)
     {
-        $results['book_popular'] = $service->get(['sort' => ['view', 'desc']]);
-        $results['book_update'] = $service->get(['sort' => ['last_update', 'desc']]);
+        $params['title'] = $request->get('keyword', null);
+        $params['sort'] = ['view', 'desc'];
+        $results['book_popular'] = $service->get($params);
+
+        $params['sort'] = ['last_update', 'desc'];
+        $results['book_update'] = $service->get($params);
 
         return view('home.index.index',  ['results' => $results]);
     }
-
-//    public function article(Request $request)
-//    {
-//        $category = $request->category_id;
-//
-//        return view('home.index.article');
-//    }
 }

@@ -29,10 +29,10 @@
         <aside class="sidebar">
             <div class="fixed">
                 <div class="widget widget_search">
-                    <form class="navbar-form" action="/Search" method="post">
+                    <form class="navbar-form" action="{{ route('article-index', ['category_id' => request()->category_id, 'keyword' => request()->get('keyword')])}}" method="get">
                         <div class="input-group">
                             <input type="text" name="keyword" class="form-control" size="35" placeholder="请输入关键字"
-                                   maxlength="15" autocomplete="off">
+                                   maxlength="15" value="{{ request()->get('keyword') }}" autocomplete="off">
                             <span class="input-group-btn">
                                 <button class="btn btn-default btn-search" name="search" type="submit">搜索</button>
                             </span>

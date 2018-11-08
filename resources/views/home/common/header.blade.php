@@ -24,9 +24,9 @@
                 </h1>
             </div>
             <div class="collapse navbar-collapse" id="header-navbar">
-                <form class="navbar-form visible-xs" action="/Search" method="post">
+                <form class="navbar-form visible-xs" action="{{ route(request()->route()->getName(), ['keyword' => request()->get('keyword'), 'category_id' => request()->category_id]) }}" method="get">
                     <div class="input-group">
-                        <input type="text" name="keyword" class="form-control" placeholder="请输入关键字" maxlength="20" autocomplete="off">
+                        <input type="text" name="keyword" class="form-control" value="{{ request()->get('keyword') }}" placeholder="请输入关键字" maxlength="20" autocomplete="off">
                         <span class="input-group-btn">
                             <button class="btn btn-default btn-search" name="search" type="submit">搜索</button>
                         </span>
