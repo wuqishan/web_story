@@ -12,4 +12,5 @@ npm-debug.log
 yarn-error.log
 .env
 .phpunit.result.cache
-/public/book/*
+/public/images/*
+composer.lock

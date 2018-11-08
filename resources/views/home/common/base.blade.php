@@ -44,5 +44,17 @@
 
 @yield('otherStaticSecond')
 
+<script>
+    // 百度统计
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?6b757a3645f7d2fcc44c876c08a2ab5f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
 </body>
 </html>

@@ -66,15 +66,15 @@ return [
 
         'banner' => [
             'driver' => 'local',
-            'root' => base_path('public/admin/images/banner'),
-            'url' => '/admin/images/banner/',
+            'root' => base_path('public/images/banner'),
+            'url' => '/images/banner/',
             'visibility' => 'public',
         ],
 
         'logo' => [
             'driver' => 'local',
-            'root' => base_path('public/admin/images/logo'),
-            'url' => '/admin/images/logo/',
+            'root' => base_path('public/images/logo'),
+            'url' => '/images/logo/',
             'visibility' => 'public',
         ],
     ],

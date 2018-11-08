@@ -39,8 +39,8 @@ class SpiderBookImage extends Command
      */
     public function handle()
     {
-        $save_dir = public_path('book/author/images/');
-        $save_db_path = '/book/author/images/';
+        $save_dir = public_path('images/author/');
+        $save_db_path = '/images/author/';
         if (! file_exists($save_dir)) {
             mkdir($save_dir, 0766, true);
         }
@@ -49,7 +49,7 @@ class SpiderBookImage extends Command
             foreach ($books as $key => $book) {
                 if (
                     ! empty($book['image_origin_url']) &&
-                    ! file_exists(public_path($book['image_local_url']))
+                    (empty($book['image_local_url']) || ! file_exists(public_path($book['image_local_url'])))
                 ) {
                     $ext = substr($book['image_origin_url'], strrpos($book['image_origin_url'], '.'));
                     if (empty($ext)) {

@@ -83,7 +83,8 @@ class SpiderUpdateChapter extends Command
             foreach ($chapter_sub_info as $key => $val) {
 
                 $temp['book_unique_code'] = $book_unique_code;
-                $temp['unique_code'] = md5($book_author . $book_title . $val['title']);
+                // 作者 + 书名 + 章节名 + 排序key
+                $temp['unique_code'] = md5($book_author . $book_title . $val['title'] . $key);
                 $temp['title'] = $val['title'];
                 $temp['view'] = 0;
                 $temp['url'] = $val['url'];
@@ -94,15 +95,18 @@ class SpiderUpdateChapter extends Command
 
                 try {
 
-                    if ($key === 0) {
+                    if ($key === 0 && $key === $length - 1) {
                         $temp['prev_unique_code'] = '';
-                        $temp['next_unique_code'] = md5($book_author . $book_title . $chapter_sub_info[$key + 1]['title']);
+                        $temp['next_unique_code'] = '';
+                    } else if ($key === 0) {
+                        $temp['prev_unique_code'] = '';
+                        $temp['next_unique_code'] = md5($book_author . $book_title . $chapter_sub_info[$key + 1]['title'] . ($key + 1));
                     } else if ($key === $length - 1) {
                         $temp['next_unique_code'] = '';
-                        $temp['prev_unique_code'] = md5($book_author . $book_title . $chapter_sub_info[$key - 1]['title']);
+                        $temp['prev_unique_code'] = md5($book_author . $book_title . $chapter_sub_info[$key - 1]['title'] . ($key - 1));
                     } else {
-                        $temp['prev_unique_code'] = md5($book_author . $book_title . $chapter_sub_info[$key - 1]['title']);
-                        $temp['next_unique_code'] = md5($book_author . $book_title . $chapter_sub_info[$key + 1]['title']);
+                        $temp['prev_unique_code'] = md5($book_author . $book_title . $chapter_sub_info[$key - 1]['title'] . ($key - 1));
+                        $temp['next_unique_code'] = md5($book_author . $book_title . $chapter_sub_info[$key + 1]['title'] . ($key + 1));
                     }
 
                     // 跳过前面已经有的章节
@@ -125,15 +129,24 @@ class SpiderUpdateChapter extends Command
                         Book::where('id', $book_id)->update(['newest_chapter' => $temp['unique_code']]);
                     }
                 } catch (\Exception $e) {
-                    print_r([
-                        'temp' => $temp,
-                        'key' => $val
-                    ]);
                     echo 'Caught exception: ',  $e->getMessage(), ", Url: {$r['info']['url']} \n";
+                    $error = ['temp' => $temp, 'key' => $val, 'info' => $e->getMessage()];
+                    $logs_file = storage_path('logs') . '/spider-chapter-' . date('Y-m-d') . '.txt';
+                    @file_put_contents($logs_file, print_r($error, 1) . "\n\n\n");
+                    exit;
                 }
             }
         });
 
         return null;
+    }
+
+    public function updateNextUniqueCode($chapter)
+    {
+        if (! empty($chapter['next_unique_code'])) {
+            DB::table('chapter_' . $chapter['category_id'])
+                ->where('unique_code', $chapter['prev_unique_code'])
+                ->update(['next_unique_code' => $chapter['unique_code']]);
+        }
     }
 }

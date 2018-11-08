@@ -14,7 +14,7 @@ class CheckChapterList extends Command
      *
      * @var string
      */
-    protected $signature = 'command:check-chapter-list {book_id?}';
+    protected $signature = 'command:check-chapter-list {category_id?}';
 
     /**
      * The console command description.
@@ -40,10 +40,10 @@ class CheckChapterList extends Command
      */
     public function handle()
     {
-        $bookId = $this->argument('book_id');
-        if (! empty($bookId)) {
+        $category_id = $this->argument('category_id');
+        if (! empty($category_id)) {
             $books = Book::orderBy("id", "asc")
-                ->where('id', $bookId)
+                ->where('category_id', $category_id)
                 ->select(['id', 'title', 'unique_code', 'newest_chapter', 'url', 'category_id'])
                 ->get()
                 ->toArray();
@@ -53,7 +53,6 @@ class CheckChapterList extends Command
                 ->get()
                 ->toArray();
         }
-
 
         $errors = [];
         $booksNumber = count($books);
@@ -112,8 +111,8 @@ class CheckChapterList extends Command
                         break;
                     }
                 }
+                echo "Book 监测进度： {$booksNumber} / " . ($key + 1) . "，章节: {$chapter[$i]['orderby']}，暂无异常！！！ \n";
             }
-            echo "Book 总数 {$booksNumber}, 当前检测到：" . ($key + 1) ."  !!!\n";
         }
 
         if (! empty($errors)) {

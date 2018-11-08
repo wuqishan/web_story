@@ -35,7 +35,7 @@ class ImageService extends Service
 
     public function update()
     {
-        $save_path = '/book/author/images/';
+        $save_path = config('customer.author_img_path');
         $results = ['book_number' => 0, 'without_image_book_number' => 0];
         $books = Book::all(['id', 'image_local_url', 'image_origin_url', 'unique_code'])->toArray();
 

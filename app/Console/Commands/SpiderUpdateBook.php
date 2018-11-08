@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Author;
 use App\Models\Book;
+use App\Models\Category;
 use App\Models\CheckBookInfo;
 use Illuminate\Console\Command;
 use App\Helper\CurlMultiHelper;
@@ -42,15 +43,18 @@ class SpiderUpdateBook extends Command
      */
     public function handle()
     {
-        $category_with_urls = [
-            'https://www.xbiquge6.com/xclass/1/1.html' => 1,
-            'https://www.xbiquge6.com/xclass/2/1.html' => 2,
-            'https://www.xbiquge6.com/xclass/3/1.html' => 3,
-            'https://www.xbiquge6.com/xclass/4/1.html' => 4,
-            'https://www.xbiquge6.com/xclass/5/1.html' => 5,
-            'https://www.xbiquge6.com/xclass/6/1.html' => 6,
-            'https://www.xbiquge6.com/xclass/7/1.html' => 7
-        ] ;
+//        $category_with_urls = [
+//            'https://www.xbiquge6.com/xclass/1/1.html' => 1,
+//            'https://www.xbiquge6.com/xclass/2/1.html' => 2,
+//            'https://www.xbiquge6.com/xclass/3/1.html' => 3,
+//            'https://www.xbiquge6.com/xclass/4/1.html' => 4,
+//            'https://www.xbiquge6.com/xclass/5/1.html' => 5,
+//            'https://www.xbiquge6.com/xclass/6/1.html' => 6,
+//            'https://www.xbiquge6.com/xclass/7/1.html' => 7
+//        ] ;
+
+        $category = Category::all(['id', 'url'])->toArray();
+        $category_with_urls = array_combine(array_column($category, 'url'), array_column($category, 'id'));
 
         $tookit = new Toolkit();
         $book_urls = CurlMultiHelper::get(array_keys($category_with_urls), function ($ql, $curl, $r) use ($tookit) {
