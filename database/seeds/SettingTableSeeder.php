@@ -29,6 +29,8 @@ class SettingTableSeeder extends Seeder
                 'orderby' => 3
             ]
         ];
-        \App\Models\Setting::insert($setting);
+        foreach ($setting as $s) {
+            \App\Models\Setting::insert($setting);
+        }
     }
 }
