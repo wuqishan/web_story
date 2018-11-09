@@ -532,11 +532,19 @@ li.page-go-to-val > a > input {
 }
 
 li.page-go-to-val > a > select {
+    width: auto;
     height: 29px;
     padding: 0px;
     display: inline-block;
     line-height: 30px;
-    text-align: center;
+
+    text-align:center;
+    text-align-last:center;
+}
+li.page-go-to-val > a > select > option{
+    height: 29px;
+    display: inline-block;
+    text-align:center;
 }
 
 @media (max-width: 1000px) {
