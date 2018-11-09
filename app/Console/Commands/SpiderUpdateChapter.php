@@ -134,11 +134,9 @@ class SpiderUpdateChapter extends Command
                         continue;
                     }
 
-                    echo 'Caught exception: ',  $e->getMessage(), ", Url: {$r['info']['url']} \n";
                     $error = ['temp' => $temp, 'key' => $val, 'info' => $e->getMessage()];
                     $logs_file = storage_path('logs') . '/spider-chapter-' . date('Y-m-d') . '.txt';
                     @file_put_contents($logs_file, print_r($error, 1) . "\n\n\n");
-                    exit;
                 }
             }
         });

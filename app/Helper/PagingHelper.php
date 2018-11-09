@@ -28,6 +28,7 @@ class PagingHelper
         }
         $paginator = new Paginator($total, $pageNumber, $currentPage, $urlPattern);
 
+        // 如果是手机则不显示过多的分页样式
         if (ToolsHelper::isMobile()) {
             $maxPageShow = 4;
         }

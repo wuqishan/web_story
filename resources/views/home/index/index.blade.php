@@ -1,5 +1,7 @@
 @extends('home.common.base')
 
+@section('title'){{ $results['seo.title'] }}@endsection
+
 @section('content')
     @include('home.common.header')
     <section class="container">
@@ -11,16 +13,15 @@
                         <li data-target="#focusslide" data-slide-to="1"></li>
                     </ol>
                     <div class="carousel-inner" role="listbox">
-                        <div class="item active">
-                            <a href="#" target="_blank" title="aaa">
-                                <img src="{{ asset('/static/images/banner1.jpg') }}" alt="aaa" class="img-responsive">
-                            </a>
-                        </div>
-                        <div class="item">
-                            <a href="#" target="_blank" title="aaa">
-                                <img src="{{ asset('/static/images/banner2.jpg') }}" alt="aaa" class="img-responsive">
-                            </a>
-                        </div>
+                        @if(isset($_common_['banner']) && count($_common_['banner']) > 0)
+                            @foreach($_common_['banner'] as $k => $v)
+                                <div class="item @if($k === 0) active @endif">
+                                    <a href="javascript:void(0);" target="_blank" title="有趣的灵魂">
+                                        <img height="200" width="820" src="{{ $v }}" alt="有趣的灵魂" class="img-responsive">
+                                    </a>
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
                     <a class="left carousel-control" href="#focusslide" role="button" data-slide="prev" rel="nofollow">
                         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -59,30 +60,27 @@
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active">
                             <a href="#notice" aria-controls="notice" role="tab" data-toggle="tab">
-                                统计信息
+                                版权所属
                             </a>
                         </li>
                         <li role="presentation">
-                            <a href="#contact" aria-controls="contact" role="tab" data-toggle="tab">联系站长
+                            <a href="#contact" aria-controls="contact" role="tab" data-toggle="tab">
+                                联系站长
                             </a>
                         </li>
                     </ul>
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane contact active" id="notice">
                             <h2>
-                                日志总数: 888篇
+                                <span id="sitetime">
+                                    本站所有小说为转载作品，所有章节均由网友上传，转载至本站只是为了宣传本书让更多读者欣赏。
+                                </span>
                             </h2>
-                            <h2>
-                                网站运行: <span id="sitetime">88天 </span></h2>
                         </div>
                         <div role="tabpanel" class="tab-pane contact" id="contact">
                             <h2>
                                 QQ:
                                 <a href="#" target="_blank" data-toggle="tooltip" rel="nofollow" data-placement="bottom" data-original-title="1174955828" draggable="false">1174955828</a>
-                            </h2>
-                            <h2>
-                                Email:
-                                <a href="#" target="_blank" data-toggle="tooltip" rel="nofollow" data-placement="bottom" data-original-title="13262693729@163.com" draggable="false">13262693729@163.com</a>
                             </h2>
                         </div>
                     </div>
@@ -117,22 +115,7 @@
                     @endforeach
                 </ul>
             </div>
-            <div class="widget widget_sentence">
-                <a href="#" target="_blank" rel="nofollow" title="">
-                    <img style="width: 100%" src="{{ asset('/static/images/ad2.png') }}">
-                </a>
-            </div>
-            <div class="widget widget_sentence">
-                <a href="#" target="_blank" rel="nofollow" title="">
-                    <img style="width: 100%" src="{{ asset('/static/images/ad.jpg') }}" alt="">
-                </a>
-            </div>
-            <div class="widget widget_sentence">
-                <h3>友情链接</h3>
-                <div class="widget-sentence-link">
-                    <a href="#" title="网站建设" target="_blank">网站建设</a>&nbsp;&nbsp;&nbsp;
-                </div>
-            </div>
+            @include('home.common.friend_link')
         </aside>
     </section>
     @include('home.common.footer')

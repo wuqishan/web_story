@@ -66,6 +66,7 @@
                 <i class="treeview-indicator fa fa-angle-right"></i>
             </a>
             <ul class="treeview-menu">
+                <li><a class="treeview-item" data-nav="admin.setting.seo" href="{{ route('admin.setting.seo') }}"><i class="icon fa fa-circle-o"></i> SEO 管理</a></li>
                 <li><a class="treeview-item" data-nav="admin.setting.banner" href="{{ route('admin.setting.banner') }}"><i class="icon fa fa-circle-o"></i> 首页Banner轮播</a></li>
                 <li><a class="treeview-item" data-nav="admin.setting.logo" href="{{ route('admin.setting.logo') }}"><i class="icon fa fa-circle-o"></i> 网站Logo</a></li>
                 <li><a class="treeview-item" data-nav="admin.friend_link.index" href="{{ route('admin.friend_link.index') }}"><i class="icon fa fa-circle-o"></i> 友情链接</a></li>

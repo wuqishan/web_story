@@ -1,5 +1,7 @@
 @extends('home.common.base')
 
+@section('title'){{ $results['seo.title'] }}@endsection
+
 @section('content')
     @include('home.common.header')
     <section class="container">
@@ -39,19 +41,6 @@
                         </div>
                     </form>
                 </div>
-                <div class="widget widget_sentence">
-                    <h3>标签云</h3>
-                    <div class="widget-sentence-content">
-                        <ul class="plinks ptags">
-                            <li>
-                                <a href="#list/67/" title="移动统计" draggable="false">移动统计 <span class="badge">1</span></a>
-                            </li>
-                            <li>
-                                <a href="#list/256/" title="404" draggable="false">404 <span class="badge">1</span></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
             </div>
             <div class="widget widget_hot">
                 <h3>点击排行榜</h3>
@@ -72,16 +61,7 @@
                     @endforeach
                 </ul>
             </div>
-            <div class="widget widget_sentence">
-                <a href="#" target="_blank" rel="nofollow">
-                    <img style="width: 100%" src="{{ asset('/static/images/ad.jpg') }}" alt="">
-                </a>
-            </div>
-            <div class="widget widget_sentence">
-                <a href="#" target="_blank" rel="nofollow">
-                    <img style="width: 100%" src="{{ asset('/static/images/201610241224221511.jpg') }}">
-                </a>
-            </div>
+            @include('home.common.friend_link')
         </aside>
     </section>
     @include('home.common.footer')

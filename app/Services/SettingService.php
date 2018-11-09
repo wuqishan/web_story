@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helper\CacheHelper;
 use App\Models\Setting;
 
 class SettingService extends Service
@@ -47,6 +48,20 @@ class SettingService extends Service
         $setting = empty($model) ? [] : $model->toArray();
 
         return $setting;
+    }
+
+    public function getByNameFromCache($name)
+    {
+        $cache_key = is_array($name) ? implode('-', $name) : $name;
+        $setting = CacheHelper::get($cache_key);
+        if (empty($setting)) {
+            $setting = $this->getByName($name);
+            if (! empty($setting)) {
+                CacheHelper::set($cache_key, $setting);
+            }
+        }
+
+        return (array) $setting;
     }
 
     public function delete($id, $del_image = false)

@@ -79,4 +79,6 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
     Route::delete('/setting/delete', 'SettingController@delete')->name('setting.delete');
     Route::get('/setting/logo', 'SettingController@logo')->name('setting.logo');
     Route::post('/setting/logo', 'SettingController@logo')->name('setting.logo.post');
+    Route::get('/setting/seo', 'SettingController@seo')->name('setting.seo');
+    Route::post('/setting/seo', 'SettingController@seo')->name('setting.seo.post');
 });

@@ -2,13 +2,15 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Services\BookService;
 use App\Services\ChapterService;
+use App\Services\FriendLinkService;
 use Illuminate\Http\Request;
 
 class ArticleController extends  Controller
 {
-    public function index(Request $request, BookService $service)
+    public function index(Request $request, BookService $service, FriendLinkService $friendLinkService)
     {
         $params['title'] = $request->get('keyword', null);
         $params['category_id'] = $request->category_id;
@@ -18,6 +20,12 @@ class ArticleController extends  Controller
 
         $params['sort'] = ['view', 'desc'];
         $results['book_popular'] = $service->get($params);
+
+        // 友链
+        $results['friend_link'] = $friendLinkService->get();
+
+        // seo
+        $results['seo.title'] = Category::categoryMap($request->category_id);
 
         return view('home.article.index', ['results' => $results]);
     }
@@ -32,14 +40,23 @@ class ArticleController extends  Controller
         $chapterService->_offset = ($chapterService->_page - 1) * $chapterService->_length;
         $results['chapter'] = $chapterService->get($results['book']['unique_code'], $results['book']['category_id']);
 
+        // seo
+        $results['seo.title'] = Category::categoryMap($results['book']['category_id']) . ' - ';
+        $results['seo.title'] .= $results['book']['title'];
+
         return view('home.article.chapter', ['results' => $results]);
     }
 
-    public function detail(Request $request, ChapterService $service)
+    public function detail(Request $request, ChapterService $service, BookService $bookService)
     {
         $params['category_id'] = $request->category_id;
         $params['unique_code'] = $request->unique_code;
         $results['chapter'] = $service->getOne($params, true);
+        $results['book'] = $bookService->getOne(['unique_code' => $results['chapter']['book_unique_code']]);
+        // seo
+        $results['seo.title'] = Category::categoryMap($results['book']['category_id']) . ' - ';
+        $results['seo.title'] .= $results['book']['title'] . ' - ';
+        $results['seo.title'] .= $results['chapter']['title'];
 
         return view('home.article.detail', ['results' => $results]);
     }

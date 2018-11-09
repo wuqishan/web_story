@@ -65,6 +65,25 @@ class SettingController extends Controller
         }
     }
 
+    public function seo(Request $request, SettingService $service)
+    {
+        if ($request->isMethod('get')) {
+            $tags = ['seo.title', 'seo.keywords', 'seo.description'];
+            $seo = $service->getByName($tags);
+            $results['data']['list'] = (array) $seo;
+
+            return view('admin.setting.seo', ['results' => $results]);
+
+        } else if ($request->isMethod('post')) {
+            $results['status'] = false;
+            $id = $request->get('id');
+            $data['name'] = $request->get('name');
+            $data['value'] = $request->get('value');
+            $results['status'] = (bool) $service->save($data, $id);
+            return $results;
+        }
+    }
+
     public function delete(Request $request, SettingService $service)
     {
         $id = $request->get('id');

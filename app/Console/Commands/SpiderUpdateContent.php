@@ -96,10 +96,8 @@ class SpiderUpdateContent extends Command
                             'category_id' => $category_id,
                             'url' => $r['info']['url']
                         ];
-                        echo 'Caught exception: ',  $e->getMessage(), ", Url: {$r['info']['url']} \n";
                         $logs_file = storage_path('logs') . '/spider-chapter-content-' . date('Y-m-d') . '.txt';
                         @file_put_contents($logs_file, print_r($error, 1) . "\n\n\n");
-                        exit;
                     }
                 });
             }

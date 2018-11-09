@@ -1,25 +1,16 @@
 <header class="header">
     <nav class="navbar navbar-default" id="navbar">
         <div class="container">
-            {{--<div class="header-topbar hidden-xs link-border">--}}
-                {{--<ul class="site-nav topmenu">--}}
-                    {{--<li><a href="#">标签云</a></li>--}}
-                    {{--<li><a href="#" rel="nofollow">读者墙</a></li>--}}
-                    {{--<li><a href="#" title="RSS订阅">--}}
-                            {{--<i class="fa fa-rss"> </i> RSS订阅--}}
-                        {{--</a>--}}
-                    {{--</li>--}}
-                {{--</ul>--}}
-                {{--勤记录 懂分享--}}
-            {{--</div>--}}
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                         data-target="#header-navbar" aria-expanded="false"><span class="sr-only"></span> <span
                             class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
                 </button>
                 <h1 class="logo hvr-bounce-in">
-                    <a href="{{ route('index') }}" title="">
-                        <img src="{{ asset('/static/images/logo.jpg') }}" alt="">
+                    <a href="{{ route('index') }}" title="有趣的灵魂">
+                        @if(isset($_common_['logo']) && ! empty($_common_['logo']))
+                            <img width="168" height="42" src="{{ asset($_common_['logo']) }}" alt="有趣的灵魂">
+                        @endif
                     </a>
                 </h1>
             </div>
@@ -28,11 +19,11 @@
                     <div class="input-group">
                         <input type="text" name="keyword" class="form-control" value="{{ request()->get('keyword') }}" placeholder="请输入关键字" maxlength="20" autocomplete="off">
                         <span class="input-group-btn">
-                            <button class="btn btn-default btn-search" name="search" type="submit">搜索</button>
+                            <button class="btn btn-default btn-search" type="submit">搜索</button>
                         </span>
                     </div>
                 </form>
-                <!--{{ $routeName = \Illuminate\Support\Facades\Route::currentRouteName() }}-->
+                <?php $routeName = \Illuminate\Support\Facades\Route::currentRouteName(); ?>
                 <ul class="nav navbar-nav navbar-right">
                     <li @if($routeName == 'index') class="active" @endif><a data-cont="首页" title="首页" href="{{ route('index') }}">首页</a></li>
                     <li @if($routeName == 'article-index' && request()->category_id == 1) class="active" @endif><a data-cont="玄幻奇幻" title="玄幻奇幻" href="{{ route('article-index', ['category_id' => 1]) }}">玄幻奇幻</a></li>

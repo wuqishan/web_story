@@ -13,13 +13,6 @@
                         {!! \App\Helper\PagingHelper::chapterListPage($pagingHelper->getNumPages(), $data['length'], $pagingHelper->getCurrentPage()) !!}
                     </a>
                 </li>
-            {{--@foreach($pagingHelper->getPages() as $page)--}}
-                {{--@if($page['url'])--}}
-                    {{--<li @if($page['isCurrent']) class="active" @endif><a href="{{ $page['url'] }}">{{ $page['num'] }} <span class="sr-only">(current)</span></a></li>--}}
-                {{--@else--}}
-                    {{--<li><a href="javascript:void(0)">{{ $page['num'] }} <span class="sr-only"> </span></a></li>--}}
-                {{--@endif--}}
-            {{--@endforeach--}}
             @if($pagingHelper->getNextUrl())
                 <li><a href="{{ $pagingHelper->getNextUrl() }}" aria-label="Next"><span aria-hidden="true">下一页</span></a></li>
             @endif

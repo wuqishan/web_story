@@ -1,5 +1,7 @@
 @extends('home.common.base')
 
+@section('title'){{ $results['seo.title'] }}@endsection
+
 @section('content')
     @include('home.common.header')
     <section class="container">
