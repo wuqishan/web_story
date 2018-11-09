@@ -10,7 +10,7 @@
                 @foreach($results['book_update']['list'] as $v)
                     <article class="excerpt excerpt-1">
                         <a class="focus" href="{{ route('chapter-list', ['unique_code' => $v['unique_code']]) }}" data-toggle="tooltip" title="" target="_blank">
-                            <img class="thumb" src="{{ $v['image_local_url'] }}" style="display: inline;">
+                            <img class="thumb lazy" src="{{ $v['image_local_url'] }}" style="display: inline;">
                         </a>
                         <header>
                             <h2>
@@ -49,7 +49,7 @@
                     <li>
                         <a href="{{ route('chapter-list', ['unique_code' => $v['unique_code']]) }}" target="_blank" title="{{ $v['title'] }}">
                             <span class="thumbnail">
-                                <img class="thumb" src="{{ $v['image_local_url'] }}" alt="{{ $v['title'] }}" style="display: block;">
+                                <img class="thumb lazy" src="{{ $v['image_local_url'] }}" alt="{{ $v['title'] }}" style="display: block;">
                             </span>
                             <span class="text">{{ $v['title'] }}</span>
                             <span class="muted"><i class="glyphicon glyphicon-time"></i>

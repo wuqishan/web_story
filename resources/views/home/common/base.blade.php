@@ -46,6 +46,12 @@
 @yield('otherStaticSecond')
 
 <script>
+
+    // 惰性加载图片
+    $(function(){
+        $("img.lazy").lazyload();
+    });
+
     // 百度统计
     var _hmt = _hmt || [];
     (function() {
