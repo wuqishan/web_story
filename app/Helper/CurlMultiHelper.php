@@ -13,9 +13,9 @@ class CurlMultiHelper
         $results = [];
         if (empty($opt)) {
             $opt = [
-                'maxThread' => 10,
+                'maxThread' => 16,
                 // Trigger curl error or user error before max try times reached.If reached $error will be called.
-                'maxTry' => 3,
+                'maxTry' => 10,
                 // Global CURLOPT_* for all tasks.
                 'opt' => [
                     CURLOPT_TIMEOUT => 16,
