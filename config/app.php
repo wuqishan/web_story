@@ -2,6 +2,8 @@
 
 return [
 
+    // true：正常对外服务，false：关闭服务
+    'servicing' => env('APP_SERVICING', true),
     /*
     |--------------------------------------------------------------------------
     | Application Name

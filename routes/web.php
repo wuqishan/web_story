@@ -16,7 +16,7 @@ Route::get('/admin/user/login', 'Admin\UserController@login')->name('admin.user.
 Route::post('/admin/user/dologin', 'Admin\UserController@doLogin')->name('admin.user.do_login');
 Route::get('/admin/user/logout', 'Admin\UserController@logout')->name('admin.user.logout');
 
-Route::group(['namespace' => 'Home'], function () {
+Route::group(['namespace' => 'Home', 'middleware' => 'app.servicing'], function () {
     Route::get('/', 'IndexController@index')->name('index');
 
     Route::get('/article/{category_id}', 'ArticleController@index')->name('article-index');
