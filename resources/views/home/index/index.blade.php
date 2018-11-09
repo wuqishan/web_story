@@ -17,7 +17,7 @@
                             @foreach($_common_['banner'] as $k => $v)
                                 <div class="item @if($k === 0) active @endif">
                                     <a href="javascript:void(0);" target="_blank" title="有趣的灵魂">
-                                        <img height="200" width="820" src="{{ $v }}" alt="有趣的灵魂" class="img-responsive lazy">
+                                        <img height="200" width="820" src="{{ asset($v) }}" alt="有趣的灵魂" class="img-responsive lazy">
                                     </a>
                                 </div>
                             @endforeach
@@ -35,7 +35,7 @@
                 @foreach($results['book_update']['list'] as $v)
                     <article class="excerpt excerpt-1">
                         <a class="focus" href="{{ route('chapter-list', ['unique_code' => $v['unique_code']]) }}" data-toggle="tooltip" title="" target="_blank">
-                            <img class="thumb lazy" src="{{ $v['image_local_url'] }}" style="display: inline;">
+                            <img class="thumb lazy" src="{{ asset($v['image_local_url']) }}" style="display: inline;">
                         </a>
                         <header>
                             <h2>
@@ -103,7 +103,7 @@
                         <li>
                             <a href="{{ route('chapter-list', ['unique_code' => $v['unique_code']]) }}" target="_blank" title="{{ $v['title'] }}">
                             <span class="thumbnail">
-                                <img class="thumb lazy" src="{{ $v['image_local_url'] }}" alt="{{ $v['title'] }}" style="display: block;">
+                                <img class="thumb lazy" src="{{ asset($v['image_local_url']) }}" alt="{{ $v['title'] }}" style="display: block;">
                             </span>
                                 <span class="text">{{ $v['title'] }}</span>
                                 <span class="muted"><i class="glyphicon glyphicon-time"></i>

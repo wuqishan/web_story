@@ -9,7 +9,7 @@
             <div class="content" style="margin-right: 0;">
                 <article class="excerpt excerpt-1">
                     <a class="focus" href="javascript:void(0);" data-toggle="tooltip" title="" target="_blank">
-                        <img class="thumb lazy" src="{{ $results['book']['image_local_url'] }}" style="display: inline;">
+                        <img class="thumb lazy" src="{{ asset($results['book']['image_local_url']) }}" style="display: inline;">
                     </a>
                     <header>
                         <h2>
