@@ -129,6 +129,11 @@ class SpiderUpdateChapter extends Command
                         Book::where('id', $book_id)->update(['newest_chapter' => $temp['unique_code']]);
                     }
                 } catch (\Exception $e) {
+                    // 如果是唯一问题则继续
+                    if (stripos($e->getMessage(), 'Duplicate entry') !== false) {
+                        continue;
+                    }
+
                     echo 'Caught exception: ',  $e->getMessage(), ", Url: {$r['info']['url']} \n";
                     $error = ['temp' => $temp, 'key' => $val, 'info' => $e->getMessage()];
                     $logs_file = storage_path('logs') . '/spider-chapter-' . date('Y-m-d') . '.txt';
