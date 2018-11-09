@@ -30,7 +30,7 @@ class SettingTableSeeder extends Seeder
             ]
         ];
         foreach ($setting as $s) {
-            \App\Models\Setting::insert($setting);
+            \App\Models\Setting::insert($s);
         }
     }
 }
