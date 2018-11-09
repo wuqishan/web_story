@@ -111,8 +111,9 @@ class CheckChapterList extends Command
                         break;
                     }
                 }
-                echo "Book 监测进度： {$booksNumber} / " . ($key + 1) . "，章节: {$chapter[$i]['orderby']}，暂无异常！！！ \n";
             }
+
+            echo "Book 监测进度： {$booksNumber} / " . ($key + 1) . "，章节: {$chapter[$i]['orderby']}，暂无异常！！！ \n";
         }
 
         if (! empty($errors)) {
