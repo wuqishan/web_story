@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('/static/css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/static/css/nprogress.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/static/css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/static/css/modify.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/static/css/font-awesome.min.css') }}">
     <link rel="apple-touch-icon-precomposed" href="images/icon.png">
     <link rel="shortcut icon" href="{{ asset('/static/images/favicon.ico') }}">

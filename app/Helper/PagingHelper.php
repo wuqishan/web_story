@@ -56,5 +56,28 @@ class PagingHelper
 
         return '<select class="page_number">' . implode('', $options) . '</select>';
     }
+
+    /**
+     * 章节分页
+     *
+     * @param $pages
+     * @param $offset
+     * @param int $current_page
+     * @return string
+     */
+    public static function chapterListPage($pages, $offset, $current_page = 1)
+    {
+        $page_template = [];
+        if ($pages > 0) {
+            for ($i = 0; $i < $pages; $i++) {
+                $selected = $current_page == ($i + 1) ? 'selected' : '';
+                $start = $i * $offset + 1;
+                $end = ($i + 1) * $offset;
+                $page_template[] = sprintf('<option %s value="%d">第 %d - %d 章</option>', $selected, $i + 1, $start, $end);
+            }
+        }
+
+        return '<select onchange="goToPage(\'' . request()->url() . '\' ,$(this).val())">' . implode('', $page_template) . '</select>';
+    }
 }
 

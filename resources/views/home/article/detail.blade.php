@@ -13,7 +13,7 @@
                             </a>
                         </h2>
                     </header>
-                    <p style="text-align: center; margin-top: 10px;">
+                    <p class="detail-action">
                         <span>
                             <a href="@if(empty($results['chapter']['prev_unique_code'])){{ 'javascript:void(0);' }}@else{{ route('chapter-detail', ['category_id' => $results['chapter']['category_id'], 'unique_code' => $results['chapter']['prev_unique_code']]) }}@endif">上一章</a>
                             &nbsp;&nbsp;&nbsp;
@@ -23,9 +23,9 @@
                         </span>
                     </p>
                 </article>
-                <article class="chapter-list excerpt-1" style="padding: 20px;font-size: 18px;">
+                <article class="chapter-list excerpt-1" style="padding: 20px;font-size: 20px;">
                     {!! $results['chapter']['content'] !!}
-                    <p style="text-align: center; margin-top: 10px;">
+                    <p class="detail-action">
                         <span>
                             <a href="@if(empty($results['chapter']['prev_unique_code'])){{ 'javascript:void(0);' }}@else{{ route('chapter-detail', ['category_id' => $results['chapter']['category_id'], 'unique_code' => $results['chapter']['prev_unique_code']]) }}@endif">上一章</a>
                             &nbsp;&nbsp;&nbsp;

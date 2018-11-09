@@ -67,7 +67,7 @@
                             @endfor
                         </table>
                     @endif
-                    @include('home.common.paging', ['data' => $results['chapter']])
+                    @include('home.common.paging', ['data' => $results['chapter'], 'chapter_list' => true])
                 </article>
             </div>
         </div>
