@@ -15,6 +15,7 @@
     <!-- color css-->
     <link rel="stylesheet" type="text/css" href="{{ asset('/static/admin/css/color.css') }}">
 
+    <link rel="shortcut icon" href="{{ asset('/favicon.ico') }}">
     {{-- 全局变量 --}}
     <script type="text/javascript">
         // 当前路由名称

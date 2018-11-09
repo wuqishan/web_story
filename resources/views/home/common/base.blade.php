@@ -13,8 +13,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('/static/css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/static/css/modify.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/static/css/font-awesome.min.css') }}">
-    <link rel="apple-touch-icon-precomposed" href="{{ asset('/static/images/icon.png') }}">
-    <link rel="shortcut icon" href="{{ asset('/static/images/favicon.ico') }}">
+    <link rel="apple-touch-icon-precomposed" href="{{ asset('/favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ asset('/favicon.ico') }}">
     <script src="{{ asset('/static/js/jquery-2.1.4.min.js') }}"></script>
     <script src="{{ asset('/static/js/nprogress.js') }}"></script>
     <script src="{{ asset('/static/js/jquery.lazyload.min.js') }}"></script>
