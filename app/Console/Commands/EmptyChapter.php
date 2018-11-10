@@ -56,7 +56,8 @@ class EmptyChapter extends Command
                 $ids = DB::table('chapter_' . $v['book_category_id'])
                     ->where('book_unique_code', $v['book_unique_code'])
                     ->select(['id'])
-                    ->get();
+                    ->get()
+                    ->toArray();
                 $ids = array_column($ids, 'id');
 
                 DB::table('chapter_content_' . $v['book_category_id'])
