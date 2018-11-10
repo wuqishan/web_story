@@ -148,8 +148,8 @@ class SpiderUpdateChapter extends Command
     {
         if (! empty($chapter['next_unique_code'])) {
             DB::table('chapter_' . $chapter['category_id'])
-                ->where('unique_code', $chapter['prev_unique_code'])
-                ->update(['next_unique_code' => $chapter['unique_code']]);
+                ->where('unique_code', $chapter['unique_code'])
+                ->update(['next_unique_code' => $chapter['next_unique_code']]);
         }
     }
 }
