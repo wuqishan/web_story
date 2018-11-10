@@ -60,7 +60,7 @@ class EmptyChapter extends Command
                     ->toArray();
                 $ids = array_column($ids, 'id');
 
-                DB::table('chapter_content_' . $v['book_category_id'])
+                DB::table('chapter_' . $v['book_category_id'])
                     ->whereIn('id', $ids)
                     ->delete();
 
