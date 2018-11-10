@@ -40,7 +40,7 @@ class EmptyChapter extends Command
      */
     public function handle()
     {
-        $exception = CheckBookInfo::where('status', 0)
+        $exception = CheckBookInfo::where('status', 1)
             ->whereIn('method', [2, 3])
             ->get();
         if (! empty($exception)) {
