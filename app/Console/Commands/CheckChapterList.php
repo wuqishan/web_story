@@ -130,8 +130,8 @@ class CheckChapterList extends Command
                         'book_unique_code' => $v['data']['unique_code'],
                         'newest_chapter' => $v['data']['newest_chapter'],
                         'message' => $v['msg'],
-                        'status' => 0,
-                        'method' => 0,
+                        'status' => 1,
+                        'method' => 1,
                         'created_at' => date('Y-m-d H:i:s'),
                     ]);
                 }
