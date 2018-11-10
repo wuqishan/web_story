@@ -83,18 +83,18 @@
                                             <td>{{ $v['book_category_id'] }}</td>
                                             <td>{{ $v['message'] }}</td>
                                             <td>
-                                                @if($v['status'] == 0)
+                                                @if($v['status'] == 1)
                                                     未解决
-                                                @elseif($v['status'] == 1)
+                                                @elseif($v['status'] == 2)
                                                     已解决
                                                 @else
                                                     忽略不显示
                                                 @endif
                                             </td>
                                             <td>
-                                                @if($v['method'] == 0)
+                                                @if($v['method'] == 1)
                                                     未做分配
-                                                @elseif($v['method'] == 1)
+                                                @elseif($v['method'] == 2)
                                                     章节删除重抓
                                                 @else
                                                     本书完全删除

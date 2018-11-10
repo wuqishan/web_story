@@ -41,19 +41,19 @@ class EmptyChapter extends Command
     public function handle()
     {
         $exception = CheckBookInfo::where('status', 0)
-            ->whereIn('method', [1, 2])
+            ->whereIn('method', [2, 3])
             ->get();
         if (! empty($exception)) {
             $exception = $exception->toArray();
             foreach ($exception as $v) {
-                if ($v['method'] == 1) {
+                if ($v['method'] == 2) {
                     Book::where('id', $v['book_id'])->update(['newest_chapter' => '']);
-                } else if ($v['method'] == 2) {
+                } else if ($v['method'] == 3) {
                     Book::where('id', $v['book_id'])->delete();
                 }
                 Chapter::where('book_unique_code', $v['book_unique_code'])->delete();
 
-                CheckBookInfo::where('id', $v['id'])->update(['status' => 1]);
+                CheckBookInfo::where('id', $v['id'])->update(['status' => 2]);
             }
 
             echo "更新完成!\n";
