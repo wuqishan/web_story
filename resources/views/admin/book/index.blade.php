@@ -36,20 +36,23 @@
                                     <option @if(request()->get('category_id') == 7) selected @endif value="7">女频频道</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-1">
+                            <div class="form-group col-md-2">
                                 <select class="form-control" name="finished">
                                     <option value="">选择完本状态</option>
                                     <option @if(request()->get('finished') == '0') selected @endif value="0">未完本</option>
                                     <option @if(request()->get('finished') == '1') selected @endif value="1">完本</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-5">
+                            <div class="form-group col-md-3">
                             </div>
                             <div class="form-group col-md-1 align-self-end">
                                 <a class="btn btn-outline-info pull-right" href="javascript:$('#search-form').submit();"><i class="fa fa-fw fa-lg fa-check-circle"></i>搜索</a>
                             </div>
                             <div class="form-group col-md-1 align-self-end">
                                 <a class="btn btn-outline-secondary pull-right" href="{{ route('admin.book.index') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>重置</a>
+                            </div>
+                            <div class="form-group col-md-1 align-self-end">
+                                <a class="btn btn-outline-success pull-right" href="{{ route('admin.book.create') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>新增</a>
                             </div>
                             <input type="hidden" name="length" value="{{ request()->get('length') }}">
                         </form>
@@ -65,7 +68,7 @@
                                 <th width="70">点击数</th>
                                 <th width="55">完本</th>
                                 <th width="70">源网站</th>
-                                <th width="120">操作</th>
+                                <th width="165">操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -83,6 +86,8 @@
                                             </td>
                                             <td>
                                                 <a href="{{ route('admin.chapter.index', ['book_unique_code' => $v['unique_code']]) }}"><i class="fa fa-clone" aria-hidden="true"></i> 章节列表</a>
+                                                &nbsp;&nbsp;
+                                                <a href="{{ route('admin.book.edit', ['book_id' => $v['id']]) }}"><i class="fa fa fa-edit" aria-hidden="true"></i> 编辑</a>
                                             </td>
                                         </tr>
                                     @endforeach

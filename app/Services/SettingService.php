@@ -64,6 +64,17 @@ class SettingService extends Service
         return (array) $setting;
     }
 
+    public function resetCache()
+    {
+//        $a = system('php /home/wells/www/story/artisan view:clear', $out);
+//        $a = passthru('php /home/wells/www/story/artisan view:clear', $out);
+//        $a = exec('php /home/wells/www/story/artisan view:clear', $out, $return);
+//        $a = proc_open('php /home/wells/www/story/artisan view:clear');
+//
+//        dd($a);
+        return true;
+    }
+
     public function delete($id, $del_image = false)
     {
         $id = intval($id);

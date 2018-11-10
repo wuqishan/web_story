@@ -89,7 +89,7 @@ class SpiderUpdateBook extends Command
                 $temp['image_origin_url'] = $ql->find('#fmimg > img')->attr('src');
                 $temp['url'] = $r['info']['url'];
                 $temp['category_id'] = $category_id;
-                $temp['author_id'] = $this->_getAuthorId($temp['author']);
+                $temp['author_id'] = Author::getAuthorId($temp['author']);
                 $temp['view'] = 0;
                 $temp['newest_chapter'] = '';
                 $temp['unique_code'] = md5($temp['author'] . $temp['title']);
@@ -115,30 +115,17 @@ class SpiderUpdateBook extends Command
                         if ($book->category_id != $book->category_id) {
                             echo "该书已存在！更新 category_id {$book->category_id} to {$category_id}\n";
                             $book->category_id = $category_id;
-                            $book->save();
                         } else {
                             echo "当前分类：{$category_id}, 该分类书籍：{$current_book} / {$category_book_number}, 书名: 《{$temp['title']}》 已经存在！！！\n";
                         }
+                        $book->last_update = $temp['last_update'];
+                        $book->author_id = $temp['author_id'];
+                        $book->save();
                     }
                 }
 
                 return $temp;
             });
         }
-    }
-
-    private function _getAuthorId($author_name)
-    {
-        $author_id = 0;
-        if (! empty($author_name)) {
-            $author = Author::where('name', $author_name)->first();
-            if (! empty($author)) {
-                $author_id = $author->id;
-            } else {
-                Author::insert(['name' => $author_name]);
-            }
-        }
-
-        return $author_id;
     }
 }

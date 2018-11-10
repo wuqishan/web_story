@@ -4,6 +4,8 @@ return [
 
     'admin.content.detail' => 'admin.book.index',
     'admin.chapter.index' => 'admin.book.index',
+    'admin.book.create' => 'admin.book.index',
+    'admin.book.edit' => 'admin.book.index',
 
     'admin.category.create' => 'admin.category.index',
     'admin.category.edit' => 'admin.category.index',

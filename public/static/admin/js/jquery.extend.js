@@ -232,6 +232,20 @@ $.extend({
         });
     },
     /**
+     * 重置缓存
+     *
+     * @param url
+     */
+    sys_reset_cache: function (url, data) {
+        var loadIndex = layer.load(2);
+        $.post(url, data, function (results) {
+            layer.close(loadIndex);
+            if (results.status) {
+                layer.alert('缓存重置成功！', {icon: 6});
+            }
+        }, 'json')
+    },
+    /**
      * 数组唯一
      *
      * @param array

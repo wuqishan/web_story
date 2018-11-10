@@ -65,6 +65,7 @@ class SettingController extends Controller
         }
     }
 
+    // seo
     public function seo(Request $request, SettingService $service)
     {
         if ($request->isMethod('get')) {
@@ -84,6 +85,15 @@ class SettingController extends Controller
         }
     }
 
+    public function resetCache(SettingService $service)
+    {
+        $results = ['status' => false];
+
+        $results['status'] = $service->resetCache();
+
+        return $results;
+    }
+
     public function delete(Request $request, SettingService $service)
     {
         $id = $request->get('id');
@@ -92,4 +102,5 @@ class SettingController extends Controller
 
         return $results;
     }
+
 }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Book;
+use App\Services\Spider\SubSpiderService;
 
 class BookService extends Service
 {
@@ -51,6 +52,26 @@ class BookService extends Service
         $book = $this->formatter($book, false);
 
         return (array) $book;
+    }
+
+    public function save($params, $id = 0)
+    {
+        $results = null;
+        $id = intval($id);
+
+        if ($id > 0) {
+            $data['view'] = intval($params['view']);
+            $data['newest_chapter'] = empty($params['newest_chapter']) ? '' : trim($params['newest_chapter']);
+            $data['finished'] = intval($params['finished']);
+            $results = Book::where('id', $id)->update($data);
+        } else {
+            $data['url'] = trim($params['url']);
+            $data['category_id'] = intval($params['category_id']);
+            $service = new SubSpiderService();
+            $results = $service->getBook($data['url'], $data['category_id']);
+        }
+
+        return $results;
     }
 
     public function updateView($id, $v = 1)

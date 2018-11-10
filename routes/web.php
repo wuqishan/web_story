@@ -51,8 +51,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
 
     // 书本
     Route::get('/book', 'BookController@index')->name('book.index');
-//    Route::get('/book/{book_id}', 'BookController@edit')->name('book.edit');
-//    Route::post('/book/{book_id}', 'BookController@update')->name('book.update');
+    Route::get('/book/create', 'BookController@create')->name('book.create');
+    Route::post('/book/store', 'BookController@store')->name('book.store');
+    Route::get('/book/{book_id}/edit', 'BookController@edit')->name('book.edit');
+    Route::put('/book/{book_id}/update', 'BookController@update')->name('book.update');
 
     // 章节
     Route::get('/chapter/{book_unique_code}', 'ChapterController@index')->name('chapter.index');
@@ -81,4 +83,5 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
     Route::post('/setting/logo', 'SettingController@logo')->name('setting.logo.post');
     Route::get('/setting/seo', 'SettingController@seo')->name('setting.seo');
     Route::post('/setting/seo', 'SettingController@seo')->name('setting.seo.post');
+    Route::post('/setting/reset_cache', 'SettingController@resetCache')->name('setting.reset_cache');
 });

@@ -10,11 +10,11 @@
     <main class="app-content">
         <div class="app-title">
             <div>
-                <h1><i class="fa fa-plus-square"></i> 商品文章</h1>
+                <h1><i class="fa fa-plus-square"></i> 小说编辑</h1>
             </div>
             <ul class="app-breadcrumb breadcrumb">
                 <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-                <li class="breadcrumb-item">商品管理</li>
+                <li class="breadcrumb-item">小说管理</li>
                 <li class="breadcrumb-item"><a href="#">编辑</a></li>
             </ul>
         </div>
@@ -26,29 +26,66 @@
                             {{ csrf_field() }}
                             {{ method_field('put') }}
                             <div class="form-group col-md-6">
-                                <label>商品名称 :</label>
-                                <input class="form-control" value="{{ $results['detail']['title'] }}" type="text" name="title" placeholder="请输入">
+                                <label>小说书名 :</label>
+                                <input class="form-control" disabled value="{{ $results['detail']['title'] }}" type="text" name="title" placeholder="请输入">
                                 <div class="form-control-feedback"></div>
                             </div>
                             <div class="form-group col-md-6">
-                                <label>商品数量单位 :</label>
-                                <input class="form-control" value="{{ $results['detail']['unit'] }}" type="text" name="unit" placeholder="请输入">
+                                <label>本书唯一码 :</label>
+                                <input class="form-control" disabled value="{{ $results['detail']['unique_code'] }}" type="text" name="unique_code" placeholder="请输入">
                                 <div class="form-control-feedback"></div>
                             </div>
                             <div class="form-group col-md-6">
-                                <label>商品状态 :</label>
-                                <select class="form-control" name="status">
-                                    <option value="">请选择</option>
-                                    <option @if($results['detail']['status'] == 1) selected @endif value="1">上架</option>
-                                    <option @if($results['detail']['status'] == 2) selected @endif value="2">下架</option>
-                                </select>
+                                <label>作者 :</label>
+                                <input class="form-control" disabled value="{{ $results['detail']['author'] }}" type="text" name="author" placeholder="请输入">
                                 <div class="form-control-feedback"></div>
                             </div>
-                            <div class="form-group col-md-6"></div>
-                            <div class="form-group col-md-12 upload_area"></div>
+                            <div class="form-group col-md-6">
+                                <label>最近更新时间 :</label>
+                                <input class="form-control" disabled value="{{ $results['detail']['last_update'] }}" type="text" name="last_update" placeholder="请输入">
+                                <div class="form-control-feedback"></div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>本地图片 :</label>
+                                <input class="form-control" disabled value="{{ $results['detail']['image_local_url'] }}" type="text" name="image_local_url" placeholder="请输入">
+                                <div class="form-control-feedback"></div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>远程图片 :</label>
+                                <input class="form-control" disabled value="{{ $results['detail']['image_origin_url'] }}" type="text" name="image_origin_url" placeholder="请输入">
+                                <div class="form-control-feedback"></div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>点击数量 :</label>
+                                <input class="form-control" value="{{ $results['detail']['view'] }}" type="text" name="view" placeholder="请输入">
+                                <div class="form-control-feedback"></div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>最新章节唯一码 :</label>
+                                <input class="form-control" value="{{ $results['detail']['newest_chapter'] }}" type="text" name="newest_chapter" placeholder="请输入">
+                                <div class="form-control-feedback"></div>
+                            </div>
+                            <div class="form-group col-md-6">
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>本书是否完本 :</label>
+                                <div class="animated-radio-button">
+                                    <label>
+                                        <input type="radio" @if($results['detail']['finished'] == 0) checked @endif name="finished" value="0">
+                                        <span class="label-text">未完本</span>
+                                    </label>
+                                </div>
+                                <div class="animated-radio-button">
+                                    <label>
+                                        <input type="radio" @if($results['detail']['finished'] == 1) checked @endif name="finished" value="1">
+                                        <span class="label-text">已完本</span>
+                                    </label>
+                                </div>
+                            </div>
+
                             <div class="form-group col-md-12">
                                 <label>简述 :</label>
-                                <textarea class="form-control" name="description" rows="3">{{ $results['detail']['description'] }}</textarea>
+                                <textarea class="form-control" disabled name="description" rows="3">{{ $results['detail']['description'] }}</textarea>
                             </div>
                         </form>
                     </div>
@@ -68,22 +105,10 @@
     <!-- Data table plugin-->
     <script type="text/javascript">
         $(function () {
-            var option = {
-                'url': '{{ route("admin::upload") }}',
-                'defaultImg': "{{ asset('/static/admin/images/upload.png') }}",
-                'uploadAreaObj': $('.upload_area'),
-                'formData': {'_token': '{{ csrf_token() }}', 'name': 'photo'},
-                'multiple': true,
-                'hiddenName': 'image_id',
-                'callback': function (results) {},
-                'initInfo': $.parseJSON('{!! json_encode($results["detail"]["images"]) !!}')
-            };
-            $.sys_upload_img(option);
-
             var sub_opt = {
                 'formSelector': '#form-data',
-                'url': '{{ route("admin::goods.update", ['goods_id' => request()->goods_id]) }}',
-                'goTo': '{{ route('admin::goods.index') }}'
+                'url': '{{ route("admin.book.update", ['book_id' => request()->book_id]) }}',
+                'goTo': '{{ route('admin.book.index') }}'
             };
             $('.submit').click(function () {
                 $.sys_submit(sub_opt);
