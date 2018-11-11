@@ -171,9 +171,11 @@
                 data.category_id = obj.parents('tr').attr('data-category-id');
                 data.id = obj.parents('tr').attr('data-id');
                 data._token = '{{ csrf_token() }}';
+                var title = obj.attr('data-title');
+
                 layer.prompt({
                     formType: 2,
-                    value: obj.attr('data-title'),
+                    value: title,
                     title: '唯一码修改'
                 }, function(val, index) {
                     data.value = val;
@@ -187,15 +189,29 @@
                 });
             });
 
+            $('.unique_code').dblclick(function () {
+                var str = $(this).attr('data-title');
+                var save = function(e){
+                    e.clipboardData.setData('text/plain', str);
+                    e.preventDefault();
+                };
+                document.addEventListener('copy', save);
+                document.execCommand('copy');
+                document.removeEventListener('copy',save);
+            });
+
             // tips显示
             $('.prev_unique_code, .next_unique_code, .unique_code').hover(function () {
                 var id = $(this).attr('id');
                 var title = $(this).attr('data-title');
-                layer.tips(title, '#'+id, {
-                    tips: [4, '#0FA6D8'],
-                    area: ['250px', 'auto'],
-                    time: 2000
-                });
+                if (title != '') {
+                    layer.tips(title, '#'+id, {
+                        tips: [4, '#0FA6D8'],
+                        area: ['250px', 'auto'],
+                        time: 2000
+                    });
+                }
+
             });
 
         });
