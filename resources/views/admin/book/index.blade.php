@@ -83,7 +83,13 @@
                                             <td>{{ \App\Models\Category::categoryMap($v['category_id']) }}</td>
                                             <td>{{ $v['last_update'] }}</td>
                                             <td>{{ $v['view'] }}</td>
-                                            <td>{{ \App\Models\Book::$finishedMap[$v['finished']] }}</td>
+                                            <td>
+                                                <div class="toggle">
+                                                    <label>
+                                                        <input class="finished-toggle" data-book-id="{{ $v['id'] }}" type="checkbox" @if($v['finished'] == 1) checked @endif><span class="button-indecator"></span>
+                                                    </label>
+                                                </div>
+                                            </td>
                                             <td>
                                                 <a target="_blank" href="{{ $v['url'] }}">源网站</a>
                                             </td>
@@ -119,6 +125,20 @@
                 autoclose: true,
                 todayHighlight: true,
                 language: 'zh-CN'
+            });
+
+            $('.finished-toggle').change(function () {
+                var book_id = $(this).attr('data-book-id');
+                var finished = 0;
+                if ($(this).prop('checked')) {
+                    finished = 1;
+                }
+                var data = {'book_id': book_id, 'finished': finished, '_token': '{{ csrf_token() }}'};
+                $.post('{{ route('admin.book.update.finished') }}', data, function (results) {
+                    if (results.status) {
+                        layer.msg('更新成功!');
+                    }
+                }, 'json');
             });
         });
     </script>

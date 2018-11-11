@@ -88,6 +88,11 @@ class BookService extends Service
         return Book::where('id', $id)->increment('view', $v);
     }
 
+    public function updateFinished($id, $finished)
+    {
+        return Book::where('id', $id)->update(['finished' => $finished]);
+    }
+
     public function formatter($books, $flag = true)
     {
         $defaultImg = '/book/author/images/default.jpg';
