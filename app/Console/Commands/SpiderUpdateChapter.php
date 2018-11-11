@@ -43,9 +43,15 @@ class SpiderUpdateChapter extends Command
     {
         $category_id = (int) $this->argument('category_id');
         if ($category_id > 0 && $category_id < 8) {
-            $books = Book::where('category_id', $category_id)->select(['id', 'unique_code', 'category_id', 'newest_chapter', 'url'])->get()->toArray();
+            $books = Book::where('category_id', $category_id)
+                ->where('finished', 0)
+                ->select(['id', 'unique_code', 'category_id', 'newest_chapter', 'url'])
+                ->get()
+                ->toArray();
         } else {
-            $books = Book::all(['id', 'unique_code', 'category_id', 'newest_chapter', 'url'])->toArray();
+            $books = Book::where('finished', 0)
+                ->select(['id', 'unique_code', 'category_id', 'newest_chapter', 'url'])
+                ->toArray();
         }
 
         $books_new = [];
