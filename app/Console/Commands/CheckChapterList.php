@@ -113,12 +113,12 @@ class CheckChapterList extends Command
                 }
 
                 // 最新文章异常
-                if (intval($chapter[$i]['number_of_words']) == 0) {
-                    $error['msg'] = "《{$chapter[$i]['title']}》内容为空\n";
-                    $error['data'] = $book;
-                    $errors[] = $error;
-                    break;
-                }
+//                if (intval($chapter[$i]['number_of_words']) == 0) {
+//                    $error['msg'] = "《{$chapter[$i]['title']}》内容为空\n";
+//                    $error['data'] = $book;
+//                    $errors[] = $error;
+//                    break;
+//                }
             }
 
             echo "Book 监测进度： {$booksNumber} / " . ($key + 1) . "，暂无异常！！！ \n";
