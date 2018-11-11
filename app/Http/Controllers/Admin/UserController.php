@@ -10,6 +10,10 @@ class UserController extends Controller
 {
     public function login()
     {
+        if (! empty(session('user'))) {
+            return redirect()->route('admin.admin.index');
+        }
+
         return view('admin.user.login');
     }
 
@@ -21,7 +25,7 @@ class UserController extends Controller
 
         if (! empty($user)) {
             session(['user' => $user->toArray()]);
-            return redirect()->route('admin.book.index');
+            return redirect()->route('admin.admin.index');
         } else {
             return view('admin.user.login');
         }

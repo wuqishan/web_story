@@ -9,9 +9,9 @@
     </div>
     <ul class="app-menu" id="app-menu">
         <li>
-            <a class="app-menu__item" href="{{ route('admin.admin.index') }}">
+            <a class="app-menu__item" data-nav="admin.admin.index" href="{{ route('admin.admin.index') }}">
                 <i class="app-menu__icon fa fa-dashboard"></i>
-                <span class="app-menu__label">Dashboard</span>
+                <span class="app-menu__label">数据统计</span>
             </a>
         </li>
 
