@@ -119,7 +119,7 @@ class CheckChapterList extends Command
         if (! empty($errors)) {
             foreach ($errors as $v) {
                 $checkBook = CheckBookInfo::where('book_id', $v['data']['id'])
-                    ->where('status', 0)
+                    ->where('status', 1)
                     ->first();
                 if (empty($checkBook)) {
                     CheckBookInfo::insert([

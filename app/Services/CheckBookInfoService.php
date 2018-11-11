@@ -20,8 +20,8 @@ class CheckBookInfoService extends Service
         if (isset($params['status']) && intval($params['status']) > 0) {
             $model = $model->where('status', intval($params['status']));
         }
-        if (isset($params['method']) && intval($params['method']) > 0) {
-            $model = $model->where('method', intval($params['method']));
+        if (isset($params['book_id']) && intval($params['book_id']) > 0) {
+            $model = $model->where('book_id', intval($params['book_id']));
         }
         if (! empty($params['sort'])) {
             $model = $model->orderBy($params['sort'][0], $params['sort'][1]);

@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\Book;
 use App\Models\Chapter;
 use App\Models\ChapterContent;
+use Illuminate\Support\Facades\DB;
 
 class ChapterService extends Service
 {
@@ -87,6 +89,35 @@ class ChapterService extends Service
         }
 
         return $results;
+    }
+
+    public function deleteAllChpater($params)
+    {
+        $book_unique_code = trim($params['book_unique_code']);
+        $category_id = intval($params['category_id']);
+
+        if (! empty($book_unique_code) && $category_id > 0) {
+
+            Book::where('unique_code', $book_unique_code)->update(['newest_chapter' => '']);
+
+            $ids = DB::table('chapter_' . $category_id)
+                ->where('book_unique_code', $book_unique_code)
+                ->select(['id'])
+                ->get()
+                ->toArray();
+
+            $ids = array_column($ids, 'id');
+
+            DB::table('chapter_' . $category_id)
+                ->whereIn('id', $ids)
+                ->delete();
+
+            DB::table('chapter_content_' . $category_id)
+                ->whereIn('id', $ids)
+                ->delete();
+        }
+
+        return true;
     }
 
     /**

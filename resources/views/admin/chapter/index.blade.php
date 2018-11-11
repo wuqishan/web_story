@@ -50,7 +50,9 @@
                             <tr>
                                 <th>操作</th>
                                 <td colspan="3">
-
+                                    <a href="javascript:del_record('{{ route('admin.chapter.delete.all', ['category_id' => $results['book']['category_id'], 'book_unique_code' => $results['book']['unique_code']]) }}', '{{ route('admin.chapter.index', ['book_unique_code' => $results['book']['unique_code']]) }}');">
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i> 删除所有章节
+                                    </a>
                                 </td>
                             </tr>
                             </tbody>
@@ -198,16 +200,6 @@
 
         });
 
-        // 修改method
-        function changeMethod(url)
-        {
-            $.post(url, {'_token': '{{ csrf_token() }}'}, function (res) {
-                if (res.status) {
-                    location.reload();
-                }
-            }, 'json');
-        }
-
         // 更新content
         function updateContent(chapter_id, category_id, url)
         {
@@ -228,6 +220,28 @@
                         layer.msg('更新成功！');
                     }
                 }, 'json');
+            });
+        }
+
+        function del_record(url, gotoUrl)
+        {
+            layer.confirm('确定该书所有章节？', {
+                skin: 'layui-layer-molv',
+                btn: ['确定','取消']
+            }, function() {
+                $.ajax({
+                    'url': url,
+                    'type': 'post',
+                    'data': {'_token': '{{ csrf_token() }}'},
+                    'dataType': 'json',
+                    'success': function (results) {
+                        if (results.status) {
+                            layer.msg('删除成功！', {'anim': -1, 'time': 4,}, function () {
+                                location.href = gotoUrl;
+                            });
+                        }
+                    }
+                });
             });
         }
     </script>

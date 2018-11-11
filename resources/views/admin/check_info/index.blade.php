@@ -63,7 +63,7 @@
                                 <th>信息</th>
                                 <th>状态</th>
                                 <th>时间</th>
-                                <th>操作</th>
+                                <th width="168">操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -83,8 +83,12 @@
                                                 @endif
                                             </td>
                                             <td>{{ $v['created_at'] }}</td>
-                                            <td width="120">
+                                            <td>
                                                 <a href="{{ route('admin.chapter.index', ['book_unique_code' => $v['book_unique_code']]) }}"><i class="fa fa-clone" aria-hidden="true"></i> 章节列表</a>
+                                                @if($v['status'] == 1)
+                                                    &nbsp;|&nbsp;
+                                                    <a href="javascript:update_record('{{ route('admin.check_info.update', ['id' => $v['id'], 'status' => 2]) }}', '{{ route('admin.check_info.index') }}')"><i class="fa fa-check" aria-hidden="true"></i> 解决</a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -101,6 +105,26 @@
 
 @section('otherStaticSecond')
     <script type="text/javascript">
-
+        function update_record(url, gotoUrl)
+        {
+            layer.confirm('更新该条记录为已解决？', {
+                skin: 'layui-layer-molv',
+                btn: ['确定','取消']
+            }, function() {
+                $.ajax({
+                    'url': url,
+                    'type': 'post',
+                    'data': {'_token': '{{ csrf_token() }}'},
+                    'dataType': 'json',
+                    'success': function (results) {
+                        if (results.status) {
+                            layer.msg('更新成功！', {'anim': -1, 'time': 4,}, function () {
+                                location.href = gotoUrl;
+                            });
+                        }
+                    }
+                });
+            });
+        }
     </script>
 @endsection
