@@ -87,7 +87,7 @@
                                                 <a href="{{ route('admin.chapter.index', ['book_unique_code' => $v['book_unique_code']]) }}"><i class="fa fa-clone" aria-hidden="true"></i> 章节列表</a>
                                                 @if($v['status'] == 1)
                                                     &nbsp;|&nbsp;
-                                                    <a href="javascript:update_record('{{ route('admin.check_info.update', ['id' => $v['id'], 'status' => 2]) }}', '{{ route('admin.check_info.index') }}')"><i class="fa fa-check" aria-hidden="true"></i> 解决</a>
+                                                    <a href="javascript:del_record('{{ route('admin.check_info.delete', ['id' => $v['id']]) }}', '{{ route('admin.check_info.index') }}')"><i class="fa fa-trash-o" aria-hidden="true"></i> 删除</a>
                                                 @endif
                                             </td>
                                         </tr>
@@ -105,9 +105,9 @@
 
 @section('otherStaticSecond')
     <script type="text/javascript">
-        function update_record(url, gotoUrl)
+        function del_record(url, gotoUrl)
         {
-            layer.confirm('更新该条记录为已解决？', {
+            layer.confirm('确定该条记录已解决，并执行删除？', {
                 skin: 'layui-layer-molv',
                 btn: ['确定','取消']
             }, function() {

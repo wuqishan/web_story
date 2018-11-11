@@ -19,12 +19,11 @@ class CheckInfoController extends Controller
         return view('admin.check_info.index', ['results' => $results]);
     }
 
-    public function update(Request $request, CheckBookInfoService $service)
+    public function delete(Request $request, CheckBookInfoService $service)
     {
         $resutls = ['status' => false];
         $id = intval($request->get('id'));
-        $status = intval($request->get('status'));
-        $resutls['status'] = $service->update($id, 'status', $status);
+        $resutls['status'] = $service->delete($id);
 
         return $resutls;
     }

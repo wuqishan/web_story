@@ -61,6 +61,11 @@ class CheckBookInfoService extends Service
         return (bool) $results;
     }
 
+    public function delete($id)
+    {
+        return CheckBookInfo::destroy($id);
+    }
+
     public function formatter($data)
     {
 //        if (! empty($data)) {
