@@ -94,7 +94,7 @@
                                                 <a target="_blank" href="{{ $v['url'] }}">源网站</a>
                                             </td>
                                             <td>
-                                                <a href="{{ route('admin.chapter.index', ['book_unique_code' => $v['unique_code']]) }}"><i class="fa fa-clone" aria-hidden="true"></i> 章节列表</a>
+                                                <a target="_blank" href="{{ route('admin.chapter.index', ['book_unique_code' => $v['unique_code']]) }}"><i class="fa fa-clone" aria-hidden="true"></i> 章节列表</a>
                                                 &nbsp;&nbsp;
                                                 <a href="{{ route('admin.book.edit', ['book_id' => $v['id']]) }}"><i class="fa fa fa-edit" aria-hidden="true"></i> 编辑</a>
                                             </td>
