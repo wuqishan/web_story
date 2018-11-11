@@ -55,7 +55,10 @@ class CheckBookInfoService extends Service
 
     public function update($id, $field, $val)
     {
-        $results = CheckBookInfo::where('id', $id)
+        if (! is_array($id)) {
+            $id = [$id];
+        }
+        $results = CheckBookInfo::whereIn('id', $id)
             ->update([$field => $val]);
 
         return (bool) $results;

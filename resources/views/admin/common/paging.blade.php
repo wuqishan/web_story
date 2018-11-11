@@ -21,7 +21,7 @@
             @endif
 
             <a href="javascript:void(0);" class="btn btn-secondary weight-normal">
-                每页显示 {!! \App\Helper\PagingHelper::pageNumber() !!} 条
+                每页显示 {!! \App\Helper\PagingHelper::pageNumber($results['data']['length']) !!} 条
             </a>
 
             <a href="javascript:void(0);" class="btn btn-secondary weight-normal">共 {{ $pagingHelper->getTotalItems() }} 条数据</a>

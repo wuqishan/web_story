@@ -22,8 +22,19 @@ class CheckInfoController extends Controller
     public function delete(Request $request, CheckBookInfoService $service)
     {
         $resutls = ['status' => false];
-        $id = intval($request->get('id'));
-        $resutls['status'] = $service->delete($id);
+        $ids = $request->get('ids');
+        $resutls['status'] = $service->delete($ids);
+
+        return $resutls;
+    }
+
+
+    public function update(Request $request, CheckBookInfoService $service)
+    {
+        $resutls = ['status' => false];
+        $status = intval($request->get('status'));
+        $ids = $request->get('ids');
+        $resutls['status'] = $service->update($ids, 'status', $status);
 
         return $resutls;
     }

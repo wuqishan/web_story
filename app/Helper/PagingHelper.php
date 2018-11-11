@@ -40,9 +40,10 @@ class PagingHelper
     /**
      * 初始化显示每页显示多少条数据
      *
+     * @param int $length
      * @return string
      */
-    public static function pageNumber()
+    public static function pageNumber($length = 0)
     {
         $pageNumber = [6, 10, 20, 30, 50, 100, 300, 500, 1000, 2000, 3000, 5000];
 
@@ -50,6 +51,8 @@ class PagingHelper
         foreach ($pageNumber as $v) {
             $selected = '';
             if (request()->get('length') == $v) {
+                $selected = 'selected';
+            } else if ($length == $v) {
                 $selected = 'selected';
             }
             $options[] = "<option value='{$v}' {$selected}>{$v}</option>";

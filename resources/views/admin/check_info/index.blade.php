@@ -51,6 +51,12 @@
                             <div class="form-group col-md-1 align-self-end">
                                 <a class="btn btn-outline-secondary pull-right" href="{{ route('admin.check_info.index') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>重置</a>
                             </div>
+                            <div class="form-group col-md-1 align-self-end">
+                                <a class="btn btn-outline-warning pull-right" href="javascript:update_record('{{ route('admin.check_info.update') }}', '{{ route('admin.check_info.index') }}');"><i class="fa fa-fw fa-lg fa-check-circle"></i>解决</a>
+                            </div>
+                            <div class="form-group col-md-1 align-self-end">
+                                <a class="btn btn-outline-warning pull-right" href="javascript:del_record('{{ route('admin.check_info.delete') }}', '{{ route('admin.check_info.index') }}');"><i class="fa fa-fw fa-lg fa-trash-o"></i>删除</a>
+                            </div>
                             <input type="hidden" name="length" value="{{ request()->get('length') }}">
                         </form>
                     </div>
@@ -58,18 +64,25 @@
                         <table class="table">
                             <thead>
                             <tr>
+                                <th>
+                                    <input style="margin-left:0px;margin-top: -15px;" class="form-check-input checkbox-select-all" type="checkbox">
+                                </th>
                                 <th>书本标题</th>
                                 <th>分类</th>
                                 <th>信息</th>
                                 <th>状态</th>
                                 <th>时间</th>
-                                <th width="168">操作</th>
+                                <th width="120">操作</th>
                             </tr>
                             </thead>
                             <tbody>
                                 @if(isset($results['data']['list']))
+
                                     @foreach($results['data']['list'] as $v)
                                         <tr>
+                                            <td>
+                                                <input style="margin-left:0px;" class="form-check-input check-id" value="{{ $v['id'] }}" type="checkbox">
+                                            </td>
                                             <td>{{ $v['book_title'] }}</td>
                                             <td>{{ $v['book_category_id'] }}</td>
                                             <td>{{ $v['message'] }}</td>
@@ -85,8 +98,8 @@
                                             <td>{{ $v['created_at'] }}</td>
                                             <td>
                                                 <a href="{{ route('admin.chapter.index', ['book_unique_code' => $v['book_unique_code']]) }}"><i class="fa fa-clone" aria-hidden="true"></i> 章节列表</a>
-                                                &nbsp;|&nbsp;
-                                                <a href="javascript:del_record('{{ route('admin.check_info.delete', ['id' => $v['id']]) }}', '{{ route('admin.check_info.index') }}')"><i class="fa fa-trash-o" aria-hidden="true"></i> 删除</a>
+                                                {{--&nbsp;|&nbsp;--}}
+                                                {{--<a href="javascript:del_record('{{ route('admin.check_info.delete', ['id' => $v['id']]) }}', '{{ route('admin.check_info.index') }}')"><i class="fa fa-trash-o" aria-hidden="true"></i> 删除</a>--}}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -103,16 +116,33 @@
 
 @section('otherStaticSecond')
     <script type="text/javascript">
+
+        $(function () {
+            $('.checkbox-select-all').change(function () {
+                var checked = $(this).prop('checked');
+                $('.check-id').each(function () {
+                    $(this).prop('checked', checked);
+                });
+            });
+        });
+
         function del_record(url, gotoUrl)
         {
-            layer.confirm('确定该条记录已解决，并执行删除？', {
+            $ids = [];
+            $('.check-id').each(function () {
+                if ($(this).prop('checked')) {
+                    $ids.push($(this).val());
+                }
+            });
+
+            layer.confirm('确定删除已选中的记录？', {
                 skin: 'layui-layer-molv',
                 btn: ['确定','取消']
             }, function() {
                 $.ajax({
                     'url': url,
                     'type': 'post',
-                    'data': {'_token': '{{ csrf_token() }}'},
+                    'data': {'_token': '{{ csrf_token() }}', 'ids': $ids},
                     'dataType': 'json',
                     'success': function (results) {
                         if (results.status) {
@@ -124,5 +154,35 @@
                 });
             });
         }
+
+        function update_record(url, gotoUrl)
+        {
+            $ids = [];
+            $('.check-id').each(function () {
+                if ($(this).prop('checked')) {
+                    $ids.push($(this).val());
+                }
+            });
+
+            layer.confirm('确定已选中的设置为已解决？', {
+                skin: 'layui-layer-molv',
+                btn: ['确定','取消']
+            }, function() {
+                $.ajax({
+                    'url': url,
+                    'type': 'post',
+                    'data': {'_token': '{{ csrf_token() }}', 'ids': $ids, 'status': 2},
+                    'dataType': 'json',
+                    'success': function (results) {
+//                        if (results.status) {
+                            layer.msg('更新成功！', {'anim': -1, 'time': 4,}, function () {
+                                location.href = gotoUrl;
+                            });
+//                        }
+                    }
+                });
+            });
+        }
+
     </script>
 @endsection

@@ -69,6 +69,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
     // 检测信息
     Route::get('/check_info', 'CheckInfoController@index')->name('check_info.index');
     Route::post('/check_info/delete', 'CheckInfoController@delete')->name('check_info.delete');
+    Route::post('/check_info/update', 'CheckInfoController@update')->name('check_info.update');
 
     // 图片检测
     Route::get('/image', 'ImageController@index')->name('image.index');

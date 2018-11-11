@@ -136,6 +136,8 @@ class CheckChapterList extends Command
                 }
             }
             echo "问题书本有 " . count($errors) . " 条，已插入待处理表\n";
+        } else {
+            echo "无问题书本\n";
         }
     }
 }
