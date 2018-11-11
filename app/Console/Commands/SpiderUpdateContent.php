@@ -75,22 +75,22 @@ class SpiderUpdateContent extends Command
 
                     try {
                         $content = DB::table('chapter_content_' . $category_id)->where('id', $chapter_id)->first();
+                        // 插入content数据表
+                        $temp['id'] = $chapter_id;
+                        $temp['content'] = $ql->find('#content')->html();
+                        $temp['content'] = '<div id="content">' . $temp['content'] . '</div>';
                         if (empty($content)) {
-                            // 插入content数据表
-                            $temp['id'] = $chapter_id;
-                            $temp['content'] = $ql->find('#content')->html();
-                            $temp['content'] = '<div id="content">' . $temp['content'] . '</div>';
                             DB::table('chapter_content_' . $category_id)->insert($temp);
-                            // 更新chapter数据表的字数字段
-                            $number_of_words = ToolsHelper::calcWords($temp['content']);
-                            $number_of_words = $number_of_words == 0 ? -1 : $number_of_words;
-                            DB::table('chapter_' . $category_id)->where('id', $chapter_id)->update(['number_of_words' => $number_of_words]);
-
-                            echo "更新章节内容: category_id: {$category_id}, 进度：{$update_chapters_length} / {$update_chapters_current} \n";
                         } else {
-                            echo "章节内容已存在: category_id: {$category_id}, 进度：{$update_chapters_length} / {$update_chapters_current} \n";
-
+                            $content->content = $temp['content'];
+                            $content->save();
                         }
+                        
+                        // 更新chapter数据表的字数字段
+                        $number_of_words = ToolsHelper::calcWords($temp['content']);
+                        $number_of_words = $number_of_words == 0 ? -1 : $number_of_words;
+                        DB::table('chapter_' . $category_id)->where('id', $chapter_id)->update(['number_of_words' => $number_of_words]);
+                        echo "更新章节内容: category_id: {$category_id}, 进度：{$update_chapters_length} / {$update_chapters_current} \n";
                     } catch (\Exception $e) {
                         $error = [
                             'chapter_id' => $chapter_id,
