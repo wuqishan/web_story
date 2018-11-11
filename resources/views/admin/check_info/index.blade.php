@@ -25,6 +25,9 @@
                                 <input class="form-control" autocomplete="off" type="text" name="book_title" value="{{ request()->get('book_title') }}" placeholder="标题">
                             </div>
                             <div class="form-group col-md-2">
+                                <input class="form-control" autocomplete="off" type="text" name="message" value="{{ request()->get('message') }}" placeholder="信息">
+                            </div>
+                            <div class="form-group col-md-2">
                                 <select class="form-control" name="book_category_id">
                                     <option value="">选择书本分类</option>
                                     <option @if(request()->get('book_category_id') == 1) selected @endif value="1">玄幻奇幻</option>
@@ -42,8 +45,6 @@
                                     <option @if(request()->get('status') == 1) selected @endif value="1">未解决</option>
                                     <option @if(request()->get('status') == 2) selected @endif value="2">已解决</option>
                                 </select>
-                            </div>
-                            <div class="form-group col-md-2">
                             </div>
                             <div class="form-group col-md-1 align-self-end">
                                 <a class="btn btn-outline-info pull-right" href="javascript:$('#search-form').submit();"><i class="fa fa-fw fa-lg fa-check-circle"></i>搜索</a>

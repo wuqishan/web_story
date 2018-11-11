@@ -32,7 +32,7 @@ class CreateTableChapter extends Migration
                 $table->integer('view', false, true)->default(0)->comment('点击量');
                 $table->integer('category_id', false, true)->default(0)->comment('所属书本分类');
                 $table->string('url', 128)->default('')->comment('本章节的源地址');
-                $table->integer('number_of_words', false, true)->default(0)->comment('本章节的字数');
+                $table->integer('number_of_words', false)->default(0)->comment('本章节的字数');
                 $table->integer('orderby', false, true)->default(0)->comment('排序');
                 $table->timestamps();
                 $table->unique('unique_code', 'unique_code_index');

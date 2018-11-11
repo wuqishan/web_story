@@ -83,6 +83,7 @@ class SpiderUpdateContent extends Command
                             DB::table('chapter_content_' . $category_id)->insert($temp);
                             // 更新chapter数据表的字数字段
                             $number_of_words = ToolsHelper::calcWords($temp['content']);
+                            $number_of_words = $number_of_words == 0 ? -1 : $number_of_words;
                             DB::table('chapter_' . $category_id)->where('id', $chapter_id)->update(['number_of_words' => $number_of_words]);
 
                             echo "更新章节内容: category_id: {$category_id}, 进度：{$update_chapters_length} / {$update_chapters_current} \n";

@@ -17,6 +17,10 @@ class CheckBookInfoService extends Service
             $params['book_title'] = trim($params['book_title']);
             $model = $model->where('book_title', 'like', "%". strip_tags($params['book_title']) ."%");
         }
+        if (isset($params['message']) && ! empty($params['message'])) {
+            $params['message'] = trim($params['message']);
+            $model = $model->where('message', 'like', "%". strip_tags($params['message']) ."%");
+        }
         if (isset($params['status']) && intval($params['status']) > 0) {
             $model = $model->where('status', intval($params['status']));
         }
