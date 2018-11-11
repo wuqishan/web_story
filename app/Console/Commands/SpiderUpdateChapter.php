@@ -51,6 +51,7 @@ class SpiderUpdateChapter extends Command
         } else {
             $books = Book::where('finished', 0)
                 ->select(['id', 'unique_code', 'category_id', 'newest_chapter', 'url'])
+                ->get()
                 ->toArray();
         }
 
