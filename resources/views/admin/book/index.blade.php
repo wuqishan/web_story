@@ -44,6 +44,9 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-3">
+                                <input class="form-control data-range" autocomplete="off" type="text" name="last_update_start" id="last_update_start" value="{{ request()->get('last_update_start') }}" placeholder="最近更新日期">
+                                -
+                                <input class="form-control data-range" autocomplete="off" type="text" name="last_update_end" id="last_update_end" value="{{ request()->get('last_update_end') }}" placeholder="最近更新日期">
                             </div>
                             <div class="form-group col-md-1 align-self-end">
                                 <a class="btn btn-outline-info pull-right" href="javascript:$('#search-form').submit();"><i class="fa fa-fw fa-lg fa-check-circle"></i>搜索</a>
@@ -104,9 +107,19 @@
 
 @section('otherStaticSecond')
     <script type="text/javascript">
-        function checkImage()
-        {
-
-        }
+        $(function () {
+            $('#last_update_start').datepicker({
+                format: "yyyy-mm-dd",
+                autoclose: true,
+                todayHighlight: true,
+                language: 'zh-CN'
+            });
+            $('#last_update_end').datepicker({
+                format: "yyyy-mm-dd",
+                autoclose: true,
+                todayHighlight: true,
+                language: 'zh-CN'
+            });
+        });
     </script>
 @endsection

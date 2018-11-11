@@ -20,6 +20,15 @@ class BookService extends Service
         if (isset($params['finished']) && intval($params['finished']) > 0) {
             $model = $model->where('finished', intval($params['finished']));
         }
+        if (isset($params['last_update_start']) && ! empty($params['last_update_start'])) {
+            $params['last_update_start'] = strtotime($params['last_update_start']);
+            $params['last_update_start'] = date('Y-m-d H:i:s', $params['last_update_start']);
+            $model = $model->where('last_update', '>=', trim($params['last_update_start']));
+        }
+        if (isset($params['last_update_end']) && ! empty($params['last_update_end'])) {
+            $params['last_update_end'] .= ' 23:59:59';
+            $model = $model->where('last_update', '<=', trim($params['last_update_end']));
+        }
         if (! empty($params['sort'])) {
             $model = $model->orderBy($params['sort'][0], $params['sort'][1]);
         } else {

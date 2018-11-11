@@ -39,6 +39,7 @@
 <script src="{{ asset('/static/admin/js/plugins/jquery.form.js') }}"></script>
 <script src="{{ asset('/static/admin/js/plugins/select2.min.js') }}"></script>
 <script src="{{ asset('/static/admin/js/plugins/bootstrap-datepicker.js') }}"></script>
+<script src="{{ asset('/static/admin/js/plugins/datepicker.zh-CN.js') }}"></script>
 <script src="{{ asset('/static/admin/js/layer/layer.js') }}"></script>
 
 <script src="{{ asset('/static/admin/js/main.js') }}"></script>
