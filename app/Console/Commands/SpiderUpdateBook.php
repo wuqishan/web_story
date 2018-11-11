@@ -43,16 +43,6 @@ class SpiderUpdateBook extends Command
      */
     public function handle()
     {
-//        $category_with_urls = [
-//            'https://www.xbiquge6.com/xclass/1/1.html' => 1,
-//            'https://www.xbiquge6.com/xclass/2/1.html' => 2,
-//            'https://www.xbiquge6.com/xclass/3/1.html' => 3,
-//            'https://www.xbiquge6.com/xclass/4/1.html' => 4,
-//            'https://www.xbiquge6.com/xclass/5/1.html' => 5,
-//            'https://www.xbiquge6.com/xclass/6/1.html' => 6,
-//            'https://www.xbiquge6.com/xclass/7/1.html' => 7
-//        ] ;
-
         $category = Category::all(['id', 'url'])->toArray();
         $category_with_urls = array_combine(array_column($category, 'url'), array_column($category, 'id'));
 
@@ -96,32 +86,21 @@ class SpiderUpdateBook extends Command
                 $temp['created_at'] = date('Y-m-d H:i:s');
                 $temp['updated_at'] = date('Y-m-d H:i:s');
 
-                // 已经删除的数据，后面再次爬取则跳过
-                $delete_book_unique_code_str = [];
-                $delete_books = CheckBookInfo::where('status', 1)->where('method', 2)->get();
-                if (! empty($delete_books)) {
-                    $delete_books = $delete_books->toArray();
-                    $delete_book_unique_code_str = array_column($delete_books, 'book_unique_code');
-                }
-                $delete_book_unique_code_str = ','. implode(',', $delete_book_unique_code_str) .',';
-
                 // 如果该书可以抓取，并且数据库中没有该书，则做入库操作
-                if (strpos($delete_book_unique_code_str, $temp['unique_code']) !== true) {
-                    $book = Book::where('unique_code', $temp['unique_code'])->first();
-                    if (empty($book)) {
-                        echo "当前分类：{$category_id}, 该分类书籍：{$current_book} / {$category_book_number}, 书名: 《{$temp['title']}》 URL：{$temp['url']} 入库\n";
-                        Book::insert($temp);
+                $book = Book::where('unique_code', $temp['unique_code'])->first();
+                if (empty($book)) {
+                    echo "当前分类：{$category_id}, 该分类书籍：{$current_book} / {$category_book_number}, 书名: 《{$temp['title']}》 URL：{$temp['url']} 入库\n";
+                    Book::insert($temp);
+                } else {
+                    if ($book->category_id != $book->category_id) {
+                        echo "该书已存在！更新 category_id {$book->category_id} to {$category_id}\n";
+                        $book->category_id = $category_id;
                     } else {
-                        if ($book->category_id != $book->category_id) {
-                            echo "该书已存在！更新 category_id {$book->category_id} to {$category_id}\n";
-                            $book->category_id = $category_id;
-                        } else {
-                            echo "当前分类：{$category_id}, 该分类书籍：{$current_book} / {$category_book_number}, 书名: 《{$temp['title']}》 已经存在！！！\n";
-                        }
-                        $book->last_update = $temp['last_update'];
-                        $book->author_id = $temp['author_id'];
-                        $book->save();
+                        echo "当前分类：{$category_id}, 该分类书籍：{$current_book} / {$category_book_number}, 书名: 《{$temp['title']}》 已经存在！！！\n";
                     }
+                    $book->last_update = $temp['last_update'];
+                    $book->author_id = $temp['author_id'];
+                    $book->save();
                 }
 
                 return $temp;
