@@ -82,10 +82,11 @@ class SpiderUpdateContent extends Command
                         if (empty($content)) {
                             DB::table('chapter_content_' . $category_id)->insert($temp);
                         } else {
-                            $content->content = $temp['content'];
-                            $content->save();
+                            DB::table('chapter_content_' . $category_id)
+                                ->where('id', $chapter_id)
+                                ->update(['content' => $temp['content']]);
                         }
-                        
+
                         // 更新chapter数据表的字数字段
                         $number_of_words = ToolsHelper::calcWords($temp['content']);
                         $number_of_words = $number_of_words == 0 ? -1 : $number_of_words;
