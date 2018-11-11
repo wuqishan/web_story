@@ -14,10 +14,4 @@ class CheckBookInfo extends Model
         '1' => '未解决',
         '2' => '已解决'
     ];
-
-    public static $methodMap = [
-        '1' => '未做分配',
-        '2' => '章节删除重抓',
-        '3' => '本书完全删除'
-    ];
 }

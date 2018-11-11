@@ -41,14 +41,6 @@
                                     <option value="">选择状态</option>
                                     <option @if(request()->get('status') == 1) selected @endif value="1">未解决</option>
                                     <option @if(request()->get('status') == 2) selected @endif value="2">已解决</option>
-                                    <option @if(request()->get('status') == 3) selected @endif value="3">忽略不显示</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <select class="form-control" name="method">
-                                    <option value="">选择解决方法</option>
-                                    <option @if(request()->get('status') == 1) selected @endif value="1">未解决</option>
-                                    <option @if(request()->get('status') == 2) selected @endif value="2">已解决</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-2">
@@ -70,7 +62,6 @@
                                 <th>分类</th>
                                 <th>信息</th>
                                 <th>状态</th>
-                                <th>解决方法</th>
                                 <th>时间</th>
                                 <th>操作</th>
                             </tr>
@@ -88,21 +79,12 @@
                                                 @elseif($v['status'] == 2)
                                                     已解决
                                                 @else
-                                                    忽略不显示
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if($v['method'] == 1)
-                                                    未做分配
-                                                @elseif($v['method'] == 2)
-                                                    章节删除重抓
-                                                @else
-                                                    本书完全删除
+                                                    状态异常
                                                 @endif
                                             </td>
                                             <td>{{ $v['created_at'] }}</td>
                                             <td width="120">
-                                                <a href="{{ route('admin.check_info.detail', ['check_info_id' => $v['id']]) }}"><i class="fa fa-clone" aria-hidden="true"></i> 详细内容</a>
+                                                <a href="{{ route('admin.chapter.index', ['book_unique_code' => $v['book_unique_code']]) }}"><i class="fa fa-clone" aria-hidden="true"></i> 章节列表</a>
                                             </td>
                                         </tr>
                                     @endforeach

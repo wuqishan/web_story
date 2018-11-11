@@ -68,6 +68,27 @@ class ChapterService extends Service
         return (array) $chapter;
     }
 
+    public function save($params)
+    {
+        $results = true;
+        $id = intval($params['id']);
+        $category_id = intval($params['category_id']);
+
+        $chapterModel = new Chapter();
+        $chapterModel = $chapterModel->setTable($category_id);
+
+        if (
+            isset($params['field']) && ! empty($params['field'])
+        ) {
+            $field = trim($params['field']);
+            $value = (string) trim($params['value']);
+
+            $results = $chapterModel->where('id', $id)->update([$field => $value]);
+        }
+
+        return $results;
+    }
+
     /**
      * @param $id
      * @param integer $category_id

@@ -59,7 +59,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
     // 章节
     Route::get('/chapter/{book_unique_code}', 'ChapterController@index')->name('chapter.index');
 //    Route::get('/chapter/{chapter_id}/{category_id}', 'ChapterController@edit')->name('chapter.edit');
-//    Route::post('/chapter/{chapter_id}/{category_id}', 'ChapterController@update')->name('chapter.update');
+    Route::post('/chapter/update', 'ChapterController@update')->name('chapter.update');
 
     // 内容
     Route::post('/content/update', 'ChapterContentController@updateContent')->name('content.update');
@@ -67,8 +67,6 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
 
     // 检测信息
     Route::get('/check_info', 'CheckInfoController@index')->name('check_info.index');
-    Route::get('/check_info/detail/{check_info_id}', 'CheckInfoController@detail')->name('check_info.detail');
-    Route::post('/check_info/{check_info_id}/{method_id}/update', 'CheckInfoController@methodUpdate')->name('check_info.method.change');
 
     // 图片检测
     Route::get('/image', 'ImageController@index')->name('image.index');

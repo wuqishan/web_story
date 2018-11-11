@@ -68,3 +68,9 @@ table.table-info-small th, table.table-info-small td {
     padding-bottom: 30px;
     border-bottom: #ccc 1px solid;
 }
+
+td.prev_unique_code, td.next_unique_code {
+    cursor: pointer;
+    color: #2ca02c;
+    font-weight: bold;
+}

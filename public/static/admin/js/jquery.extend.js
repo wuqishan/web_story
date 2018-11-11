@@ -303,6 +303,11 @@ $.extend({
 
         return newArray;
     },
+    sys_tip: function (id, msg) {
+        layer.tips(msg, id, {
+            tips: [1, '#0FA6D8']
+        });
+    },
     /**
      * 获取url中的参数
      * @param name

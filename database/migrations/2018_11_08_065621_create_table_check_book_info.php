@@ -23,7 +23,6 @@ class CreateTableCheckBookInfo extends Migration
             $table->char('newest_chapter', 32)->default('')->comment('最新章节的唯一码');
             $table->string('message', 255)->default('')->comment('监测信息');
             $table->tinyInteger('status')->default(0)->comment('状态，1：未解决；2：已解决；');
-            $table->tinyInteger('method')->default(0)->comment('解决方法，1：未做分配；2：章节删除重抓；3：本书完全删除');
             $table->dateTime('created_at')->comment('创建时间');
         });
     }

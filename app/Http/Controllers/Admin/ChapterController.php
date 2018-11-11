@@ -19,4 +19,14 @@ class ChapterController extends Controller
 
         return view('admin.chapter.index', ['results' => $results]);
     }
+
+    public function update(Request $request, ChapterService $service)
+    {
+        $results = ['status' => false];
+        if ($request->ajax()) {
+            $results['status'] = (bool) $service->save($request->all());
+        }
+
+        return $results;
+    }
 }

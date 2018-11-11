@@ -131,7 +131,6 @@ class CheckChapterList extends Command
                         'newest_chapter' => $v['data']['newest_chapter'],
                         'message' => $v['msg'],
                         'status' => 1,
-                        'method' => 1,
                         'created_at' => date('Y-m-d H:i:s'),
                     ]);
                 }
