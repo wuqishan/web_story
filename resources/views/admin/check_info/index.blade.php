@@ -85,10 +85,8 @@
                                             <td>{{ $v['created_at'] }}</td>
                                             <td>
                                                 <a href="{{ route('admin.chapter.index', ['book_unique_code' => $v['book_unique_code']]) }}"><i class="fa fa-clone" aria-hidden="true"></i> 章节列表</a>
-                                                @if($v['status'] == 1)
-                                                    &nbsp;|&nbsp;
-                                                    <a href="javascript:del_record('{{ route('admin.check_info.delete', ['id' => $v['id']]) }}', '{{ route('admin.check_info.index') }}')"><i class="fa fa-trash-o" aria-hidden="true"></i> 删除</a>
-                                                @endif
+                                                &nbsp;|&nbsp;
+                                                <a href="javascript:del_record('{{ route('admin.check_info.delete', ['id' => $v['id']]) }}', '{{ route('admin.check_info.index') }}')"><i class="fa fa-trash-o" aria-hidden="true"></i> 删除</a>
                                             </td>
                                         </tr>
                                     @endforeach
