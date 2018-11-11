@@ -197,7 +197,7 @@
             // tips显示
             $('.prev_unique_code, .next_unique_code, .unique_code').hover(function () {
                 var id = $(this).attr('id');
-                var title = $(this).attr('data-title');
+                var title = $.trim($(this).attr('data-title'));
                 if (title != '') {
                     layer.tips(title, '#'+id, {
                         tips: [4, '#0FA6D8'],
