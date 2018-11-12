@@ -80,6 +80,8 @@ class SpiderUpdateBook extends Command
                 $temp['url'] = $r['info']['url'];
                 $temp['category_id'] = $category_id;
                 $temp['author_id'] = Author::getAuthorId($temp['author']);
+                $temp['finished'] = $ql->find('#info p:eq(1)')->text();
+                $temp['finished'] = mb_strrpos($temp['finished'], '已完结') !== false ? 1 : 0;
                 $temp['view'] = 0;
                 $temp['newest_chapter'] = '';
                 $temp['unique_code'] = md5($temp['author'] . $temp['title']);
@@ -100,6 +102,7 @@ class SpiderUpdateBook extends Command
                     }
                     $book->last_update = $temp['last_update'];
                     $book->author_id = $temp['author_id'];
+                    $book->finished = $temp['finished'];
                     $book->save();
                 }
 
