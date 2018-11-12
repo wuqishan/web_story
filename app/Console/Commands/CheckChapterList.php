@@ -14,7 +14,7 @@ class CheckChapterList extends Command
      *
      * @var string
      */
-    protected $signature = 'command:check-chapter-list {category_id?}';
+    protected $signature = 'command:check {category_id?}';
 
     /**
      * The console command description.

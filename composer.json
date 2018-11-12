@@ -9,6 +9,7 @@
         "fideloper/proxy": "^4.0",
         "jaeger/querylist": "^4.0",
         "jaeger/querylist-curl-multi": "^4.0",
+        "jaeger/querylist-ext-dimage": "^1.1",
         "jasongrimes/paginator": "^1.0",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0"
