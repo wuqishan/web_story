@@ -71,8 +71,6 @@
 @endsection
 
 @section('otherStaticSecond')
-    <!-- Page specific javascripts-->
-{{--    <script type="text/javascript" src="{{ asset('/static/admin/js/plugins/chart.js') }}"></script>--}}
     <script type="text/javascript" src="{{ asset('/static/admin/js/plugins/echarts.common.min.js') }}"></script>
     <script type="text/javascript">
 

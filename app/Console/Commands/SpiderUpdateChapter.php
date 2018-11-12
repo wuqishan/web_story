@@ -74,11 +74,15 @@ class SpiderUpdateChapter extends Command
             $book_author = preg_replace('/作(\s|(&nbsp;))*者(\:|：)/su', '', $book_author);
             $book_author = trim($book_author);
             $book_title = trim($ql->find("#info > h1")->text());
+            $finished = $ql->find('#info p:eq(1)')->text();
+            $finished = mb_strrpos($finished, '已完结') !== false ? 1 : 0;
 
             // 获取书本信息
             $book_info = $books_new[$r['info']['url']];
             list($book_id, $book_unique_code, $category_id, $newest_chapter) = explode('-', $book_info);
-
+            echo "{$book_number} / {$book_current}";
+            Book::where('id', $book_id)->update(['finished' => $finished]);
+/*
             $chapter_sub_info = (array) $ql->find('#list dl dd')->map(function ($item) use ($tookit, $r) {
                 $temp['url'] = $tookit->uri2url($item->find('a')->attr('href'), $r['info']['url']);
                 $temp['title'] = trim($item->find('a')->text());
@@ -145,7 +149,7 @@ class SpiderUpdateChapter extends Command
                     $logs_file = storage_path('logs') . '/spider-chapter-' . date('Y-m-d') . '.txt';
                     @file_put_contents($logs_file, print_r($error, 1) . "\n\n\n");
                 }
-            }
+            }*/
         });
 
         return null;
