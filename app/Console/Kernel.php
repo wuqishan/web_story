@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\CheckChapterList::class,
+        Commands\SpiderCheck::class,
     ];
 
     /**
@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('command:check-chapter-list') ->daily();
+//         $schedule->command('command:check-chapter-list') ->daily();
     }
 
     /**

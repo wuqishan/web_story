@@ -8,7 +8,7 @@
     <main class="app-content">
         <div class="app-title">
             <div>
-                <h1><i class="fa fa-th-list"></i> 《{{ $results['book']['title'] }}》 章节列表</h1>
+                <h1><i class="fa fa-th-list"></i> 分类为：{{ \App\Models\Category::categoryMap($results['category_id']) }} 的章节列表</h1>
             </div>
             <ul class="app-breadcrumb breadcrumb side">
                 <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -20,46 +20,7 @@
             <div class="col-md-12">
                 <div class="tile">
                     <div class="tile-body">
-                        <h3 class="tile-title">本书简介</h3>
-                        <table class="table table-bordered table-info-small">
-                            <tbody>
-                            <tr>
-                                <th>名称</th>
-                                <td width="40%">{{ $results['book']['title'] }}</td>
-                                <th>作者</th>
-                                <td width="40%">{{ $results['book']['author'] }}</td>
-                            </tr>
-                            <tr>
-                                <th>最近更新日期</th>
-                                <td>{{ $results['book']['last_update'] }}</td>
-                                <th>是否完本</th>
-                                <td>{{ $results['book']['finished'] }}</td>
-                            </tr>
-                            <tr>
-                                <th>分类</th>
-                                <td>{{ \App\Models\Category::categoryMap($results['book']['category_id']) }}</td>
-                                <th>点击数</th>
-                                <td>{{ $results['book']['view'] }}</td>
-                            </tr>
-                            <tr>
-                                <th>最新章节唯一码</th>
-                                <td>{{ $results['book']['newest_chapter'] }}</td>
-                                <th>数据源</th>
-                                <td><a href="{{ $results['book']['url'] }}" target="_blank">查看</a></td>
-                            </tr>
-                            <tr>
-                                <th>操作</th>
-                                <td colspan="3">
-                                    <a href="javascript:del_record('{{ route('admin.chapter.delete.all', ['category_id' => $results['book']['category_id'], 'book_unique_code' => $results['book']['unique_code']]) }}', '{{ route('admin.chapter.index', ['book_unique_code' => $results['book']['unique_code']]) }}');">
-                                        <i class="fa fa-trash-o" aria-hidden="true"></i> 删除所有章节
-                                    </a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="tile-body">
-                        <form class="row" id="search-form" action="{{ route('admin.chapter.index', ['book_unique_code' => $results['book']['unique_code']]) }}" method="get">
+                        <form class="row" id="search-form" action="{{ route('admin.chapter.list.all') }}" method="get">
                             <div class="form-group col-md-2">
                                 <input class="form-control" autocomplete="off" type="text" name="title" value="{{ request()->get('title') }}" placeholder="标题">
                             </div>
@@ -68,13 +29,20 @@
                                 -
                                 <input class="form-control data-range" autocomplete="off" type="text" name="lte_number_of_words" value="{{ request()->get('lte_number_of_words') }}" placeholder="最大字数">
                             </div>
-                            <div class="form-group col-md-5">
+                            <div class="form-group col-md-2">
+                                <select class="form-control" name="category_id">
+                                    @foreach(\App\Models\Category::getAll() as $v)
+                                        <option @if(request()->get('category_id', 1) == $v['id']) selected @endif  value="{{ $v['id'] }}">{{ $v['name'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
                             </div>
                             <div class="form-group col-md-1 align-self-end">
                                 <a class="btn btn-outline-info pull-right" href="javascript:$('#search-form').submit();"><i class="fa fa-fw fa-lg fa-check-circle"></i>搜索</a>
                             </div>
                             <div class="form-group col-md-1 align-self-end">
-                                <a class="btn btn-outline-secondary pull-right" href="{{ route('admin.chapter.index', ['book_unique_code' => $results['book']['unique_code']]) }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>重置</a>
+                                <a class="btn btn-outline-secondary pull-right" href="{{ route('admin.chapter.list.all') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>重置</a>
                             </div>
                             <input type="hidden" name="length" value="{{ request()->get('length') }}">
                         </form>
@@ -84,24 +52,32 @@
                             <thead>
                             <tr>
                                 <th>标题</th>
+                                <th width="80">分类</th>
                                 <th>点击数</th>
                                 <th>本章节字数</th>
-                                <th width="160">上一章</th>
-                                <th width="160">本章</th>
-                                <th width="160">下一章</th>
-                                <th>排序</th>
+                                <th width="80">所属书本</th>
+                                <th width="80">上一章</th>
+                                <th width="80">本章</th>
+                                <th width="80">下一章</th>
+
                                 <th>源网站</th>
                                 <th width="140">操作</th>
                             </tr>
                             </thead>
                             <tbody>
                                 @if(isset($results['data']['list']))
-                                    <?php $orderby = ($results['data']['page'] - 1) * $results['data']['length']; ?>
                                     @foreach($results['data']['list'] as $k => $v)
                                         <tr data-category-id="{{ $v['category_id'] }}" data-id="{{ $v['id'] }}">
                                             <td>{{ $v['title'] }}</td>
+                                            <td>
+                                                {{ \App\Models\Category::categoryMap($v['category_id']) }}
+                                            </td>
                                             <td>{{ $v['view'] }}</td>
                                             <td>{{ $v['number_of_words'] }}</td>
+
+                                            <td>
+                                                {{ \App\Helper\ToolsHelper::subStr($v['book_unique_code'], 0, 8) }}
+                                            </td>
 
                                             <td id="prev_unique_code_{{ $v['id'] }}" data-title="{{ $v['prev_unique_code'] }}" class="prev_unique_code">
                                                 {{ \App\Helper\ToolsHelper::subStr($v['prev_unique_code'], 0, 8) }}
@@ -113,9 +89,7 @@
                                                 {{ \App\Helper\ToolsHelper::subStr($v['next_unique_code'], 0, 8) }}
                                             </td>
 
-                                            <td @if(($k + $orderby) == $v['orderby']) class="font-green" @else class="font-red" @endif>
-                                                {{ $v['orderby'] }}
-                                            </td>
+
                                             <td>
                                                 <a target="_blank" href="{{ $v['url'] }}">源网站</a>
                                             </td>

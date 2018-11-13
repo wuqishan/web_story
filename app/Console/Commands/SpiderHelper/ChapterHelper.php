@@ -9,20 +9,19 @@ use Illuminate\Support\Facades\DB;
 
 class ChapterHelper
 {
-    public static function run($category_id = 0)
+    /**
+     * 本次更新的数据
+     *
+     * @var array
+     */
+    protected $updateInfo = ['data' => [], 'number' => 0];
+
+    public function run()
     {
-        if ($category_id > 0 && $category_id < 8) {
-            $books = Book::where('category_id', $category_id)
-                ->where('finished', 0)
-                ->select(['id', 'unique_code', 'category_id', 'newest_chapter', 'url'])
-                ->get()
-                ->toArray();
-        } else {
-            $books = Book::where('finished', 0)
-                ->select(['id', 'unique_code', 'category_id', 'newest_chapter', 'url'])
-                ->get()
-                ->toArray();
-        }
+        $books = Book::where('finished', 0)
+            ->select(['id', 'unique_code', 'category_id', 'newest_chapter', 'url'])
+            ->get()
+            ->toArray();
 
         $books_new = [];
         foreach ($books as $book) {
@@ -89,7 +88,7 @@ class ChapterHelper
                     if (! empty($newest_chapter)) {
                         if (! $run_at) {
                             if ($newest_chapter == $temp['unique_code']) {
-                                self::updateNextUniqueCode($temp);
+                                $this->updateNextUniqueCode($temp);
                                 $run_at = true;
                             }
                             continue;
@@ -97,8 +96,9 @@ class ChapterHelper
                     }
 
                     // 插入章节
-                    DB::table('chapter_' . $temp['category_id'])->insert($temp);
-                    echo "新增章节: category_id: {$category_id}, 进度：{$book_number} / {$book_current}, title: {$temp['title']}, Url: {$temp['url']}\n";
+                    $this->updateInfo['data'][$temp['category_id']][] = DB::table('chapter_' . $temp['category_id'])->insertGetId($temp);
+                    $this->updateInfo['number']++;
+                    echo "进度：{$book_number} / {$book_current}, category_id: {$category_id}, title: {$temp['title']}, Url: {$temp['url']}\n";
 
                     // 更新book最新更新的章节
                     if ($key === $length - 1) {
@@ -109,18 +109,14 @@ class ChapterHelper
                     if (stripos($e->getMessage(), 'Duplicate entry') !== false) {
                         continue;
                     }
-
-//                    $error = ['temp' => $temp, 'key' => $val, 'info' => $e->getMessage()];
-//                    $logs_file = storage_path('logs') . '/spider-chapter-' . date('Y-m-d') . '.txt';
-//                    @file_put_contents($logs_file, print_r($error, 1) . "\n\n\n");
                 }
             }
         });
 
-        return null;
+        return $this->updateInfo;
     }
 
-    public static function updateNextUniqueCode($chapter)
+    public function updateNextUniqueCode($chapter)
     {
         if (! empty($chapter['next_unique_code'])) {
             DB::table('chapter_' . $chapter['category_id'])

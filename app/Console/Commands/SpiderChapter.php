@@ -2,25 +2,24 @@
 
 namespace App\Console\Commands;
 
-
-use App\Console\Commands\Helper\BookHelper;
+use App\Console\Commands\Helper\ChapterHelper;
 use Illuminate\Console\Command;
 
-class SpiderUpdateBook extends Command
+class SpiderChapter extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'command:book';
+    protected $signature = 'command:chapter';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '抓取小说书本信息';
+    protected $description = '抓章节';
 
     /**
      * Create a new command instance.
@@ -39,6 +38,7 @@ class SpiderUpdateBook extends Command
      */
     public function handle()
     {
-        return BookHelper::run();
+        return (new ChapterHelper)->run();
     }
+
 }

@@ -5,54 +5,22 @@ namespace App\Console\Commands;
 use App\Models\Book;
 use App\Models\Chapter;
 use App\Models\CheckBookInfo;
-use Illuminate\Console\Command;
 
-class CheckChapterList extends Command
+class CheckHelper
 {
     /**
-     * The name and signature of the console command.
+     * 本次更新的数据
      *
-     * @var string
+     * @var array
      */
-    protected $signature = 'command:check {category_id?}';
+    protected $updateInfo = [];
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = '检测章节list连表是否正确';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function run()
     {
-        parent::__construct();
-    }
-
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
-    {
-        $category_id = $this->argument('category_id');
-        if (! empty($category_id)) {
-            $books = Book::orderBy("id", "asc")
-                ->where('category_id', $category_id)
-                ->select(['id', 'title', 'unique_code', 'newest_chapter', 'url', 'category_id'])
-                ->get()
-                ->toArray();
-        } else {
-            $books = Book::orderBy("id", "asc")
-                ->select(['id', 'title', 'unique_code', 'newest_chapter', 'url', 'category_id'])
-                ->get()
-                ->toArray();
-        }
+        $books = Book::orderBy("id", "asc")
+            ->select(['id', 'title', 'unique_code', 'newest_chapter', 'url', 'category_id'])
+            ->get()
+            ->toArray();
 
         $errors = [];
         $booksNumber = count($books);
@@ -111,17 +79,9 @@ class CheckChapterList extends Command
                         break;
                     }
                 }
-
-                // 最新文章异常
-//                if (intval($chapter[$i]['number_of_words']) == 0) {
-//                    $error['msg'] = "《{$chapter[$i]['title']}》内容为空\n";
-//                    $error['data'] = $book;
-//                    $errors[] = $error;
-//                    break;
-//                }
             }
 
-            echo "Book 监测进度： {$booksNumber} / " . ($key + 1) . "，暂无异常！！！ \n";
+            echo "进度： {$booksNumber} / " . ($key + 1) . "，暂无异常！！！ \n";
         }
 
         if (! empty($errors)) {
@@ -145,7 +105,9 @@ class CheckChapterList extends Command
             }
             echo "问题书本有 " . count($errors) . " 条，已插入待处理表\n";
         } else {
-            echo "无问题书本\n";
+            echo "库中所有书本，暂无问题\n";
         }
+
+        return null;
     }
 }

@@ -12,11 +12,16 @@ use Ares333\Curl\Toolkit;
 class BookHelper
 {
     /**
-     * Execute the console command.
+     * 本次更新的数据
      *
-     * @return mixed
+     * @var array
      */
-    public static function run()
+    protected $updateInfo = ['data' => [], 'number' => 0];
+
+    /**
+     * @return array
+     */
+    public function run()
     {
         $category = Category::all(['id', 'url'])->toArray();
         $category_with_urls = array_combine(array_column($category, 'url'), array_column($category, 'id'));
@@ -70,7 +75,8 @@ class BookHelper
                 $book = Book::where('unique_code', $temp['unique_code'])->first();
                 if (empty($book)) {
                     echo "当前分类：{$category_id}, 该分类书籍：{$current_book} / {$category_book_number}, 书名: 《{$temp['title']}》 URL：{$temp['url']} 入库\n";
-                    Book::insert($temp);
+                    $this->updateInfo['data'][] = Book::insertGetId($temp);
+                    $this->updateInfo['number']++;
                 } else {
                     if ($book->category_id != $book->category_id) {
                         echo "该书已存在！更新 category_id {$book->category_id} to {$category_id}\n";
@@ -88,7 +94,7 @@ class BookHelper
             });
         }
 
-        return null;
+        return $this->updateInfo;
     }
 
     public static function getBookImages($book)

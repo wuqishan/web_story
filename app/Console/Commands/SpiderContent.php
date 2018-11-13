@@ -5,21 +5,21 @@ namespace App\Console\Commands;
 use App\Console\Commands\Helper\ContentHelper;
 use Illuminate\Console\Command;
 
-class SpiderUpdateContent extends Command
+class SpiderContent extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'command:content {category_id?}';
+    protected $signature = 'command:content';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '抓取书本对应的内容';
+    protected $description = '抓章节内容';
 
     /**
      * Create a new command instance.
@@ -38,8 +38,6 @@ class SpiderUpdateContent extends Command
      */
     public function handle()
     {
-        $param = (int) $this->argument('category_id');
-
-        return ContentHelper::run($param);
+        return (new ContentHelper)->run();
     }
 }

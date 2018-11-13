@@ -9,15 +9,18 @@ use Illuminate\Support\Facades\DB;
 
 class ChapterService extends Service
 {
-    public function get($book_unique_code, $category_id, $params = [])
+    public function get($category_id, $book_unique_code = null, $params = [])
     {
         $model = new Chapter();
         $model = $model->setTable($category_id);
-        $model = $model->where('book_unique_code', trim($book_unique_code));
-        if (isset($params['lte_number_of_words']) && intval($params['lte_number_of_words']) > 0) {
+        if ($book_unique_code !== null) {
+            $model = $model->where('book_unique_code', trim($book_unique_code));
+        }
+
+        if (isset($params['lte_number_of_words'])) {
             $model = $model->where('number_of_words', '<=', intval($params['lte_number_of_words']));
         }
-        if (isset($params['gte_number_of_words']) && intval($params['gte_number_of_words']) > 0) {
+        if (isset($params['gte_number_of_words'])) {
             $model = $model->where('number_of_words', '>=', intval($params['gte_number_of_words']));
         }
         if (isset($params['title']) && ! empty($params['title'])) {

@@ -30,6 +30,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
 
 
     Route::get('/index', 'IndexController@index')->name('admin.index');
+    Route::get('/table', 'IndexController@table')->name('admin.table');
 
     // 附件
 //    Route::get('upload/delete/{id}', 'UploadController@delete')->name('upload.delete');
@@ -58,7 +59,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
     Route::post('/book/finished', 'BookController@updateFinished')->name('book.update.finished');
 
     // 章节
-    Route::get('/chapter/{book_unique_code}', 'ChapterController@index')->name('chapter.index');
+    Route::get('/chapter/{book_unique_code}', 'ChapterController@index')->name('chapter.index');    // 书本点击过去的章节
+    Route::get('/chapter/list/all', 'ChapterController@listAll')->name('chapter.list.all');    // 所有章节的列表
 //    Route::get('/chapter/{chapter_id}/{category_id}', 'ChapterController@edit')->name('chapter.edit');
     Route::post('/chapter/update', 'ChapterController@update')->name('chapter.update');
     Route::post('/chapter/delete/all', 'ChapterController@deleteAllChapter')->name('chapter.delete.all');

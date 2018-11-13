@@ -10,11 +10,11 @@
     <main class="app-content">
         <div class="app-title">
             <div>
-                <h1><i class="fa fa-plus-square"></i> 小说添加</h1>
+                <h1><i class="fa fa-plus-square"></i> 书本添加</h1>
             </div>
             <ul class="app-breadcrumb breadcrumb">
                 <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-                <li class="breadcrumb-item">小说管理</li>
+                <li class="breadcrumb-item">书本管理</li>
                 <li class="breadcrumb-item"><a href="#">添加</a></li>
             </ul>
         </div>

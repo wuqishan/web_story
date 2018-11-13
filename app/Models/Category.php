@@ -11,18 +11,25 @@ class Category extends Model
 
     public $timestamps = false;
 
-    public static function categoryMap($category_id)
+    public static function getAll()
     {
-        $cache_key = 'category_info';
+        $cache_key = 'category_all';
         if (CacheHelper::has($cache_key)) {
             $category = CacheHelper::get($cache_key);
         } else {
-            $results = self::all(['id', 'name'])->toArray();
-            $ids = array_column($results, 'id');
-            $names = array_column($results, 'name');
-            $category = array_combine($ids, $names);
+            $category = self::all(['id', 'name'])->toArray();
             CacheHelper::set($cache_key, $category);
         }
+
+        return $category;
+    }
+
+    public static function categoryMap($category_id)
+    {
+        $results = self::getAll();
+        $ids = array_column($results, 'id');
+        $names = array_column($results, 'name');
+        $category = array_combine($ids, $names);
 
         return $category[$category_id];
     }

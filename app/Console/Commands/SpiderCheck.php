@@ -2,24 +2,23 @@
 
 namespace App\Console\Commands;
 
-use App\Console\Commands\Helper\ChapterHelper;
 use Illuminate\Console\Command;
 
-class SpiderUpdateChapter extends Command
+class SpiderCheck extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'command:chapter {category_id?}';
+    protected $signature = 'command:check';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '抓取书本对应的小说章节';
+    protected $description = '校验抓取的书本';
 
     /**
      * Create a new command instance.
@@ -38,8 +37,6 @@ class SpiderUpdateChapter extends Command
      */
     public function handle()
     {
-        $category_id = (int) $this->argument('category_id');
-        return ChapterHelper::run($category_id);
+        return (new CheckHelper)->run();
     }
-
 }

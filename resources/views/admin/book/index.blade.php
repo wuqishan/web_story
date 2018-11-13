@@ -8,12 +8,12 @@
     <main class="app-content">
         <div class="app-title">
             <div>
-                <h1><i class="fa fa-th-list"></i> 小说列表</h1>
+                <h1><i class="fa fa-th-list"></i> 书本列表</h1>
             </div>
             <ul class="app-breadcrumb breadcrumb side">
                 <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-                <li class="breadcrumb-item">小说管理</li>
-                <li class="breadcrumb-item active"><a href="#">小说列表</a></li>
+                <li class="breadcrumb-item">书本管理</li>
+                <li class="breadcrumb-item active"><a href="#">书本列表</a></li>
             </ul>
         </div>
         <div class="row">

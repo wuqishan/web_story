@@ -47,18 +47,18 @@
             return true;
         }
     });
-    $('#app-menu > li').each(function (i) {
-        if (! $(this).hasClass('treeview')) {
-            var dataNav = $(this).find('a').attr('data-nav');
-            if (window.routeName == '') {
-                return true;
-            }
-            if (dataNav == window.routeName) {
-                $(this).find('a').addClass('active');
-                return true;
-            }
-        }
-    });
+    // $('#app-menu > li').each(function (i) {
+    //     if (! $(this).hasClass('treeview')) {
+    //         var dataNav = $(this).find('a').attr('data-nav');
+    //         if (window.routeName == '') {
+    //             return true;
+    //         }
+    //         if (dataNav == window.routeName) {
+    //             $(this).find('a').addClass('active');
+    //             return true;
+    //         }
+    //     }
+    // });
 
     // 切换每页显示多少条数据
     $(".page_number").change(function () {

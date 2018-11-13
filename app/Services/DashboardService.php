@@ -8,7 +8,7 @@ use App\Models\Category;
 
 class DashboardService extends Service
 {
-    public function getBooks($params = [])
+    public function getBooksPie()
     {
         $results = Book::all(['title', 'author', 'unique_code', 'finished', 'category_id', 'author_id', 'view', 'last_update'])->toArray();
 
@@ -17,7 +17,6 @@ class DashboardService extends Service
             'no' => ['name' => '未完本', 'value' => 0],
         ];
         $grout_by_cagtegory_id = [];
-        $max_view_5 = [];
 
         foreach ($results as $v) {
             if ($v['finished'] == 0) {
@@ -40,6 +39,38 @@ class DashboardService extends Service
             'group_by_category' => array_values($grout_by_cagtegory_id),
             'group_by_finished' => array_values($grout_by_finished),
             'max_view_5' => $max_view_5
+        ];
+    }
+
+    public function getBooksTable()
+    {
+        $results = Book::all(['title', 'author', 'unique_code', 'finished', 'category_id', 'author_id', 'view', 'last_update'])->toArray();
+
+        $grout_by_finished = [
+            'yes' => ['name' => '完本', 'value' => 0],
+            'no' => ['name' => '未完本', 'value' => 0],
+        ];
+
+        $grout_by_cagtegory_id = [];
+        foreach ($results as $v) {
+            if ($v['finished'] == 0) {
+                $grout_by_finished['no']['value']++;
+            } else {
+                $grout_by_finished['yes']['value']++;
+            }
+
+            if (isset($grout_by_cagtegory_id[$v['category_id']])) {
+                $grout_by_cagtegory_id[$v['category_id']]['value']++;
+            } else {
+                $grout_by_cagtegory_id[$v['category_id']]['value'] = 1;
+                $grout_by_cagtegory_id[$v['category_id']]['name'] = Category::categoryMap($v['category_id']);
+            }
+        }
+
+        return [
+            'total_number' => count($results),
+            'group_by_category' => $grout_by_cagtegory_id,
+            'group_by_finished' => $grout_by_finished,
         ];
     }
 }
