@@ -45,7 +45,7 @@
             <div class="widget widget_hot">
                 <h3>点击排行榜</h3>
                 <ul>
-                    @foreach($results['book_update']['list'] as $v)
+                    @foreach($results['book_popular']['list'] as $v)
                     <li>
                         <a href="{{ route('chapter-list', ['unique_code' => $v['unique_code']]) }}" target="_blank" title="{{ $v['title'] }}">
                             <span class="thumbnail">
