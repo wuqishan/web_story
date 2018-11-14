@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Console\Commands\Helper\ChapterHelper;
+use App\Console\Commands\SpiderHelper\ChapterHelper;
 use Illuminate\Console\Command;
 
 class SpiderChapter extends Command
@@ -38,7 +38,7 @@ class SpiderChapter extends Command
      */
     public function handle()
     {
-        return (new ChapterHelper)->run();
+        return (new ChapterHelper())->run();
     }
 
 }

@@ -2,8 +2,7 @@
 
 namespace App\Console\Commands;
 
-
-use App\Console\Commands\Helper\BookHelper;
+use App\Console\Commands\SpiderHelper\BookHelper;
 use Illuminate\Console\Command;
 
 class SpiderBook extends Command
@@ -39,6 +38,6 @@ class SpiderBook extends Command
      */
     public function handle()
     {
-        return (new BookHelper)->run();
+        return (new BookHelper())->run();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Console\Commands\SpiderHelper\CheckHelper;
 use Illuminate\Console\Command;
 
 class SpiderCheck extends Command
@@ -37,6 +38,6 @@ class SpiderCheck extends Command
      */
     public function handle()
     {
-        return (new CheckHelper)->run();
+        return (new CheckHelper())->run();
     }
 }

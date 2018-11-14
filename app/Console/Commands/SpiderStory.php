@@ -2,10 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Console\Commands\Helper\BookHelper;
-use App\Console\Commands\Helper\ChapterHelper;
-use App\Console\Commands\Helper\ContentHelper;
-use App\Console\Commands\Helper\LoggerHelper;
+use App\Console\Commands\SpiderHelper\BookHelper;
+use App\Console\Commands\SpiderHelper\ChapterHelper;
+use App\Console\Commands\SpiderHelper\CheckHelper;
+use App\Console\Commands\SpiderHelper\ContentHelper;
+use App\Console\Commands\SpiderHelper\LoggerHelper;
 use App\Helper\CacheHelper;
 use Illuminate\Console\Command;
 
@@ -62,16 +63,16 @@ class SpiderStory extends Command
             file_put_contents($step_file, $i);
             if ($i === 1) {
                 echo "======================= 第一步、抓书本和图片 ======================\n";
-                (new BookHelper)->run();
+                (new BookHelper())->run();
             } else if ($i === 2) {
                 echo "======================= 第二步、抓章节信息 =====================\n";
-                (new ChapterHelper)->run();
+                (new ChapterHelper())->run();
             } else if ($i === 3) {
                 echo "======================= 第三步、抓章节内容 =====================\n";
-                (new ContentHelper)->run();
+                (new ContentHelper())->run();
             } else if ($i === 4) {
                 echo "======================= 第四步、校验抓取的书本 =====================\n";
-                (new CheckHelper)->run();
+                (new CheckHelper())->run();
             }
         }
 

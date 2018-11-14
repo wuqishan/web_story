@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Console\Commands\Helper\ContentHelper;
+use App\Console\Commands\SpiderHelper\ContentHelper;
 use Illuminate\Console\Command;
 
 class SpiderContent extends Command
@@ -38,6 +38,6 @@ class SpiderContent extends Command
      */
     public function handle()
     {
-        return (new ContentHelper)->run();
+        return (new ContentHelper())->run();
     }
 }

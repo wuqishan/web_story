@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\Helper;
+namespace App\Console\Commands\SpiderHelper;
 
 
 use App\Models\Book;
