@@ -25,6 +25,7 @@
                             @foreach($results['book']['group_by_category'] as $v)
                                 <th>{{ $v['name'] }}</th>
                             @endforeach
+                            <th>总计</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -33,12 +34,14 @@
                                 @foreach($results['book']['group_by_category'] as $v)
                                     <td>{{ $v['value'] }}</td>
                                 @endforeach
+                                <td>{{ $results['book']['total_number'] }}</td>
                             </tr>
                             <tr>
                                 <th>百分比%</th>
                                 @foreach($results['book']['group_by_category'] as $v)
                                     <td>{{ sprintf("%1.4f", $v['value'] / $results['book']['total_number']) * 100 }}%</td>
                                 @endforeach
+                                <td>100%</td>
                             </tr>
                         </tbody>
                     </table>

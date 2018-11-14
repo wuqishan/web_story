@@ -50,6 +50,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
         'parameters' => ['common_article' => 'common_article_id']
     ]);
 
+    Route::resource('author', 'AuthorController', [
+        'parameters' => ['author' => 'author_id']
+    ]);
+
     // 书本
     Route::get('/book', 'BookController@index')->name('book.index');
     Route::get('/book/create', 'BookController@create')->name('book.create');
