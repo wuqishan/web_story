@@ -9,13 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class ContentHelper
 {
-    /**
-     * 本次更新的数据
-     *
-     * @var array
-     */
-    protected $updateInfo = [];
-
     public function run()
     {
         $all_category_id = Category::all(['id'])->toArray();
@@ -80,6 +73,6 @@ class ContentHelper
             }
         }
 
-        return $this->updateInfo;
+        return null;
     }
 }

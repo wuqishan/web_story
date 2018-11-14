@@ -9,13 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class ChapterHelper
 {
-    /**
-     * 本次更新的数据
-     *
-     * @var array
-     */
-    protected $updateInfo = ['data' => [], 'number' => 0];
-
     public function run()
     {
         $books = Book::where('finished', 0)
@@ -65,6 +58,7 @@ class ChapterHelper
                 $temp['url'] = $val['url'];
                 $temp['orderby'] = $key;
                 $temp['category_id'] = $category_id;
+                $temp['is_new'] = 1;
                 $temp['created_at'] = date('Y-m-d H:i:s');
                 $temp['updated_at'] = date('Y-m-d H:i:s');
 
@@ -96,8 +90,7 @@ class ChapterHelper
                     }
 
                     // 插入章节
-                    $this->updateInfo['data'][$temp['category_id']][] = DB::table('chapter_' . $temp['category_id'])->insertGetId($temp);
-                    $this->updateInfo['number']++;
+                    DB::table('chapter_' . $temp['category_id'])->insert($temp);
                     echo "进度：{$book_number} / {$book_current}, category_id: {$category_id}, title: {$temp['title']}, Url: {$temp['url']}\n";
 
                     // 更新book最新更新的章节
@@ -113,7 +106,7 @@ class ChapterHelper
             }
         });
 
-        return $this->updateInfo;
+        return null;
     }
 
     public function updateNextUniqueCode($chapter)

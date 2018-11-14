@@ -12,13 +12,6 @@ use Ares333\Curl\Toolkit;
 class BookHelper
 {
     /**
-     * 本次更新的数据
-     *
-     * @var array
-     */
-    protected $updateInfo = ['data' => [], 'number' => 0];
-
-    /**
      * @return array
      */
     public function run()
@@ -65,39 +58,42 @@ class BookHelper
                 $temp['view'] = 0;
                 $temp['newest_chapter'] = '';
                 $temp['unique_code'] = md5($temp['author'] . $temp['title']);
+                $temp['is_new'] = 1;
                 $temp['created_at'] = date('Y-m-d H:i:s');
                 $temp['updated_at'] = date('Y-m-d H:i:s');
 
                 // 下载生成图片
-                $temp = self::getBookImages($temp);
+                $temp = $this->getBookImages($temp);
 
                 // 如果该书可以抓取，并且数据库中没有该书，则做入库操作
                 $book = Book::where('unique_code', $temp['unique_code'])->first();
                 if (empty($book)) {
+                    Book::insert($temp);
+
                     echo "当前分类：{$category_id}, 该分类书籍：{$current_book} / {$category_book_number}, 书名: 《{$temp['title']}》 URL：{$temp['url']} 入库\n";
-                    $this->updateInfo['data'][] = Book::insertGetId($temp);
-                    $this->updateInfo['number']++;
                 } else {
-                    if ($book->category_id != $book->category_id) {
-                        echo "该书已存在！更新 category_id {$book->category_id} to {$category_id}\n";
+                    if ($book->category_id != $category_id) {
                         $book->category_id = $category_id;
-                    } else {
-                        echo "当前分类：{$category_id}, 该分类书籍：{$current_book} / {$category_book_number}, 书名: 《{$temp['title']}》 已经存在！！！\n";
+                    }
+                    // 如果还未完本，则更新完本信息
+                    if ($book->finished != 1) {
+                        $book->finished = $temp['finished'];
                     }
                     $book->last_update = $temp['last_update'];
                     $book->author_id = $temp['author_id'];
-                    $book->finished = $temp['finished'];
                     $book->save();
+
+                    echo "当前分类：{$category_id}, 该分类书籍：{$current_book} / {$category_book_number}, 书名: 《{$temp['title']}》 已经存在！！！\n";
                 }
 
                 return $temp;
             });
         }
 
-        return $this->updateInfo;
+        return null;
     }
 
-    public static function getBookImages($book)
+    public function getBookImages($book)
     {
         $save_dir = public_path('images/author/');
         $save_db_path = '/images/author/';

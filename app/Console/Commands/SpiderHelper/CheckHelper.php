@@ -5,19 +5,24 @@ namespace App\Console\Commands;
 use App\Models\Book;
 use App\Models\Chapter;
 use App\Models\CheckBookInfo;
+use Illuminate\Support\Facades\DB;
 
 class CheckHelper
 {
-    /**
-     * 本次更新的数据
-     *
-     * @var array
-     */
-    protected $updateInfo = [];
+    // 本书结束的关键字
+    public $finished_flag = [
+        '书完',
+        '完本',
+        'end',
+        '大结局',
+        '完结'
+    ];
 
     public function run()
     {
-        $books = Book::orderBy("id", "asc")
+        // 已完本的则不做检测
+        $books = Book::where('finished', 0)
+            ->orderBy("id", "asc")
             ->select(['id', 'title', 'unique_code', 'newest_chapter', 'url', 'category_id'])
             ->get()
             ->toArray();
@@ -38,7 +43,7 @@ class CheckHelper
 
             $chapter = $chapterModel->setTable($book['category_id'])->where('book_unique_code', $book['unique_code'])
                 ->orderBy('orderby', 'asc')
-                ->select(['id', 'title', 'unique_code', 'prev_unique_code', 'next_unique_code', 'orderby'])
+                ->select(['id', 'unique_code', 'prev_unique_code', 'next_unique_code', 'orderby', 'number_of_words'])
                 ->get()
                 ->toArray();
             $count = count($chapter);
@@ -47,7 +52,7 @@ class CheckHelper
 
                 // 排序异常
                 if ($i != $chapter[$i]['orderby']) {
-                    echo "排序数据异常\n";
+                    echo "=========================排序数据异常========================\n";
                     $error['msg'] = "排序数据异常";
                     $error['data'] = $book;
                     $errors[] = $error;
@@ -62,7 +67,7 @@ class CheckHelper
                         $chapter[$i]['unique_code'] != $chapter[$i + 1]['prev_unique_code'] ||
                         $chapter[$i]['next_unique_code'] != $chapter[$i + 1]['unique_code']
                     ) {
-                        echo "连表异常\n";
+                        echo "============================连表异常============================\n";
                         $error['msg'] = "章节链表异常";
                         $error['data'] = $book;
                         $errors[] = $error;
@@ -70,13 +75,25 @@ class CheckHelper
                     }
                 }
 
-                // 最新文章异常
+                // 最新文章异常，循环最后一次执行该分支代码
                 if ($i == $count - 1) {
                     if ($chapter[$i]['unique_code'] != $book['newest_chapter']) {
-                        $error['msg'] = "最新文章异常\n";
+                        echo "========================最新文章异常=======================\n";
+                        $error['msg'] = "最新文章异常";
                         $error['data'] = $book;
                         $errors[] = $error;
-                        break;
+                    } else if ($chapter[$i]['number_of_words'] > 0) {
+                        // 检测是否已经完本
+                        $chapterContent = DB::table('chapter_content_' . $book['category_id'])
+                            ->where('id', $chapter[$i]['id'])
+                            ->select(['content'])
+                            ->first();
+                        if ($this->checkFinished($chapterContent->content)) {
+                            echo "========================该本书籍可能已经完本=======================\n";
+                            $error['msg'] = "该本书籍可能已经完本";
+                            $error['data'] = $book;
+                            $errors[] = $error;
+                        }
                     }
                 }
             }
@@ -109,5 +126,23 @@ class CheckHelper
         }
 
         return null;
+    }
+
+    /**
+     * 模糊检测本书是否完结
+     *
+     * @param $content
+     * @return bool
+     */
+    public function checkFinished($content)
+    {
+        $results = false;
+        if (! empty($content)) {
+            if (preg_match('/' . implode('|', $this->finished_flag) . '/isuU', $content)) {
+                $results = true;
+            }
+        }
+
+        return $results;
     }
 }

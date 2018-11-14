@@ -5,7 +5,8 @@ namespace App\Console\Commands;
 use App\Console\Commands\Helper\BookHelper;
 use App\Console\Commands\Helper\ChapterHelper;
 use App\Console\Commands\Helper\ContentHelper;
-use App\Models\ImportLog;
+use App\Console\Commands\Helper\LoggerHelper;
+use App\Helper\CacheHelper;
 use Illuminate\Console\Command;
 
 class SpiderStory extends Command
@@ -31,12 +32,12 @@ class SpiderStory extends Command
      */
     public function __construct()
     {
-        @ini_set('memory_limit','256M');
+        @ini_set('memory_limit', '256M');
         parent::__construct();
 
         // 建立缓存文件夹
         $step_dir = storage_path('step');
-        if (! file_exists($step_dir)) {
+        if (!file_exists($step_dir)) {
             mkdir($step_dir, 0766, true);
         }
     }
@@ -53,19 +54,18 @@ class SpiderStory extends Command
         $step = intval($this->option('step'));
 
         $step_file = storage_path('step/step.txt');
-        if (! in_array($step, [1, 2, 3, 4])) {
+        if (!in_array($step, [1, 2, 3, 4])) {
             $step = 1;
         }
 
-        $spider_info = [];
         for ($i = $step; $i <= 4; $i++) {
             file_put_contents($step_file, $i);
             if ($i === 1) {
                 echo "======================= 第一步、抓书本和图片 ======================\n";
-                $spider_info['book'] = (new BookHelper)->run();
+                (new BookHelper)->run();
             } else if ($i === 2) {
-                echo "======================= 第二步、抓章节 =====================\n";
-                $spider_info['chapter'] = (new ChapterHelper)->run();
+                echo "======================= 第二步、抓章节信息 =====================\n";
+                (new ChapterHelper)->run();
             } else if ($i === 3) {
                 echo "======================= 第三步、抓章节内容 =====================\n";
                 (new ContentHelper)->run();
@@ -76,7 +76,10 @@ class SpiderStory extends Command
         }
 
         // 记录日志
-        $this->recordLog($spider_info);
+        $this->recordLog();
+
+        // reset unique flag
+        $this->delUniqueFlag();
 
         // 重置为1
         file_put_contents($step_file, '1');
@@ -84,7 +87,10 @@ class SpiderStory extends Command
         return null;
     }
 
-    public function recordLog($spider_info)
+    /**
+     * 记录本次抓取的日志信息
+     */
+    public function recordLog()
     {
         // 初始化模板
         $import_log = [
@@ -92,21 +98,12 @@ class SpiderStory extends Command
             'status' => 0,
             'created_at' => date('Y-m-d H:i:s')
         ];
-        // book 采集
-        if (isset($spider_info['book'])) {
-            $import_log['type'] = 1;
-            $import_log['number'] = $spider_info['book']['number'];
-            $import_log['content'] = json_encode($spider_info['book']['data']);
-            ImportLog::insert($import_log);
-        }
 
-        // chapter 采集
-        if (isset($spider_info['chapter'])) {
-            $import_log['type'] = 2;
-            $import_log['number'] = $spider_info['chapter']['number'];
-            $import_log['content'] = json_encode($spider_info['chapter']['data']);
-            ImportLog::insert($import_log);
-        }
+        // 记录日志
+        echo "========================开始记录日志...=========================\n\n";
+        LoggerHelper::spiderBook($import_log);
+        LoggerHelper::spiderChapter($import_log);
+        echo "========================记录日志结束=========================\n";
     }
 
     /**
@@ -116,6 +113,25 @@ class SpiderStory extends Command
      */
     public function getUniqueFlag()
     {
-        return md5(time() . rand(0, 1000));
+        $key = 'unique_key';
+        if (CacheHelper::has($key) && !empty(CacheHelper::get($key))) {
+            $unique_flag = CacheHelper::get($key);
+        } else {
+            $unique_flag = md5(time() . rand(0, 1000));
+        }
+
+        return $unique_flag;
+    }
+
+    /**
+     * 删除unique flag缓存
+     *
+     * @return mixed
+     */
+    public function delUniqueFlag()
+    {
+        $key = 'unique_key';
+
+        return CacheHelper::delete($key);
     }
 }
