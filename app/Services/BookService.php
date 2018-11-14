@@ -72,6 +72,7 @@ class BookService extends Service
             $data['view'] = intval($params['view']);
             $data['newest_chapter'] = empty($params['newest_chapter']) ? '' : trim($params['newest_chapter']);
             $data['finished'] = intval($params['finished']);
+            $data['image_origin_url'] = trim($params['image_origin_url']);
             $results = Book::where('id', $id)->update($data);
         } else {
             $data['url'] = trim($params['url']);

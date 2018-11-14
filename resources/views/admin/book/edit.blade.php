@@ -52,7 +52,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label>远程图片 :</label>
-                                <input class="form-control" disabled value="{{ $results['detail']['image_origin_url'] }}" type="text" name="image_origin_url" placeholder="请输入">
+                                <input class="form-control" value="{{ $results['detail']['image_origin_url'] }}" type="text" name="image_origin_url" placeholder="请输入">
                                 <div class="form-control-feedback"></div>
                             </div>
                             <div class="form-group col-md-6">
