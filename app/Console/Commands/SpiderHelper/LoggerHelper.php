@@ -52,7 +52,9 @@ class LoggerHelper
         $content = [];
         foreach ($category_id as $v) {
             $chapter = [];
-            $chapterModel = DB::table('chapter_' . $v)->select(['id'])->get();
+            $chapterModel = DB::table('chapter_' . $v)
+                ->where('is_new', '=', 1)
+                ->select(['id'])->get();
             if (! empty($chapterModel)) {
                 $chapter = $chapterModel->toArray();
             }
