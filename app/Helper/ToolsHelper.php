@@ -109,4 +109,47 @@ class ToolsHelper
 
         return $results;
     }
+
+    /**
+     * 获取随机盐
+     *
+     * @param $length
+     * @return mixed
+     */
+    public static function getSalt($length)
+    {
+        $results = '';
+        $chars = '~!@#$%^&*(){}[]:|\+";<>,./?.=-\'_';
+        for ($i = 0; $i < $length; $i++) {
+            $start_pos = mt_rand(0, strlen($chars) - 1);
+            $results .= substr($chars, $start_pos,  1);
+        }
+
+        return $results;
+    }
+
+    /**
+     * 加密密码
+     *
+     * @param $password
+     * @param $salt
+     * @return string
+     */
+    public static function encodePassword($password, $salt)
+    {
+        return md5(md5($password . $salt));
+    }
+
+    /**
+     * 验证密码
+     *
+     * @param $password
+     * @param $salt
+     * @param $password_from_db
+     * @return bool
+     */
+    public static function checkPassword($password, $salt, $password_from_db)
+    {
+        return self::encodePassword($password, $salt) === $password_from_db;
+    }
 }

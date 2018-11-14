@@ -2,13 +2,14 @@
 
 namespace App\Services;
 
-use App\Models\Author;
+use App\Helper\ToolsHelper;
+use App\Models\User;
 
-class AuthorService extends Service
+class UserService extends Service
 {
     public function get($params = [])
     {
-        $model = new Author();
+        $model = new User();
         if (isset($params['name']) && ! empty($params['name'])) {
             $params['name'] = trim($params['name']);
             $model = $model->where('name', 'like', "%". strip_tags($params['name']) ."%");
@@ -32,23 +33,28 @@ class AuthorService extends Service
     {
         $results = null;
         $id = intval($id);
-        $data['name'] = trim(strip_tags($params['name']));
+
+        $data['salt'] = ToolsHelper::getSalt(8);
+        $data['username'] = trim(strip_tags($params['username']));
+        $data['password'] = ToolsHelper::encodePassword(trim($params['password']), $data['salt']);
+        $data['nickname'] = trim(strip_tags($params['nickname']));
+        $data['email'] = trim(strip_tags($params['email']));
+        $data['status'] = intval($params['status']) > 0 ? intval($params['status']) : 1;
 
         if ($id > 0) {
-            $results = Author::where('id', $id)->update($data);
+            $results = User::where('id', $id)->update($data);
         } else {
-            $results =  Author::insertGetId($data);
+            $results =  User::insertGetId($data);
         }
 
-        return true;
-//        return $results;
+        return $results;
     }
 
     public function getOne($id)
     {
         $results = [];
         if (intval($id) > 0) {
-            $results = Author::where('id', intval($id))->first();
+            $results = User::where('id', intval($id))->first();
         }
         if (! empty($results)) {
             $results = $results->toArray();
@@ -59,7 +65,7 @@ class AuthorService extends Service
 
     public function delete($id)
     {
-        return Author::destroy($id);
+        return User::destroy($id);
     }
 
     public function formatter($rows)

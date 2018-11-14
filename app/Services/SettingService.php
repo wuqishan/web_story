@@ -66,12 +66,8 @@ class SettingService extends Service
 
     public function resetCache()
     {
-//        $a = system('php /home/wells/www/story/artisan view:clear', $out);
-//        $a = passthru('php /home/wells/www/story/artisan view:clear', $out);
-//        $a = exec('php /home/wells/www/story/artisan view:clear', $out, $return);
-//        $a = proc_open('php /home/wells/www/story/artisan view:clear');
-//
-//        dd($a);
+        CacheHelper::flush();
+
         return true;
     }
 

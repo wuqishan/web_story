@@ -21,7 +21,7 @@
         <h1>有趣的灵魂后台</h1>
     </div>
     <div class="login-box">
-        <form class="login-form" action="{{ route('admin.user.do_login') }}" method="post">
+        <form class="login-form" action="{{ route('admin.admin.do_login') }}" method="post">
             {{ csrf_field() }}
             <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>登 陆</h3>
             <div class="form-group">

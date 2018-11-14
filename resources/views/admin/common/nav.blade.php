@@ -52,6 +52,17 @@
         <li class="treeview">
             <a class="app-menu__item" href="#" data-toggle="treeview">
                 <i class="app-menu__icon fa fa-laptop"></i>
+                <span class="app-menu__label">前台用户管理</span>
+                <i class="treeview-indicator fa fa-angle-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                <li><a class="treeview-item" data-nav="admin.user.index" href="{{ route('admin.user.index') }}"><i class="icon fa fa-circle-o"></i> 用户列表</a></li>
+            </ul>
+        </li>
+
+        <li class="treeview">
+            <a class="app-menu__item" href="#" data-toggle="treeview">
+                <i class="app-menu__icon fa fa-laptop"></i>
                 <span class="app-menu__label">异常管理</span>
                 <i class="treeview-indicator fa fa-angle-right"></i>
             </a>
@@ -95,22 +106,24 @@
             </ul>
         </li>
 
-        <li>
-            <a class="app-menu__item" href="charts.html">
-                <i class="app-menu__icon fa fa-pie-chart"></i>
-                <span class="app-menu__label">Charts</span>
-            </a>
-        </li>
 
-        <li class="treeview">
-            <a class="app-menu__item" href="#" data-toggle="treeview">
-                <i class="app-menu__icon fa fa-edit"></i>
-                <span class="app-menu__label">访客管理</span>
-                <i class="treeview-indicator fa fa-angle-right"></i>
-            </a>
-            <ul class="treeview-menu">
-                <li><a class="treeview-item" data-nav="admin.comment.index" href="#"><i class="icon fa fa-circle-o"></i>评论管理</a></li>
-            </ul>
-        </li>
+
+        {{--<li>--}}
+            {{--<a class="app-menu__item" href="charts.html">--}}
+                {{--<i class="app-menu__icon fa fa-pie-chart"></i>--}}
+                {{--<span class="app-menu__label">Charts</span>--}}
+            {{--</a>--}}
+        {{--</li>--}}
+
+        {{--<li class="treeview">--}}
+            {{--<a class="app-menu__item" href="#" data-toggle="treeview">--}}
+                {{--<i class="app-menu__icon fa fa-edit"></i>--}}
+                {{--<span class="app-menu__label">访客管理</span>--}}
+                {{--<i class="treeview-indicator fa fa-angle-right"></i>--}}
+            {{--</a>--}}
+            {{--<ul class="treeview-menu">--}}
+                {{--<li><a class="treeview-item" data-nav="admin.comment.index" href="#"><i class="icon fa fa-circle-o"></i>评论管理</a></li>--}}
+            {{--</ul>--}}
+        {{--</li>--}}
     </ul>
 </aside>

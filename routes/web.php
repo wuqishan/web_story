@@ -12,9 +12,9 @@
 */
 
 // 登陆
-Route::get('/admin/user/login', 'Admin\UserController@login')->name('admin.user.login');
-Route::post('/admin/user/dologin', 'Admin\UserController@doLogin')->name('admin.user.do_login');
-Route::get('/admin/user/logout', 'Admin\UserController@logout')->name('admin.user.logout');
+Route::get('/admin/admin/login', 'Admin\AdminController@login')->name('admin.admin.login');
+Route::post('/admin/admin/dologin', 'Admin\AdminController@doLogin')->name('admin.admin.do_login');
+Route::get('/admin/admin/logout', 'Admin\AdminController@logout')->name('admin.admin.logout');
 
 Route::group(['namespace' => 'Home', 'middleware' => 'app.servicing'], function () {
     Route::get('/', 'IndexController@index')->name('index');
@@ -26,7 +26,7 @@ Route::group(['namespace' => 'Home', 'middleware' => 'app.servicing'], function 
     Route::get('/updateView', 'ArticleController@updateView')->name('update-view');
 });
 
-Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'login.check'], function () {
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin.login.check'], function () {
 
 
     Route::get('/index', 'IndexController@index')->name('admin.index');
@@ -52,6 +52,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
 
     Route::resource('author', 'AuthorController', [
         'parameters' => ['author' => 'author_id']
+    ]);
+
+    Route::resource('user', 'UserController', [
+        'parameters' => ['user' => 'user_id']
     ]);
 
     // 书本

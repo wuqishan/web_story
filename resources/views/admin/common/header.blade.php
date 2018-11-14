@@ -125,7 +125,7 @@
                     </a>
                 </li>
                 <li>
-                    <a class="dropdown-item" href="{{ route('admin.user.logout') }}">
+                    <a class="dropdown-item" href="{{ route('admin.admin.logout') }}">
                         <i class="fa fa-sign-out fa-lg"></i> 注销
                     </a>
                 </li>

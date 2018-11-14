@@ -2,39 +2,54 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
+use App\Http\Requests\UserRequest;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
-    public function login()
+    public function index(Request $request, UserService $service)
     {
-        if (! empty(session('user'))) {
-            return redirect()->route('admin.admin.index');
-        }
+        $params = $request->all();
+        $results['data'] = $service->get($params);
 
-        return view('admin.user.login');
+        return view('admin.user.index', ['results' => $results]);
     }
 
-    public function doLogin(Request $request)
+    public function create()
     {
-        $username = $request->get('username');
-        $password = md5($request->get('password'));
-        $user = User::where('username', $username)->where('password', $password)->first();
-
-        if (! empty($user)) {
-            session(['user' => $user->toArray()]);
-            return redirect()->route('admin.admin.index');
-        } else {
-            return view('admin.user.login');
-        }
+        return view('admin.user.create');
     }
 
-    public function logout(Request $request)
+    public function store(UserRequest $request, UserService $service)
     {
-        session(['user' => null]);
+        $results = ['status' => false];
+        $results['status'] = (bool) $service->save($request->all());
 
-        return view('admin.user.login');
+        return $results;
+    }
+
+    public function edit(Request $request, UserService $service)
+    {
+        $results['detail'] = $service->getOne($request->user_id);
+
+        return view('admin.user.edit', ['results' => $results]);
+    }
+
+    public function update(UserRequest $request, UserService $service)
+    {
+        $params = $request->all();
+        $results['status'] = (bool) $service->save($params, $request->user_id);
+
+        return $results;
+    }
+
+    // 删除
+    public function destroy(Request $request, UserService $service)
+    {
+        $results['status'] = $service->delete($request->user_id);
+
+        return $results;
     }
 }
