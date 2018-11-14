@@ -102,6 +102,7 @@ class CheckHelper
         }
 
         if (! empty($errors)) {
+            $need_insert = 0;
             foreach ($errors as $v) {
                 $checkBook = CheckBookInfo::where('book_id', $v['data']['id'])
                     ->where('status', 1)
@@ -118,9 +119,10 @@ class CheckHelper
                         'status' => 1,
                         'created_at' => date('Y-m-d H:i:s'),
                     ]);
+                    $need_insert++;
                 }
             }
-            echo "问题书本有 " . count($errors) . " 条，已插入待处理表\n";
+            echo "可能有问题的书本有 " . count($errors) . " 条, 需要插入的书本为 {$need_insert} 条，已插入待处理表\n";
         } else {
             echo "库中所有书本，暂无问题\n";
         }
