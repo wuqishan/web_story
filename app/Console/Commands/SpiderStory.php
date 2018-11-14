@@ -103,7 +103,9 @@ class SpiderStory extends Command
         // 记录日志
         echo "========================开始记录日志...=========================\n\n";
         LoggerHelper::spiderBook($import_log);
-        LoggerHelper::spiderChapter($import_log);
+
+        // 暂无必要记录章节的log
+        // LoggerHelper::spiderChapter($import_log);
         echo "========================记录日志结束=========================\n";
     }
 

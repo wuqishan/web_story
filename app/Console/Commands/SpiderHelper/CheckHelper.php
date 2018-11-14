@@ -11,11 +11,25 @@ class CheckHelper
 {
     // 本书结束的关键字
     public $finished_flag = [
+        'end',
         '书完',
         '完本',
-        'end',
         '大结局',
         '完结'
+    ];
+
+    /**
+     * @var array
+     */
+    public $errors = [];
+
+    public $type = [
+        '1' => '书本分类异常不在 1 - 7范围',
+        '2' => '该书对应章节数量为空',
+        '3' => '排序数据异常',
+        '4' => '章节链表异常',
+        '5' => '最新文章异常',
+        '6' => '该本书籍可能已经完本'
     ];
 
     public function run()
@@ -27,17 +41,12 @@ class CheckHelper
             ->get()
             ->toArray();
 
-        $errors = [];
         $booksNumber = count($books);
         $chapterModel = new Chapter();
         foreach ($books as $key => $book) {
             // category_id 异常
             if ($book['category_id'] < 1 || $book['category_id'] > 7) {
-                echo "书本分类异常不在 1 - 7范围\n";
-                $errors[] = [
-                    'msg' => '书本分类异常不在 1 - 7范围',
-                    'data' => $book
-                ];
+                $this->logErrorBook($book, 1);
                 continue;
             }
 
@@ -47,15 +56,17 @@ class CheckHelper
                 ->get()
                 ->toArray();
             $count = count($chapter);
+
+            if ($count == 0) {
+                $this->logErrorBook($book, 2);
+                continue;
+            }
+
             for ($i = 0; $i < $count; $i++) {
-                $error = ['data' => [], 'msg' => ''];
 
                 // 排序异常
                 if ($i != $chapter[$i]['orderby']) {
-                    echo "=========================排序数据异常========================\n";
-                    $error['msg'] = "排序数据异常";
-                    $error['data'] = $book;
-                    $errors[] = $error;
+                    $this->logErrorBook($book, 3);
                     break;
                 }
                 if ($i > 0 && $i < $count - 1) {
@@ -67,10 +78,7 @@ class CheckHelper
                         $chapter[$i]['unique_code'] != $chapter[$i + 1]['prev_unique_code'] ||
                         $chapter[$i]['next_unique_code'] != $chapter[$i + 1]['unique_code']
                     ) {
-                        echo "============================连表异常============================\n";
-                        $error['msg'] = "章节链表异常";
-                        $error['data'] = $book;
-                        $errors[] = $error;
+                        $this->logErrorBook($book, 4);
                         break;
                     }
                 }
@@ -78,10 +86,7 @@ class CheckHelper
                 // 最新文章异常，循环最后一次执行该分支代码
                 if ($i == $count - 1) {
                     if ($chapter[$i]['unique_code'] != $book['newest_chapter']) {
-                        echo "========================最新文章异常=======================\n";
-                        $error['msg'] = "最新文章异常";
-                        $error['data'] = $book;
-                        $errors[] = $error;
+                        $this->logErrorBook($book, 5);
                     } else if ($chapter[$i]['number_of_words'] > 0) {
                         // 检测是否已经完本
                         $chapterContent = DB::table('chapter_content_' . $book['category_id'])
@@ -89,10 +94,7 @@ class CheckHelper
                             ->select(['content'])
                             ->first();
                         if ($this->checkFinished($chapterContent->content)) {
-                            echo "========================该本书籍可能已经完本=======================\n";
-                            $error['msg'] = "该本书籍可能已经完本";
-                            $error['data'] = $book;
-                            $errors[] = $error;
+                            $this->logErrorBook($book, 6);
                         }
                     }
                 }
@@ -101,9 +103,44 @@ class CheckHelper
             echo "进度： {$booksNumber} / " . ($key + 1) . "，暂无异常！！！ \n";
         }
 
-        if (! empty($errors)) {
+        // 插入数据库
+        $this->logInsertToDb();
+
+        return null;
+    }
+
+    /**
+     * @param $book
+     * @param $type
+     *      1: 书本分类异常不在 1 - 7范围
+     *      2: 该书对应章节数量为空
+     *      3: 排序数据异常
+     *      4: 章节链表异常
+     *      5: 最新文章异常
+     *      6: 该本书籍可能已经完本
+     *
+     * @return array
+     */
+    public function logErrorBook($book, $type)
+    {
+        $error['msg'] = $this->type[$type];
+        $error['data'] = $book;
+        $this->errors[] = $error;
+        echo "========================================================\n";
+        echo "{$error['msg']}\n";
+        echo "========================================================\n";
+
+        return $this->errors;
+    }
+
+    /**
+     * 错误信息插入数据库
+     */
+    public function logInsertToDb()
+    {
+        if (!empty($this->errors)) {
             $need_insert = 0;
-            foreach ($errors as $v) {
+            foreach ($this->errors as $v) {
                 $checkBook = CheckBookInfo::where('book_id', $v['data']['id'])
                     ->where('status', 1)
                     ->first();
@@ -122,12 +159,10 @@ class CheckHelper
                     $need_insert++;
                 }
             }
-            echo "可能有问题的书本有 " . count($errors) . " 条, 需要插入的书本为 {$need_insert} 条，已插入待处理表\n";
+            echo "可能有问题的书本有 " . count($this->errors) . " 条, 需要插入的书本为 {$need_insert} 条，已插入待处理表\n";
         } else {
             echo "库中所有书本，暂无问题\n";
         }
-
-        return null;
     }
 
     /**
@@ -139,7 +174,7 @@ class CheckHelper
     public function checkFinished($content)
     {
         $results = false;
-        if (! empty($content)) {
+        if (!empty($content)) {
             if (preg_match('/' . implode('|', $this->finished_flag) . '/isuU', $content)) {
                 $results = true;
             }
