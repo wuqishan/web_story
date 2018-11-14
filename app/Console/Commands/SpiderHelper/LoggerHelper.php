@@ -18,18 +18,25 @@ class LoggerHelper
     public static function spiderBook($import_log)
     {
         $book = [];
+        $number = 0;
+        $content = [];
         $bookModel = Book::where('is_new', 1)->select(['id'])->get();
         if (! empty($bookModel)) {
             $book = $bookModel->toArray();
         }
         if (! empty($book)) {
             $book_id = array_column($book, 'id');
-            $import_log['number'] = count($book_id);
-            $import_log['content'] = json_encode($book_id);
+            $number = count($book_id);
+            $content = $book_id;
         }
         $import_log['type'] = 1;
-        ImportLog::insert($import_log);
-        Book::where('is_new', 1)->update(['is_new' => 2]);
+
+        if ($number > 0 && ! empty($content)) {
+            $import_log['number'] = $number;
+            $import_log['content'] = json_encode($content);
+            ImportLog::insert($import_log);
+            Book::where('is_new', 1)->update(['is_new' => 2]);
+        }
     }
 
     /**
@@ -61,8 +68,10 @@ class LoggerHelper
         }
 
         $import_log['type'] = 2;
-        $import_log['number'] = $number;
-        $import_log['content'] = json_encode($content);
-        ImportLog::insert($import_log);
+        if ($number > 0 && ! empty($content)) {
+            $import_log['number'] = $number;
+            $import_log['content'] = json_encode($content);
+            ImportLog::insert($import_log);
+        }
     }
 }
