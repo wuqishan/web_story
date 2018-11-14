@@ -36,9 +36,9 @@ class ArticleController extends  Controller
         $results['book'] = $service->getOne($params);
 
         // 显示30条每页
-        $chapterService->_length = 30;
+        $chapterService->_length = 60;
         $chapterService->_offset = ($chapterService->_page - 1) * $chapterService->_length;
-        $results['chapter'] = $chapterService->get($results['book']['unique_code'], $results['book']['category_id']);
+        $results['chapter'] = $chapterService->get($results['book']['category_id'], $results['book']['unique_code']);
 
         // seo
         $results['seo.title'] = Category::categoryMap($results['book']['category_id']) . ' - ';
