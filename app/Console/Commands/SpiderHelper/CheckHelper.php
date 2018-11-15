@@ -54,6 +54,11 @@ class CheckHelper
                 ->select(['id', 'unique_code', 'prev_unique_code', 'next_unique_code', 'orderby', 'number_of_words'])
                 ->get()
                 ->toArray();
+
+            $chapter = array_map(function ($v) {
+                return (array) $v;
+            }, $chapter);
+
             $count = count($chapter);
             if ($count == 0) {
                 $this->logErrorBook($book, 2);
