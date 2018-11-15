@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Console\Commands\SpiderHelper\CheckHelper;
 use App\Models\Book;
 use App\Models\Chapter;
 use App\Models\ChapterContent;
@@ -71,6 +72,15 @@ class ChapterService extends Service
         }
 
         return (array) $chapter;
+    }
+
+    public function highlightEndKeyword($content)
+    {
+        $end_keyword = (new CheckHelper())->finished_flag;
+
+        $content = preg_replace('/('. implode('|', $end_keyword) .')/iu', '<span class="highlight">$1</span>', $content);
+
+        return $content;
     }
 
     public function save($params)

@@ -74,3 +74,8 @@ td.prev_unique_code, td.next_unique_code {
     color: #2ca02c;
     font-weight: bold;
 }
+span.highlight {
+    font-weight: bold;
+    font-size: 18px;
+    color: red;
+}

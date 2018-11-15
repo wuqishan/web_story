@@ -21,6 +21,7 @@ class ChapterContentController extends Controller
             $key = 'unique_code';
         }
         $results['chapter'] = $service->getOne(['category_id' => $category_id, $key => $content_id], true);
+        $results['chapter']['content'] = $service->highlightEndKeyword($results['chapter']['content']);
 
         return view('admin.chapter_content.detail', ['results' => $results]);
     }
