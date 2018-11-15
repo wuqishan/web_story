@@ -36,12 +36,12 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label>密码 :</label>
-                                <input class="form-control" type="text" name="password" placeholder="请输入">
+                                <input class="form-control" type="password" name="password" placeholder="请输入">
                                 <div class="form-control-feedback"></div>
                             </div>
                             <div class="form-group col-md-6">
                                 <label>确认密码 :</label>
-                                <input class="form-control" type="text" name="password_confirmation" placeholder="请输入">
+                                <input class="form-control" type="password" name="password_confirmation" placeholder="请输入">
                                 <div class="form-control-feedback"></div>
                             </div>
                             <div class="form-group col-md-6">

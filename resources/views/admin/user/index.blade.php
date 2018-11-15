@@ -21,10 +21,17 @@
                 <div class="tile">
                     <div class="tile-body">
                         <form class="row" action="{{ route('admin.user.index') }}" method="get" id="search-from">
-                            <div class="form-group col-md-3">
-                                <input class="form-control" type="text" name="name" value="{{ request()->get('name') }}" placeholder="名称">
+                            <div class="form-group col-md-2">
+                                <input class="form-control" type="text" name="username" value="{{ request()->get('username') }}" placeholder="用户名 或 昵称 或 邮箱">
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-2">
+                                <select name="status" class="form-control">
+                                    <option>请选择</option>
+                                    <option @if(request()->get('status') == 1) selected @endif value="1">开启</option>
+                                    <option @if(request()->get('status') == 2) selected @endif value="2">禁用</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-5">
                             </div>
                             <div class="form-group col-md-1 align-self-end">
                                 <a class="btn btn-outline-info pull-right" href="javascript:$('#search-from').submit();"><i class="fa fa-fw fa-lg fa-check-circle"></i>搜索</a>
@@ -48,7 +55,7 @@
                                 <th>最近登录时间</th>
                                 <th>最近登录IP</th>
                                 <th>创建时间</th>
-                                <th>操作</th>
+                                <th width="140">操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -57,13 +64,13 @@
                                         <td>{{ $v['username'] }}</td>
                                         <td>{{ $v['nickname'] }}</td>
                                         <td>{{ $v['email'] }}</td>
-                                        <td>{{ $v['status'] }}</td>
+                                        <td>@if($v['status'] == 1) 启用 @else 禁用 @endif</td>
                                         <td>{{ $v['latest_login_time'] }}</td>
                                         <td>{{ $v['latest_login_ip'] }}</td>
                                         <td>{{ $v['created_at'] }}</td>
-                                        <td width="130">
-                                            <a href="{{ route('admin.category.edit', ['category_id' => $v['id']]) }}"><i class="fa fa-edit" aria-hidden="true"></i> 编辑</a>
-                                            &nbsp;&nbsp;
+                                        <td>
+                                            <a href="{{ route('admin.user.edit', ['user_id' => $v['id']]) }}"><i class="fa fa-edit" aria-hidden="true"></i> 编辑</a>
+                                            &nbsp;|&nbsp;
                                             <a href="javascript:del_record('{{ route('admin.user.destroy', ['user_id' => $v['id']]) }}', '{{ route('admin.user.index') }}');"><i class="fa fa-trash-o" aria-hidden="true"></i> 删除</a>
                                         </td>
                                     </tr>

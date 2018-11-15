@@ -10,11 +10,17 @@ class UserService extends Service
     public function get($params = [])
     {
         $model = new User();
-        if (isset($params['name']) && ! empty($params['name'])) {
-            $params['name'] = trim($params['name']);
-            $model = $model->where('name', 'like', "%". strip_tags($params['name']) ."%");
+        if (isset($params['username']) && ! empty($params['username'])) {
+            $params['username'] = trim($params['username']);
+            $model = $model->where(function ($query) use ($params) {
+                $query->orWhere('username', 'like', "%". strip_tags($params['username']) ."%");
+                $query->orWhere('nickname', 'like', "%". strip_tags($params['username']) ."%");
+                $query->orWhere('email', 'like', "%". strip_tags($params['username']) ."%");
+            });
         }
-
+        if (isset($params['status']) && intval($params['status']) > 0) {
+            $model = $model->where('status', intval($params['status']));
+        }
         $results['list'] = [];
         $results['length'] = $this->_length;
         $results['page'] = $this->_page;
@@ -34,9 +40,7 @@ class UserService extends Service
         $results = null;
         $id = intval($id);
 
-        $data['salt'] = ToolsHelper::getSalt(8);
         $data['username'] = trim(strip_tags($params['username']));
-        $data['password'] = ToolsHelper::encodePassword(trim($params['password']), $data['salt']);
         $data['nickname'] = trim(strip_tags($params['nickname']));
         $data['email'] = trim(strip_tags($params['email']));
         $data['status'] = intval($params['status']) > 0 ? intval($params['status']) : 1;
@@ -44,6 +48,8 @@ class UserService extends Service
         if ($id > 0) {
             $results = User::where('id', $id)->update($data);
         } else {
+            $data['salt'] = ToolsHelper::getSalt(8);
+            $data['password'] = ToolsHelper::encodePassword(trim($params['password']), $data['salt']);
             $results =  User::insertGetId($data);
         }
 

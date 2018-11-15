@@ -43,26 +43,16 @@ class SubSpiderService extends SpiderService
         $temp['category_id'] = $category_id;
         $temp['author_id'] = Author::getAuthorId($temp['author']);
         $temp['view'] = 0;
+        $temp['is_new'] = 1;
         $temp['newest_chapter'] = '';
         $temp['unique_code'] = md5($temp['author'] . $temp['title']);
         $temp['created_at'] = date('Y-m-d H:i:s');
         $temp['updated_at'] = date('Y-m-d H:i:s');
 
-        // 已经删除的数据，后面再次爬取则跳过
-        $delete_book_unique_code_str = [];
-        $delete_books = CheckBookInfo::where('status', 1)->where('method', 2)->get();
-        if (! empty($delete_books)) {
-            $delete_books = $delete_books->toArray();
-            $delete_book_unique_code_str = array_column($delete_books, 'book_unique_code');
-        }
-        $delete_book_unique_code_str = ','. implode(',', $delete_book_unique_code_str) .',';
-
         // 如果该书可以抓取，并且数据库中没有该书，则做入库操作
-        if (strpos($delete_book_unique_code_str, $temp['unique_code']) !== true) {
-            $book = Book::where('unique_code', $temp['unique_code'])->first();
-            if (empty($book)) {
-                Book::insert($temp);
-            }
+        $book = Book::where('unique_code', $temp['unique_code'])->first();
+        if (empty($book)) {
+            Book::insert($temp);
         }
 
         return true;
