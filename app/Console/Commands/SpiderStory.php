@@ -17,7 +17,7 @@ class SpiderStory extends Command
      *
      * @var string
      */
-    protected $signature = 'command:story {--step=?}';
+    protected $signature = 'command:story {--step=?} {--log=?}';
 
     /**
      * The console command description.
@@ -53,6 +53,7 @@ class SpiderStory extends Command
 
         // 如果传了指定从第几步开始抓，则直接开始第几步开始抓，否则从历史文件中读取从第几步开始抓
         $step = intval($this->option('step'));
+        $log = trim($this->option('log'));      // 是否记录log
 
         $step_file = storage_path('step/step.txt');
         if (!in_array($step, [1, 2, 3, 4])) {
@@ -77,7 +78,9 @@ class SpiderStory extends Command
         }
 
         // 记录日志
-        $this->recordLog();
+        if (strtolower($log) != 'no') {
+            $this->recordLog();
+        }
 
         // reset unique flag
         $this->delUniqueFlag();
