@@ -106,6 +106,18 @@
             </ul>
         </li>
 
+        <li class="treeview">
+            <a class="app-menu__item" href="#" data-toggle="treeview">
+                <i class="app-menu__icon fa fa-laptop"></i>
+                <span class="app-menu__label">日志管理</span>
+                <i class="treeview-indicator fa fa-angle-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                <li><a class="treeview-item" data-nav="admin.import_log.index" href="{{ route('admin.import_log.index') }}"><i class="icon fa fa-circle-o"></i> 书本导入日志</a></li>
+                {{--<li><a class="treeview-item" data-nav="admin.goods_export.index" href="{{ route('admin.goods_export.index') }}"><i class="icon fa fa-circle-o"></i> 出库列表</a></li>--}}
+                {{--<li><a class="treeview-item" data-nav="admin.category.index" href="{{ route('admin.category.index') }}"><i class="icon fa fa-circle-o"></i> 分类管理</a></li>--}}
+            </ul>
+        </li>
 
 
         {{--<li>--}}

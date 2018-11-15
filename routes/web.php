@@ -96,4 +96,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
     Route::get('/setting/seo', 'SettingController@seo')->name('setting.seo');
     Route::post('/setting/seo', 'SettingController@seo')->name('setting.seo.post');
     Route::post('/setting/reset_cache', 'SettingController@resetCache')->name('setting.reset_cache');
+
+    // 书本导入log
+    Route::get('/import_log/index', 'ImportLogController@index')->name('import_log.index');
+    Route::get('/import_log/show/{import_log_id}', 'ImportLogController@show')->name('import_log.show');
 });

@@ -42,7 +42,6 @@ class CheckHelper
             ->toArray();
 
         $booksNumber = count($books);
-        $chapterModel = new Chapter();
         foreach ($books as $key => $book) {
             // category_id 异常
             if ($book['category_id'] < 1 || $book['category_id'] > 7) {
@@ -50,13 +49,12 @@ class CheckHelper
                 continue;
             }
 
-            $chapter = $chapterModel->setTable($book['category_id'])->where('book_unique_code', $book['unique_code'])
+            $chapter = DB::table('chapter_' . $book['category_id'])->where('book_unique_code', $book['unique_code'])
                 ->orderBy('orderby', 'asc')
                 ->select(['id', 'unique_code', 'prev_unique_code', 'next_unique_code', 'orderby', 'number_of_words'])
                 ->get()
                 ->toArray();
             $count = count($chapter);
-
             if ($count == 0) {
                 $this->logErrorBook($book, 2);
                 continue;
