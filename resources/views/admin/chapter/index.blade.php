@@ -33,7 +33,13 @@
                                 <th>最近更新日期</th>
                                 <td>{{ $results['book']['last_update'] }}</td>
                                 <th>是否完本</th>
-                                <td>{{ $results['book']['finished'] }}</td>
+                                <td>
+                                    <div class="toggle">
+                                        <label>
+                                            <input class="finished-toggle" data-book-id="{{ $results['book']['id'] }}" type="checkbox" @if($results['book']['finished'] == 1) checked @endif><span class="button-indecator"></span>
+                                        </label>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <th>分类</th>
@@ -43,7 +49,11 @@
                             </tr>
                             <tr>
                                 <th>最新章节唯一码</th>
-                                <td>{{ $results['book']['newest_chapter'] }}</td>
+                                <td>
+                                    <a target="_blank" href="{{ route('admin.content.detail', ['content_id' => $results['book']['newest_chapter'], 'category_id' => $results['book']['category_id']]) }}">
+                                        {{ $results['book']['newest_chapter'] }}
+                                    </a>
+                                </td>
                                 <th>数据源</th>
                                 <td><a href="{{ $results['book']['url'] }}" target="_blank">查看</a></td>
                             </tr>
@@ -202,6 +212,20 @@
                 }
             });
 
+            // 完本修改
+            $('.finished-toggle').change(function () {
+                var book_id = $(this).attr('data-book-id');
+                var finished = 0;
+                if ($(this).prop('checked')) {
+                    finished = 1;
+                }
+                var data = {'book_id': book_id, 'finished': finished, '_token': '{{ csrf_token() }}'};
+                $.post('{{ route('admin.book.update.finished') }}', data, function (results) {
+                    if (results.status) {
+                        layer.msg('更新成功!');
+                    }
+                }, 'json');
+            });
         });
 
         // 更新content

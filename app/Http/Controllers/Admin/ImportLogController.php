@@ -21,6 +21,7 @@ class ImportLogController extends Controller
         $import_log_id = $request->import_log_id;
         $results['detail'] = $service->getOne($import_log_id);
         $results['book'] = $service->getImportBook($results['detail']['content']);
-        dd($results);
+
+        return $results;
     }
 }
