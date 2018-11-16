@@ -5,6 +5,9 @@ namespace App\Console\Commands\SpiderHelper;
 use App\Models\Book;
 use App\Models\Chapter;
 use App\Models\CheckBookInfo;
+use App\Models\NewBook;
+use App\Models\NewChapter;
+use App\Models\NewChapterContent;
 use Illuminate\Support\Facades\DB;
 
 class CheckHelper
@@ -12,10 +15,10 @@ class CheckHelper
     // 本书结束的关键字
     public $finished_flag = [
         'end',
-        '书完',
-        '完本',
+        '本书完',
+        '全书完',
         '大结局',
-        '完结'
+        '完本'
     ];
 
     /**
@@ -23,93 +26,95 @@ class CheckHelper
      */
     public $errors = [];
 
-    public $type = [
-        '1' => '书本分类异常不在 1 - 7范围',
-        '2' => '该书对应章节数量为空',
-        '3' => '排序数据异常',
-        '4' => '章节链表异常',
-        '5' => '最新文章异常',
-        '6' => '该本书籍可能已经完本'
-    ];
-
     public function run()
     {
-        // 已完本的则不做检测
-        $books = Book::where('finished', 0)
-            ->orderBy("id", "asc")
-            ->select(['id', 'title', 'unique_code', 'newest_chapter', 'url', 'category_id'])
-            ->get()
-            ->toArray();
+        do {
+            echo "==================循环检测=================== \n";
+            $continue_check = false;
 
-        $booksNumber = count($books);
-        foreach ($books as $key => $book) {
-            // category_id 异常
-            if ($book['category_id'] < 1 || $book['category_id'] > 7) {
-                $this->logErrorBook($book, 1);
-                continue;
-            }
-
-            $chapter = DB::table('chapter_' . $book['category_id'])->where('book_unique_code', $book['unique_code'])
-                ->orderBy('orderby', 'asc')
-                ->select(['id', 'unique_code', 'prev_unique_code', 'next_unique_code', 'orderby', 'number_of_words'])
+            $books = NewBook::orderBy("id", "asc")
+                ->select(['id', 'title', 'unique_code', 'newest_chapter', 'url', 'category_id'])
                 ->get()
                 ->toArray();
+            $booksNumber = count($books);
 
-            $chapter = array_map(function ($v) {
-                return (array) $v;
-            }, $chapter);
-
-            $count = count($chapter);
-            if ($count == 0) {
-                $this->logErrorBook($book, 2);
-                continue;
-            }
-
-            for ($i = 0; $i < $count; $i++) {
-
-                // 排序异常
-                if ($i != $chapter[$i]['orderby']) {
-                    $this->logErrorBook($book, 3);
-                    break;
+            foreach ($books as $key => $book) {
+                // category_id 异常
+                if ($book['category_id'] < 1 || $book['category_id'] > 7) {
+                    $this->delete($book);
+                    $continue_check = true;
+                    continue;
                 }
-                if ($i > 0 && $i < $count - 1) {
 
-                    // 链表异常
-                    if (
-                        $chapter[$i - 1]['next_unique_code'] != $chapter[$i]['unique_code'] ||
-                        $chapter[$i - 1]['unique_code'] != $chapter[$i]['prev_unique_code'] ||
-                        $chapter[$i]['unique_code'] != $chapter[$i + 1]['prev_unique_code'] ||
-                        $chapter[$i]['next_unique_code'] != $chapter[$i + 1]['unique_code']
-                    ) {
-                        $this->logErrorBook($book, 4);
+                $chapter = NewChapter::where('book_unique_code', $book['unique_code'])
+                    ->orderBy('orderby', 'asc')
+                    ->select(['id', 'unique_code', 'prev_unique_code', 'next_unique_code', 'orderby', 'number_of_words'])
+                    ->get()
+                    ->toArray();
+
+                $count = count($chapter);
+                if ($count == 0) {
+                    $this->delete($book);
+                    $continue_check = true;
+                    continue;
+                }
+                for ($i = 0; $i < $count; $i++) {
+                    // 排序异常
+                    if ($i != $chapter[$i]['orderby']) {
+                        $this->delete($book);
+                        $continue_check = true;
                         break;
                     }
-                }
+                    if ($i > 0 && $i < $count - 1) {
+                        // 链表异常
+                        if (
+                            $chapter[$i - 1]['unique_code'] != $chapter[$i]['prev_unique_code'] ||
+                            $chapter[$i]['next_unique_code'] != $chapter[$i + 1]['unique_code']
+                        ) {
+                            $this->delete($book);
+                            $continue_check = true;
+                            break;
+                        }
+                    }
 
-                // 最新文章异常，循环最后一次执行该分支代码
-                if ($i == $count - 1) {
-                    if ($chapter[$i]['unique_code'] != $book['newest_chapter']) {
-                        $this->logErrorBook($book, 5);
-                    } else if ($chapter[$i]['number_of_words'] > 0) {
-                        // 检测是否已经完本
-                        $chapterContent = DB::table('chapter_content_' . $book['category_id'])
-                            ->where('id', $chapter[$i]['id'])
-                            ->select(['content'])
-                            ->first();
-                        if ($this->checkFinished($chapterContent->content)) {
-                            $this->logErrorBook($book, 6);
+                    $content = NewChapterContent::find($chapter[$i]['id']);
+                    if (empty($content->content)) {
+                        $this->delete($book);
+                        $continue_check = true;
+                        break;
+                    }
+                    // 最新文章异常，循环最后一次执行该分支代码
+                    if ($i == $count - 1) {
+                        if ($chapter[$i]['unique_code'] != $book['newest_chapter']) {
+                            $continue_check = true;
+                            $this->delete($book);
                         }
                     }
                 }
+                echo "进度： {$booksNumber} / " . ($key + 1) . " \n";
             }
-
-            echo "进度： {$booksNumber} / " . ($key + 1) . "，暂无异常！！！ \n";
-        }
-
-        // 插入数据库
-        $this->logInsertToDb();
+        } while ($continue_check || $booksNumber === 0);
 
         return null;
+    }
+
+    /**
+     * 只要有问题，就全部删除
+     *
+     * @param $book
+     */
+    public function delete($book)
+    {
+        $chapter_id = NewChapter::where('book_unique_code', $book['unique_code'])
+            ->select(['id'])
+            ->get()
+            ->toArray();
+        if (! empty($chapter_id)) {
+            $chapter_id = array_column($chapter_id, 'id');
+        }
+        NewChapterContent::destroy((array) $chapter_id);
+        NewChapter::destroy((array) $chapter_id);
+        NewBook::destroy($book['id']);
     }
 
     /**
@@ -174,15 +179,15 @@ class CheckHelper
      * @param $content
      * @return bool
      */
-    public function checkFinished($content)
-    {
-        $results = false;
-        if (!empty($content)) {
-            if (preg_match('/' . implode('|', $this->finished_flag) . '/isuU', $content)) {
-                $results = true;
-            }
-        }
-
-        return $results;
-    }
+//    public function checkFinished($content)
+//    {
+//        $results = false;
+//        if (!empty($content)) {
+//            if (preg_match('/' . implode('|', $this->finished_flag) . '/isuU', $content)) {
+//                $results = true;
+//            }
+//        }
+//
+//        return $results;
+//    }
 }

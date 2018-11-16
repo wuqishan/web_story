@@ -7,6 +7,7 @@ use App\Models\Author;
 use App\Models\Book;
 use App\Models\Category;
 use App\Helper\CurlMultiHelper;
+use App\Models\NewBook;
 use Ares333\Curl\Toolkit;
 
 class BookHelper
@@ -31,6 +32,14 @@ class BookHelper
 
             return array_merge($url1, $url2);
         });
+
+        $book_urls= [
+            'https://www.xbiquge6.com/xclass/5/1.html' => [
+                'https://www.xbiquge6.com/77_77828/',
+                'https://www.xbiquge6.com/77_77563/'
+            ]
+        ];
+
 
         foreach ($book_urls as $key => $url) {
             // 当前分类下的书本数量
@@ -68,22 +77,8 @@ class BookHelper
                 // 如果该书可以抓取，并且数据库中没有该书，则做入库操作
                 $book = Book::where('unique_code', $temp['unique_code'])->first();
                 if (empty($book)) {
-                    Book::insert($temp);
-
+                    NewBook::insert($temp);
                     echo "当前分类：{$category_id}, 该分类书籍：{$current_book} / {$category_book_number}, 书名: 《{$temp['title']}》 URL：{$temp['url']} 入库\n";
-                } else {
-                    if ($book->category_id != $category_id) {
-                        $book->category_id = $category_id;
-                    }
-                    // 如果还未完本，则更新完本信息
-                    if ($book->finished != 1) {
-                        $book->finished = $temp['finished'];
-                    }
-                    $book->last_update = $temp['last_update'];
-                    $book->author_id = $temp['author_id'];
-                    $book->save();
-
-                    echo "当前分类：{$category_id}, 该分类书籍：{$current_book} / {$category_book_number}, 书名: 《{$temp['title']}》 已经存在！！！\n";
                 }
 
                 return $temp;

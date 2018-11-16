@@ -6,6 +6,7 @@ use App\Console\Commands\SpiderHelper\BookHelper;
 use App\Console\Commands\SpiderHelper\ChapterHelper;
 use App\Console\Commands\SpiderHelper\CheckHelper;
 use App\Console\Commands\SpiderHelper\ContentHelper;
+use App\Console\Commands\SpiderHelper\ImportHelper;
 use App\Console\Commands\SpiderHelper\LoggerHelper;
 use App\Helper\CacheHelper;
 use Illuminate\Console\Command;
@@ -24,7 +25,7 @@ class SpiderStory extends Command
      *
      * @var string
      */
-    protected $description = '1: 抓书本和图片 => 2: 抓章节 => 3: 抓章节内容 => 4: 校验抓取的书本';
+    protected $description = '1: 抓书本和图片 => 2: 抓章节 => 3: 抓章节内容 => 4: 校验抓取的书本 => 5: 导入正确的书本';
 
     /**
      * Create a new command instance.
@@ -51,43 +52,16 @@ class SpiderStory extends Command
     public function handle()
     {
 
-        // 如果传了指定从第几步开始抓，则直接开始第几步开始抓，否则从历史文件中读取从第几步开始抓
-        $step = intval($this->option('step'));
-        $log = trim($this->option('log'));      // 是否记录log
-
-        $step_file = storage_path('step/step.txt');
-        if (!in_array($step, [1, 2, 3, 4])) {
-            $step = 1;
-        }
-
-        for ($i = $step; $i <= 4; $i++) {
-            file_put_contents($step_file, $i);
-            if ($i === 1) {
-                echo "======================= 第一步、抓书本和图片 ======================\n";
-                (new BookHelper())->run();
-            } else if ($i === 2) {
-                echo "======================= 第二步、抓章节信息 =====================\n";
-                (new ChapterHelper())->run();
-            } else if ($i === 3) {
-                echo "======================= 第三步、抓章节内容 =====================\n";
-                (new ContentHelper())->run();
-            } else if ($i === 4) {
-                echo "======================= 第四步、校验抓取的书本 =====================\n";
-                (new CheckHelper())->run();
-            }
-        }
-
-        // 记录日志
-        if (strtolower($log) != 'no') {
-            $this->recordLog();
-        }
-
-        // reset unique flag
-        $this->delUniqueFlag();
-
-        // 重置为1
-        file_put_contents($step_file, '1');
-
+        echo "======================= 第一步、抓书本和图片 ======================\n";
+        (new BookHelper())->run();
+        echo "======================= 第二步、抓章节信息 =====================\n";
+        (new ChapterHelper())->run();
+        echo "======================= 第三步、抓章节内容 =====================\n";
+        (new ContentHelper())->run();
+        echo "======================= 第四步、校验抓取的书本 =====================\n";
+        (new CheckHelper())->run();
+        echo "======================= 第五步、导入正确的书本 =====================\n";
+        (new ImportHelper())->run();
         return null;
     }
 

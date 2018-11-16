@@ -3,15 +3,15 @@
 namespace App\Console\Commands\SpiderHelper;
 
 use App\Helper\CurlMultiHelper;
-use App\Models\Book;
+use App\Models\NewBook;
+use App\Models\NewChapter;
 use Ares333\Curl\Toolkit;
-use Illuminate\Support\Facades\DB;
 
 class ChapterHelper
 {
     public function run()
     {
-        $books = Book::where('finished', 0)
+        $books = NewBook::where('finished', 0)
             ->select(['id', 'unique_code', 'category_id', 'newest_chapter', 'url'])
             ->get()
             ->toArray();
@@ -30,7 +30,6 @@ class ChapterHelper
 
             // 当前抓取第几本书籍
             $book_current++;
-
             $book_author = $ql->find('#info p:eq(0)')->text();
             $book_author = preg_replace('/作(\s|(&nbsp;))*者(\:|：)/su', '', $book_author);
             $book_author = trim($book_author);
@@ -38,7 +37,7 @@ class ChapterHelper
 
             // 获取书本信息
             $book_info = $books_new[$r['info']['url']];
-            list($book_id, $book_unique_code, $category_id, $newest_chapter) = explode('-', $book_info);
+            list($book_id, $book_unique_code, $category_id) = explode('-', $book_info);
 
             $chapter_sub_info = (array) $ql->find('#list dl dd')->map(function ($item) use ($tookit, $r) {
                 $temp['url'] = $tookit->uri2url($item->find('a')->attr('href'), $r['info']['url']);
@@ -47,7 +46,6 @@ class ChapterHelper
             });
             $chapter_sub_info = array_pop($chapter_sub_info);     // 去除一层数组
             $length = count($chapter_sub_info);                         // 获取长度
-            $run_at = false;                                            // 辅助判断从哪里开始是新增的章节
             foreach ($chapter_sub_info as $key => $val) {
 
                 $temp['book_unique_code'] = $book_unique_code;
@@ -63,7 +61,6 @@ class ChapterHelper
                 $temp['updated_at'] = date('Y-m-d H:i:s');
 
                 try {
-
                     if ($key === 0 && $key === $length - 1) {
                         $temp['prev_unique_code'] = '';
                         $temp['next_unique_code'] = '';
@@ -78,43 +75,21 @@ class ChapterHelper
                         $temp['next_unique_code'] = md5($book_author . $book_title . $chapter_sub_info[$key + 1]['title'] . ($key + 1));
                     }
 
-                    // 跳过前面已经有的章节
-                    if (! empty($newest_chapter)) {
-                        if (! $run_at) {
-                            if ($newest_chapter == $temp['unique_code']) {
-                                $this->updateNextUniqueCode($temp);
-                                $run_at = true;
-                            }
-                            continue;
-                        }
-                    }
-
                     // 插入章节
-                    DB::table('chapter_' . $temp['category_id'])->insert($temp);
-                    echo "进度：{$book_number} / {$book_current}, category_id: {$category_id}, title: {$temp['title']}, Url: {$temp['url']}\n";
+                    NewChapter::insert($temp);
 
                     // 更新book最新更新的章节
                     if ($key === $length - 1) {
-                        Book::where('id', $book_id)->update(['newest_chapter' => $temp['unique_code']]);
+                        NewBook::where('id', $book_id)->update(['newest_chapter' => $temp['unique_code']]);
                     }
+
+                    echo "进度：{$book_number} / {$book_current}, category_id: {$category_id}, title: {$temp['title']}, Url: {$temp['url']}\n";
                 } catch (\Exception $e) {
-                    // 如果是唯一问题则继续
-                    if (stripos($e->getMessage(), 'Duplicate entry') !== false) {
-                        continue;
-                    }
+                    // todo something
                 }
             }
         });
 
         return null;
-    }
-
-    public function updateNextUniqueCode($chapter)
-    {
-        if (! empty($chapter['next_unique_code'])) {
-            DB::table('chapter_' . $chapter['category_id'])
-                ->where('unique_code', $chapter['unique_code'])
-                ->update(['next_unique_code' => $chapter['next_unique_code']]);
-        }
     }
 }
