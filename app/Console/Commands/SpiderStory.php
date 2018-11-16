@@ -61,7 +61,7 @@ class SpiderStory extends Command
         echo "======================= 第四步、校验抓取的书本 =====================\n";
         (new CheckHelper())->run();
         echo "======================= 第五步、导入正确的书本 =====================\n";
-        (new ImportHelper())->run();
+//        (new ImportHelper())->run();
         return null;
     }
 

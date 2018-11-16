@@ -16,7 +16,7 @@ class ImportHelper
         if (! empty($books)) {
             $book_number = count($books);
             foreach ($books as $key => $book) {
-                $chapters = NewChapter::where('book_unique_code', $book['unique_code']);
+                $chapters = NewChapter::where('book_unique_code', $book['unique_code'])->get()->toArray();
                 DB::beginTransaction();
                 $insert_ids = [];
                 foreach ($chapters as $chapter) {
@@ -25,7 +25,7 @@ class ImportHelper
                     // 插入章节
                     unset($chapter['id']);
                     $new_id = DB::table('chapter_' . $chapter['category_id'])->insertGetId($chapter);
-                    $insert_ids[] = (int) $insert_ids;
+                    $insert_ids[] = (int) $new_id;
 
                     // 插入内容
                     unset($content['id']);
