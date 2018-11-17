@@ -22,7 +22,11 @@ class SpiderUpdateStory extends Command
      *
      * @var string
      */
-    protected $description = '更新已有的书本新章节';
+    protected $description = "
+    第一步: 抓取更新的章节\n
+    第二步: 抓取更新章节的内容\n
+    第三步: 导入更新的章节\n
+    第四步: 记录导入的日志";
 
     /**
      * Create a new command instance.
@@ -48,7 +52,6 @@ class SpiderUpdateStory extends Command
         (new ContentUpdateHelper())->run();
         echo "======================= 第三步、抓取书本章节的内容 ======================\n";
         (new ImportUpdateHelper())->run();
-
         echo "======================= 第四步、记录日志 =====================\n";
         $this->recordLog();
 
