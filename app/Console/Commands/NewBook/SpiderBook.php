@@ -1,30 +1,25 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\NewBook;
 
-use App\Console\Commands\SpiderHelper\ImportHelper;
-use App\Models\Book;
-use App\Models\NewBook;
-use App\Models\NewChapter;
-use App\Models\NewChapterContent;
+use App\Console\Commands\SpiderHelper\BookHelper;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 
-class SpiderImport extends Command
+class SpiderBook extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'command:import';
+    protected $signature = 'command:new-book';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '把抓取到新书本，导入到线上访问的数据表';
+    protected $description = '抓书本和图片';
 
     /**
      * Create a new command instance.
@@ -43,6 +38,6 @@ class SpiderImport extends Command
      */
     public function handle()
     {
-        return (new ImportHelper())->run();
+        return (new BookHelper())->run();
     }
 }

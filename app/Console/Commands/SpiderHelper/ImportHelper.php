@@ -32,14 +32,15 @@ class ImportHelper
                     $content['id'] = $new_id;
                     $insert_ids[] = (int) DB::table('chapter_content_' . $chapter['category_id'])->insertGetId($content);
                 }
+
                 // 插入书本
                 unset($book['id']);
                 $insert_ids[] = (int) Book::insertGetId($book);
                 if (min($insert_ids) === 0) {
                     DB::rollBack();
-                    echo "进度：{$book_number} / " . ($key + 1) . " 插入失败，已经回滚 \n";
+                    echo "进度：{$book_number} / " . ($key + 1) . ",插入失败,已经回滚 \n";
                 } else {
-                    echo "导入成功 \n";
+                    echo "进度：{$book_number} / " . ($key + 1) . ", 导入成功 \n";
                     DB::commit();
                 }
             }

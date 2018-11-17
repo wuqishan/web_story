@@ -34,6 +34,7 @@ class CreateTableChapter extends Migration
                 $table->string('url', 128)->default('')->comment('本章节的源地址');
                 $table->integer('number_of_words', false)->default(0)->comment('本章节的字数');
                 $table->integer('orderby', false, true)->default(0)->comment('排序');
+                $table->tinyInteger('is_new')->default(0)->comment('是否是刚抓取的，默认是0，记录好log后更新为1');
                 $table->timestamps();
                 $table->unique('unique_code', 'unique_code_index');
                 $table->index('book_unique_code', 'book_unique_code_index');

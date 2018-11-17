@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\NewBook;
 
-use App\Console\Commands\SpiderHelper\ChapterHelper;
+use App\Console\Commands\SpiderHelper\ContentHelper;
 use Illuminate\Console\Command;
 
-class SpiderChapter extends Command
+class SpiderContent extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'command:chapter';
+    protected $signature = 'command:new-content';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '抓章节';
+    protected $description = '抓章节内容';
 
     /**
      * Create a new command instance.
@@ -38,7 +38,6 @@ class SpiderChapter extends Command
      */
     public function handle()
     {
-        return (new ChapterHelper())->run();
+        return (new ContentHelper())->run();
     }
-
 }

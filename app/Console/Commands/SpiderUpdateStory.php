@@ -2,7 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Book;
+use App\Console\Commands\SpiderHelper\ChapterUpdateHelper;
+use App\Console\Commands\SpiderHelper\ContentUpdateHelper;
+use App\Console\Commands\SpiderHelper\ImportUpdateHelper;
+use App\Console\Commands\SpiderHelper\LoggerHelper;
 use Illuminate\Console\Command;
 
 class SpiderUpdateStory extends Command
@@ -28,6 +31,7 @@ class SpiderUpdateStory extends Command
      */
     public function __construct()
     {
+        @ini_set('memory_limit', '256M');
         parent::__construct();
     }
 
@@ -38,13 +42,30 @@ class SpiderUpdateStory extends Command
      */
     public function handle()
     {
-        $books = Book::where('finished', 0)
-            ->select(['newest_chapter', 'url', 'category_id'])
-            ->get()
-            ->toArray();
-        $books = array_map(function ($v) {
-            return (array) $v;
-        }, $books);
+        echo "======================= 第一步、抓取书本新章节 ======================\n";
+        (new ChapterUpdateHelper())->run();
+        echo "======================= 第二步、抓取书本章节的内容 ======================\n";
+        (new ContentUpdateHelper())->run();
+        echo "======================= 第三步、抓取书本章节的内容 ======================\n";
+        (new ImportUpdateHelper())->run();
 
+        echo "======================= 第四步、记录日志 =====================\n";
+        $this->recordLog();
+
+        return null;
+    }
+
+    /**
+     * 记录本次抓取的日志信息
+     */
+    public function recordLog()
+    {
+        // 初始化模板
+        $import_log = [
+            'status' => 0,
+            'created_at' => date('Y-m-d H:i:s')
+        ];
+        LoggerHelper::spiderChapter($import_log);
+        echo "本次抓取结束!!!\n\n";
     }
 }

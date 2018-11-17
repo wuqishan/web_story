@@ -28,6 +28,7 @@ class CreateTableBook extends Migration
             $table->integer('author_id', false, true)->default(0)->comment('作者ID');
             $table->integer('view', false, true)->default(0)->comment('点击量');
             $table->char('newest_chapter', 32)->default('')->comment('本书最新章节的唯一码');
+            $table->tinyInteger('is_new')->default(0)->comment('是否是刚抓取的，默认是0，记录好log后更新为1');
             $table->timestamps();
             $table->unique('unique_code', 'unique_code_index');
         });

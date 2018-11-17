@@ -29,7 +29,7 @@ class CheckHelper
     public function run()
     {
         do {
-            echo "==================循环检测=================== \n";
+            echo "循环检测... \n";
             $continue_check = false;
 
             $books = NewBook::orderBy("id", "asc")
@@ -116,78 +116,4 @@ class CheckHelper
         NewChapter::destroy((array) $chapter_id);
         NewBook::destroy($book['id']);
     }
-
-    /**
-     * @param $book
-     * @param $type
-     *      1: 书本分类异常不在 1 - 7范围
-     *      2: 该书对应章节数量为空
-     *      3: 排序数据异常
-     *      4: 章节链表异常
-     *      5: 最新文章异常
-     *      6: 该本书籍可能已经完本
-     *
-     * @return array
-     */
-    public function logErrorBook($book, $type)
-    {
-        $error['msg'] = $this->type[$type];
-        $error['data'] = $book;
-        $this->errors[] = $error;
-        echo "========================================================\n";
-        echo "{$error['msg']}\n";
-        echo "========================================================\n";
-
-        return $this->errors;
-    }
-
-    /**
-     * 错误信息插入数据库
-     */
-    public function logInsertToDb()
-    {
-        if (!empty($this->errors)) {
-            $need_insert = 0;
-            foreach ($this->errors as $v) {
-                $checkBook = CheckBookInfo::where('book_id', $v['data']['id'])
-                    ->where('status', 1)
-                    ->first();
-                if (empty($checkBook)) {
-                    CheckBookInfo::insert([
-                        'book_title' => $v['data']['title'],
-                        'book_id' => $v['data']['id'],
-                        'book_category_id' => $v['data']['category_id'],
-                        'book_url' => $v['data']['url'],
-                        'book_unique_code' => $v['data']['unique_code'],
-                        'newest_chapter' => $v['data']['newest_chapter'],
-                        'message' => $v['msg'],
-                        'status' => 1,
-                        'created_at' => date('Y-m-d H:i:s'),
-                    ]);
-                    $need_insert++;
-                }
-            }
-            echo "可能有问题的书本有 " . count($this->errors) . " 条, 需要插入的书本为 {$need_insert} 条，已插入待处理表\n";
-        } else {
-            echo "库中所有书本，暂无问题\n";
-        }
-    }
-
-    /**
-     * 模糊检测本书是否完结
-     *
-     * @param $content
-     * @return bool
-     */
-//    public function checkFinished($content)
-//    {
-//        $results = false;
-//        if (!empty($content)) {
-//            if (preg_match('/' . implode('|', $this->finished_flag) . '/isuU', $content)) {
-//                $results = true;
-//            }
-//        }
-//
-//        return $results;
-//    }
 }

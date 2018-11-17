@@ -1,25 +1,31 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\UpdateBook;
 
-use App\Console\Commands\SpiderHelper\ContentHelper;
+use App\Console\Commands\SpiderHelper\ImportHelper;
+use App\Console\Commands\SpiderHelper\ImportUpdateHelper;
+use App\Models\Book;
+use App\Models\NewBook;
+use App\Models\NewChapter;
+use App\Models\NewChapterContent;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
-class SpiderContent extends Command
+class SpiderUpdateImport extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'command:content';
+    protected $signature = 'command:update-import';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '抓章节内容';
+    protected $description = '更新新章节的数据导入';
 
     /**
      * Create a new command instance.
@@ -38,6 +44,6 @@ class SpiderContent extends Command
      */
     public function handle()
     {
-        return (new ContentHelper())->run();
+        return (new ImportUpdateHelper())->run();
     }
 }

@@ -18,7 +18,7 @@ class SpiderStory extends Command
      *
      * @var string
      */
-    protected $signature = 'command:story {--step=?} {--log=?}';
+    protected $signature = 'command:new-story';
 
     /**
      * The console command description.
@@ -34,14 +34,8 @@ class SpiderStory extends Command
      */
     public function __construct()
     {
-        @ini_set('memory_limit', '256M');
+        @ini_set('memory_limit', '512M');
         parent::__construct();
-
-        // 建立缓存文件夹
-        $step_dir = storage_path('step');
-        if (!file_exists($step_dir)) {
-            mkdir($step_dir, 0766, true);
-        }
     }
 
     /**
@@ -51,7 +45,6 @@ class SpiderStory extends Command
      */
     public function handle()
     {
-
         echo "======================= 第一步、抓书本和图片 ======================\n";
         (new BookHelper())->run();
         echo "======================= 第二步、抓章节信息 =====================\n";
@@ -61,7 +54,10 @@ class SpiderStory extends Command
         echo "======================= 第四步、校验抓取的书本 =====================\n";
         (new CheckHelper())->run();
         echo "======================= 第五步、导入正确的书本 =====================\n";
-//        (new ImportHelper())->run();
+        (new ImportHelper())->run();
+        echo "======================= 第六步、记录日志 =====================\n";
+        $this->recordLog();
+
         return null;
     }
 
@@ -72,46 +68,10 @@ class SpiderStory extends Command
     {
         // 初始化模板
         $import_log = [
-            'flag' => $this->getUniqueFlag(),
             'status' => 0,
             'created_at' => date('Y-m-d H:i:s')
         ];
-
-        // 记录日志
-        echo "========================开始记录日志...=========================\n\n";
         LoggerHelper::spiderBook($import_log);
-
-        // 暂无必要记录章节的log
-        // LoggerHelper::spiderChapter($import_log);
-        echo "========================记录日志结束=========================\n";
-    }
-
-    /**
-     * 本次抓取的flag
-     *
-     * @return string
-     */
-    public function getUniqueFlag()
-    {
-        $key = 'unique_key';
-        if (CacheHelper::has($key) && !empty(CacheHelper::get($key))) {
-            $unique_flag = CacheHelper::get($key);
-        } else {
-            $unique_flag = md5(time() . rand(0, 1000));
-        }
-
-        return $unique_flag;
-    }
-
-    /**
-     * 删除unique flag缓存
-     *
-     * @return mixed
-     */
-    public function delUniqueFlag()
-    {
-        $key = 'unique_key';
-
-        return CacheHelper::delete($key);
+        echo "本次抓取结束!!!\n\n";
     }
 }

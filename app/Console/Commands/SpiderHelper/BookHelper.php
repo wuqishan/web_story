@@ -20,6 +20,16 @@ class BookHelper
         $category = Category::all(['id', 'url'])->toArray();
         $category_with_urls = array_combine(array_column($category, 'url'), array_column($category, 'id'));
 
+//        $category_with_urls = [
+//            'https://www.xbiquge6.com/xclass/1/1.html' => 1,
+//            'https://www.xbiquge6.com/xclass/2/1.html' => 2,
+//            'https://www.xbiquge6.com/xclass/3/1.html' => 3,
+//            'https://www.xbiquge6.com/xclass/4/1.html' => 4,
+//            'https://www.xbiquge6.com/xclass/5/1.html' => 5,
+//            'https://www.xbiquge6.com/xclass/6/1.html' => 6,
+//            'https://www.xbiquge6.com/xclass/7/1.html' => 7
+//        ];
+
         $tookit = new Toolkit();
         $book_urls = CurlMultiHelper::get(array_keys($category_with_urls), function ($ql, $curl, $r) use ($tookit) {
             $url1 = (array) $ql->find('#hotcontent .ll .item')->map(function ($item) use ($tookit, $r) {
@@ -33,13 +43,23 @@ class BookHelper
             return array_merge($url1, $url2);
         });
 
-        $book_urls= [
-            'https://www.xbiquge6.com/xclass/5/1.html' => [
-                'https://www.xbiquge6.com/77_77828/',
-                'https://www.xbiquge6.com/77_77563/'
-            ]
-        ];
+        $bookExists = Book::all(['url']);
+        if (! empty($bookExists)) {
+            $bookExists = $bookExists->toArray();
+            $bookExists = array_column($bookExists, 'url');
+        }
 
+        if (! empty($bookExists)) {
+            foreach ($book_urls as $key => $val) {
+
+                $temp = array_diff($val, $bookExists);
+                if (! empty($temp)) {
+                    $book_urls[$key] = $temp;
+                } else {
+                    unset($book_urls[$key]);
+                }
+            }
+        }
 
         foreach ($book_urls as $key => $url) {
             // 当前分类下的书本数量
@@ -75,7 +95,7 @@ class BookHelper
                 $temp = $this->getBookImages($temp);
 
                 // 如果该书可以抓取，并且数据库中没有该书，则做入库操作
-                $book = Book::where('unique_code', $temp['unique_code'])->first();
+                $book = NewBook::where('unique_code', $temp['unique_code'])->first();
                 if (empty($book)) {
                     NewBook::insert($temp);
                     echo "当前分类：{$category_id}, 该分类书籍：{$current_book} / {$category_book_number}, 书名: 《{$temp['title']}》 URL：{$temp['url']} 入库\n";
