@@ -17,9 +17,12 @@ class ChapterUpdateHelper
         UpdateChapterContent::truncate();
 
         $books = Book::where('finished', 0)
+//            ->where('id', 635)
+//            ->limit(1)
             ->select(['id', 'unique_code', 'category_id', 'newest_chapter', 'url'])
             ->get()
             ->toArray();
+
 
         $books_new = [];
         foreach ($books as $book) {
@@ -55,6 +58,7 @@ class ChapterUpdateHelper
             $newest_chapter_status = false;
             $chapter_sub_info = array_pop($chapter_sub_info);     // 去除一层数组
             $length = count($chapter_sub_info);                   // 获取长度
+
             foreach ($chapter_sub_info as $key => $val) {
 
                 $temp['book_unique_code'] = $book_unique_code;
@@ -70,11 +74,13 @@ class ChapterUpdateHelper
                 $temp['created_at'] = date('Y-m-d H:i:s');
                 $temp['updated_at'] = date('Y-m-d H:i:s');
 
-                if (! $newest_chapter_status) {
-                    if ($newest_chapter == $temp['unique_code']) {
-                        $newest_chapter_status = true;
+                if (! empty($newest_chapter)) {
+                    if (! $newest_chapter_status) {
+                        if ($newest_chapter == $temp['unique_code']) {
+                            $newest_chapter_status = true;
+                        }
+                        continue;
                     }
-                    continue;
                 }
 
                 try {

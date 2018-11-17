@@ -136,6 +136,8 @@ class BookHelper
                 @file_put_contents($full_path, $content);
                 $book['image_local_url'] = $db_full_path;
             }
+        } else {
+            $book['image_local_url'] = $db_full_path;
         }
 
         return $book;

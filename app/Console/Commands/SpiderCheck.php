@@ -140,8 +140,10 @@ class SpiderCheck extends Command
 
         if (count($this->errors) > 0) {
             $this->logInsertToDb();
+        } else {
+            echo "\n本次检测无异常书本\n";
         }
-
+        echo "\n检测结束!!! \n";
 
         return null;
     }
@@ -199,8 +201,6 @@ class SpiderCheck extends Command
                 }
             }
             echo "可能有问题的书本有 " . count($this->errors) . " 条, 需要插入的书本为 {$need_insert} 条，已插入待处理表\n";
-        } else {
-            echo "库中所有书本，暂无问题\n";
         }
     }
 

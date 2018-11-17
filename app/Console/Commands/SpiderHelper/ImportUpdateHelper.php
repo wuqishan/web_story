@@ -47,7 +47,7 @@ class ImportUpdateHelper
                     $insert_ids[] = (int) DB::table('chapter_content_' . $c['category_id'])->insertGetId($content);
 
                     // 更新上一章节的下一章节唯一码
-                    if ($k === 0) {
+                    if ($k === 0 && ! empty($c['prev_unique_code'])) {
                         $insert_ids[] = DB::table('chapter_' . $c['category_id'])
                             ->where('unique_code', $c['prev_unique_code'])
                             ->update(['next_unique_code' => $c['unique_code']]);

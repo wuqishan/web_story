@@ -2,6 +2,7 @@
 
 namespace App\Services\Spider;
 
+use App\Console\Commands\SpiderHelper\BookHelper;
 use App\Helper\ToolsHelper;
 use App\Models\Author;
 use App\Models\Book;
@@ -48,6 +49,9 @@ class SubSpiderService extends SpiderService
         $temp['unique_code'] = md5($temp['author'] . $temp['title']);
         $temp['created_at'] = date('Y-m-d H:i:s');
         $temp['updated_at'] = date('Y-m-d H:i:s');
+
+        // 获取图片
+        $temp = (new BookHelper())->getBookImages($temp);
 
         // 如果该书可以抓取，并且数据库中没有该书，则做入库操作
         $book = Book::where('unique_code', $temp['unique_code'])->first();
