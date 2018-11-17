@@ -74,7 +74,7 @@ class SpiderCheck extends Command
 
         $books = Book::where('finished', 0)
             ->orderBy("id", "asc")
-            ->select(['id', 'title', 'unique_code', 'newest_chapter', 'category_id'])
+            ->select(['id', 'title', 'url', 'unique_code', 'newest_chapter', 'category_id'])
             ->get()
             ->toArray();
         $books_number = count($books);
@@ -193,8 +193,8 @@ class SpiderCheck extends Command
                         'status' => 1,
                         'created_at' => date('Y-m-d H:i:s'),
                     ];
-                    print_r($insert);
-//                    CheckBookInfo::insert($insert);
+//                    print_r($insert);
+                    CheckBookInfo::insert($insert);
                     $need_insert++;
                 }
             }
