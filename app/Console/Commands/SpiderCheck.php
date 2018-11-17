@@ -116,7 +116,7 @@ class SpiderCheck extends Command
                     }
                 }
 
-                $content = DB::table('chapter_content_' . $chapter[$i]['category_id'])
+                $content = DB::table('chapter_content_' . $book['category_id'])
                     ->where('id', $chapter[$i]['id'])
                     ->first();
                 if (empty($content->content)) {
