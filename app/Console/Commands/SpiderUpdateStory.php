@@ -23,10 +23,10 @@ class SpiderUpdateStory extends Command
      * @var string
      */
     protected $description = "
-    第一步: 抓取更新的章节\n
-    第二步: 抓取更新章节的内容\n
-    第三步: 导入更新的章节\n
-    第四步: 记录导入的日志";
+                            第一步: 抓取更新的章节
+                            第二步: 抓取更新章节的内容
+                            第三步: 导入更新的章节
+                            第四步: 记录导入的日志";
 
     /**
      * Create a new command instance.

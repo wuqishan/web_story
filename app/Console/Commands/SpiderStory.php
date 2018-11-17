@@ -26,12 +26,12 @@ class SpiderStory extends Command
      * @var string
      */
     protected $description = "
-    第一步: 抓书本和图片\n
-    第二步: 抓章节\n
-    第三步: 抓章节内容\n
-    第四步: 校验抓取的书本\n
-    第五步: 导入正确的书本\n
-    第六步: 记录日志";
+                            第一步: 抓书本和图片
+                            第二步: 抓章节
+                            第三步: 抓章节内容
+                            第四步: 校验抓取的书本
+                            第五步: 导入正确的书本
+                            第六步: 记录日志";
 
     /**
      * Create a new command instance.
