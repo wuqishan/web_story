@@ -55,7 +55,7 @@ class ChapterHelper
                 $temp['url'] = $val['url'];
                 $temp['orderby'] = $key;
                 $temp['category_id'] = $category_id;
-                $temp['is_new'] = 1;
+                $temp['is_new'] = 2;    // 导入书本这里章节默认为2
                 $temp['created_at'] = date('Y-m-d H:i:s');
                 $temp['updated_at'] = date('Y-m-d H:i:s');
 
