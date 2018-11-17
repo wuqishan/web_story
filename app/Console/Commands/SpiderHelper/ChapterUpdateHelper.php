@@ -5,12 +5,17 @@ namespace App\Console\Commands\SpiderHelper;
 use App\Helper\CurlMultiHelper;
 use App\Models\Book;
 use App\Models\UpdateChapter;
+use App\Models\UpdateChapterContent;
 use Ares333\Curl\Toolkit;
 
 class ChapterUpdateHelper
 {
     public function run()
     {
+        // 清空临时表
+        UpdateChapter::truncate();
+        UpdateChapterContent::truncate();
+
         $books = Book::where('finished', 0)
             ->select(['id', 'unique_code', 'category_id', 'newest_chapter', 'url'])
             ->get()

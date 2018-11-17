@@ -8,6 +8,8 @@ use App\Models\Book;
 use App\Models\Category;
 use App\Helper\CurlMultiHelper;
 use App\Models\NewBook;
+use App\Models\NewChapter;
+use App\Models\NewChapterContent;
 use Ares333\Curl\Toolkit;
 
 class BookHelper
@@ -17,6 +19,11 @@ class BookHelper
      */
     public function run()
     {
+        // 清空临时表
+        NewBook::truncate();
+        NewChapter::truncate();
+        NewChapterContent::truncate();
+
         $category = Category::all(['id', 'url'])->toArray();
         $category_with_urls = array_combine(array_column($category, 'url'), array_column($category, 'id'));
 

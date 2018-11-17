@@ -11,12 +11,12 @@ class AdminTableSeeder extends Seeder
      */
     public function run()
     {
-        App\Models\User::truncate();
+        App\Models\Admin::truncate();
         $user =  [
             'username' => 'wuqishan',
             'password' => '92b655398726e48e6972506817dc9e82',   // wuqishan 的 md5
             'status' => 0
         ];
-        \App\Models\User::insert($user);
+        \App\Models\Admin::insert($user);
     }
 }
