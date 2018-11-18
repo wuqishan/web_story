@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Models\Book;
+use App\Models\Category;
 use App\Models\ImportLog;
+use Illuminate\Support\Facades\DB;
 
 class ImportLogService extends Service
 {
@@ -13,6 +15,12 @@ class ImportLogService extends Service
         if (isset($params['name']) && ! empty($params['name'])) {
             $params['name'] = trim($params['name']);
             $model = $model->where('name', 'like', "%". strip_tags($params['name']) ."%");
+        }
+
+        if (isset($params['sort'])) {
+            $model = $model->orderBy($params['sort'][0], $params['sort'][1]);
+        } else {
+            $model = $model->orderBy('id', 'desc');
         }
 
         $results['list'] = [];
@@ -55,6 +63,26 @@ class ImportLogService extends Service
                 $results[$v['category_id']] = $v;
             }
         }
+
+        return $results;
+    }
+
+    public function getImportChapter($content)
+    {
+        $results = [];
+        $content = json_decode($content, true);
+        foreach ($content as $k => $v) {
+            $chapters = DB::table('chapter_' . $k . ' as c')
+                ->leftJoin('book' , 'book.unique_code', '=','c.book_unique_code')
+                ->whereIn('c.id', $v)
+                ->orderBy('c.book_unique_code', 'asc')
+                ->orderBy('c.orderby', 'asc')
+                ->select(['book.title as book_title', 'c.title', 'c.category_id'])
+                ->get()
+                ->toArray();
+            $results = array_merge($chapters, $results);
+        }
+        $results = array_map(function($v) {return (array) $v;}, $results);
 
         return $results;
     }

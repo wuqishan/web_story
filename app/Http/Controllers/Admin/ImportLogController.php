@@ -20,8 +20,16 @@ class ImportLogController extends Controller
     {
         $import_log_id = $request->import_log_id;
         $results['detail'] = $service->getOne($import_log_id);
-        $results['book'] = $service->getImportBook($results['detail']['content']);
 
-        return $results;
+        if ($results['detail']['type'] == 1) {
+            $results['book'] = $service->getImportBook($results['detail']['content']);
+        } else if ($results['detail']['type'] == 2) {
+            $results['book'] = $service->getImportChapter($results['detail']['content']);
+        }
+
+        dd($results);
+
+        return view('admin.import_log.show', ['results' => $results]);
+//        return $results;
     }
 }

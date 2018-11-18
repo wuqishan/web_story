@@ -38,7 +38,6 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th>导入flag</th>
                                 <th>导入数量</th>
                                 <th>导入类型</th>
                                 <th>导入结束时间</th>
@@ -48,7 +47,6 @@
                             <tbody>
                                 @foreach($results['data']['list'] as $v)
                                     <tr>
-                                        <td>{{ \App\Helper\ToolsHelper::subStr($v['flag'], 0, 8) }}</td>
                                         <td>{{ $v['number'] }}</td>
                                         <td>{{ \App\Models\ImportLog::$typeMap[$v['type']] }}</td>
                                         <td>{{ $v['created_at'] }}</td>
@@ -71,30 +69,12 @@
     <script type="text/javascript">
         function show_detail(url)
         {
-            var loadIndex = layer.load(2);
-            $.ajax({
-                'url': url,
-                'type': 'get',
-                'data': {},
-                'dataType': 'json',
-                'success': function (results) {
-                    layer.close(loadIndex);
-                    if (results.status) {
-                        layer.tab({
-                            area: ['600px', '300px'],
-                            tab: [{
-                                title: 'TAB1',
-                                content: '内容1'
-                            }, {
-                                title: 'TAB2',
-                                content: '内容2'
-                            }, {
-                                title: 'TAB3',
-                                content: '内容3'
-                            }]
-                        });
-                    }
-                }
+            layer.open({
+                type: 2,
+                area: ['700px', '450px'],
+                fixed: false, //不固定
+                maxmin: true,
+                content: url
             });
         }
     </script>
