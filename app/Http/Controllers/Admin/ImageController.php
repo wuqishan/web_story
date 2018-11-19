@@ -10,10 +10,11 @@ use Illuminate\Http\Request;
 class ImageController extends Controller
 {
     // 图片
-    public function index(BookService $service)
+    public function index(BookService $service, ImageService $imageService)
     {
-        $results['book'] = $service->get();
-
+//        $results['book'] = $service->get();
+        $results['check'] = $imageService->check();
+//        dd($results);
         return view('admin.image.index', ['results' => $results]);
     }
 
@@ -24,9 +25,10 @@ class ImageController extends Controller
         return $results;
     }
 
-    public function update(ImageService $service)
+    public function update(Request $request, ImageService $service)
     {
-        $results = $service->update();
+        $book_id = $request->get('book_id', 0);
+        $results = $service->update($book_id);
 
         return $results;
     }

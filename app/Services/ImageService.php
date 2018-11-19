@@ -20,15 +20,17 @@ class ImageService extends Service
     public function check()
     {
         $results = ['book_number' => 0, 'without_image_book_number' => 0];
-        $books = Book::all(['id', 'image_local_url'])->toArray();
+        $books = Book::all(['id', 'title', 'unique_code', 'image_origin_url', 'url', 'image_local_url'])->toArray();
 
         $results['book_number'] = count($books);
         $results['without_image_book_number'] = 0;
+        $results['books'] = [];
         foreach ($books as $book) {
             $image_save_path = public_path($book['image_local_url']);
             $image_arr = @getimagesize($image_save_path);
             if (empty($book['image_local_url']) || ! file_exists($image_save_path) || $image_arr === false) {
                 $results['without_image_book_number']++;
+                $results['books'][] = $book;
             }
             if ($image_arr === false) {
                 @unlink($image_save_path);
@@ -38,11 +40,21 @@ class ImageService extends Service
         return $results;
     }
 
-    public function update()
+    public function update($book_id = 0)
     {
         $save_path = config('customer.author_img_path');
         $results = ['book_number' => 0, 'without_image_book_number' => 0];
-        $books = Book::all(['id', 'image_local_url', 'image_origin_url', 'unique_code'])->toArray();
+
+        $books = [];
+        $booksModel = new Book();
+        if (intval($book_id) > 0) {
+            $booksModel = $booksModel->where('id', intval($book_id));
+        }
+        $booksModel = $booksModel->select(['id', 'image_local_url', 'image_origin_url', 'unique_code']);
+        $booksModel = $booksModel->get();
+        if (! empty($booksModel)) {
+            $books = $booksModel->toArray();
+        }
 
         $need_update = [];
         $results['update'] = 1;

@@ -21,16 +21,22 @@
                 <div class="tile">
                     <div class="tile-body">
                         <form class="row" id="search-form" action="{{ route('admin.book.index') }}" method="get">
-                            <div class="form-group col-md-2">
-                                <input class="form-control" autocomplete="off" type="text" name="title" value="{{ request()->get('title') }}" placeholder="标题">
+                            {{--<div class="form-group col-md-2">--}}
+                                {{--<input class="form-control" autocomplete="off" type="text" name="title" value="{{ request()->get('title') }}" placeholder="标题">--}}
+                            {{--</div>--}}
+                            <div class="form-group col-md-8">
                             </div>
-                            <div class="form-group col-md-5">
+                            {{--<div class="form-group col-md-1 align-self-end">--}}
+                                {{--<a class="btn btn-outline-info pull-right" href="javascript:$('#search-form').submit();"><i class="fa fa-fw fa-lg fa-check-circle"></i>搜索</a>--}}
+                            {{--</div>--}}
+                            {{--<div class="form-group col-md-1 align-self-end">--}}
+                                {{--<a class="btn btn-outline-secondary pull-right" href="{{ route('admin.book.index') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>重置</a>--}}
+                            {{--</div>--}}
+                            <div class="form-group col-md-3 align-self-end">
+                                <a class="btn btn-outline-success pull-right" href="javascript:checkImage();"><i class="fa fa-fw fa-lg fa-check-circle"></i>检测(总数 / 异常: {{ $results['check']['book_number'] }} / {{ $results['check']['without_image_book_number'] }})</a>
                             </div>
                             <div class="form-group col-md-1 align-self-end">
-                                <a class="btn btn-outline-info pull-right" href="javascript:$('#search-form').submit();"><i class="fa fa-fw fa-lg fa-check-circle"></i>搜索</a>
-                            </div>
-                            <div class="form-group col-md-1 align-self-end">
-                                <a class="btn btn-outline-secondary pull-right" href="{{ route('admin.book.index') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>重置</a>
+                                <a class="btn btn-outline-warning pull-right" href="javascript:updateImage(0);"><i class="fa fa-fw fa-lg fa-check-circle"></i>更新</a>
                             </div>
                         </form>
                     </div>
@@ -38,23 +44,23 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th>功能</th>
-                                <th>书本数量</th>
-                                <th>简介</th>
+                                <th>书名</th>
+                                <th>图片源URL</th>
+                                <th>本地图片URL</th>
                                 <th width="135">操作</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>图片检测</td>
-                                <td>{{ $results['book']['total'] }}</td>
-                                <td>检测小说封面图片是否已下载</td>
-                                <td>
-                                    <a href="javascript:checkImage();"><i class="fa fa-check" aria-hidden="true"></i> 检测</a>
-                                    &nbsp;
-                                    <a href="javascript:updateImage();"><i class="fa fa-cloud-download" aria-hidden="true"></i> 更新</a>
-                                </td>
-                            </tr>
+                            @foreach($results['check']['books'] as $v)
+                                <tr>
+                                    <td><a target="_blank" href="{{ $v['url'] }}">{{ $v['title'] }}</a></td>
+                                    <td><a target="_blank" href="{{ $v['image_origin_url'] }}">{{ $v['image_origin_url'] }}</a></td>
+                                    <td>{{ $v['image_local_url'] }}</td>
+                                    <td>
+                                        <a href="javascript:updateImage('{{ $v['id'] }}');"><i class="fa fa-cloud-download" aria-hidden="true"></i> 更新</a>
+                                    </td>
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -80,10 +86,10 @@
             }, 'json');
         }
 
-        function updateImage()
+        function updateImage(book_id)
         {
             var loadIndex = layer.load(2);
-            $.post('{{ route('admin.image.update') }}', {'_token': '{{ csrf_token() }}'}, function(results) {
+            $.post('{{ route('admin.image.update') }}', {'_token': '{{ csrf_token() }}', 'book_id': book_id}, function(results) {
                 layer.close(loadIndex);
                 if (results.update == 2) {
                     var msg = '更新结果如下：<br>' +
