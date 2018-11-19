@@ -25,8 +25,13 @@ class ImageService extends Service
         $results['book_number'] = count($books);
         $results['without_image_book_number'] = 0;
         foreach ($books as $book) {
-            if (empty($book['image_local_url']) || ! file_exists(public_path($book['image_local_url']))) {
+            $image_save_path = public_path($book['image_local_url']);
+            $image_arr = @getimagesize($image_save_path);
+            if (empty($book['image_local_url']) || ! file_exists($image_save_path) || $image_arr === false) {
                 $results['without_image_book_number']++;
+            }
+            if ($image_arr === false) {
+                @unlink($image_save_path);
             }
         }
 

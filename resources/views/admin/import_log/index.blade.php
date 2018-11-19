@@ -51,7 +51,7 @@
                                         <td>{{ \App\Models\ImportLog::$typeMap[$v['type']] }}</td>
                                         <td>{{ $v['created_at'] }}</td>
                                         <td width="130">
-                                            <a href="javascript:show_detail('{{ route('admin.import_log.show', ['import_log_id' => $v['id']]) }}')"><i class="fa fa-clone" aria-hidden="true"></i> 详细</a>
+                                            <a href="javascript:show_detail('{{ route('admin.import_log.show', ['import_log_id' => $v['id']]) }}', '{{ $v['type'] }}', '{{ $v['created_at'] }}')"><i class="fa fa-clone" aria-hidden="true"></i> 详细</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -67,13 +67,16 @@
 
 @section('otherStaticSecond')
     <script type="text/javascript">
-        function show_detail(url)
+        function show_detail(url, import_type, created_at)
         {
             layer.open({
+                title: (import_type === '1' ? '书本导入' : '章节') + "导入信息, 时间: " + created_at,
                 type: 2,
-                area: ['700px', '450px'],
+                area: ['60%', '70%'],
                 fixed: false, //不固定
+                shadeClose: true,
                 maxmin: true,
+                resize:true,
                 content: url
             });
         }

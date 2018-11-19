@@ -27,9 +27,6 @@ class ImportLogController extends Controller
             $results['book'] = $service->getImportChapter($results['detail']['content']);
         }
 
-        dd($results);
-
         return view('admin.import_log.show', ['results' => $results]);
-//        return $results;
     }
 }

@@ -60,7 +60,8 @@ class ImportLogService extends Service
         if (! empty($books)) {
             $books = $books->toArray();
             foreach ($books as $v) {
-                $results[$v['category_id']] = $v;
+                $v['category_name'] = Category::categoryMap($v['category_id']);
+                $results[] = $v;
             }
         }
 
@@ -82,7 +83,11 @@ class ImportLogService extends Service
                 ->toArray();
             $results = array_merge($chapters, $results);
         }
-        $results = array_map(function($v) {return (array) $v;}, $results);
+        $results = array_map(function(&$v) {
+            $v = (array) $v;
+            $v['category_name'] = Category::categoryMap($v['category_id']);
+            return (array) $v;
+        }, $results);
 
         return $results;
     }

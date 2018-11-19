@@ -1,7 +1,7 @@
 @extends('admin.common.base')
 
 @section('content')
-    <main class="app-content">
+    <main class="app-content" style="margin-top: 0px;margin-left: 0px;">
         <div class="row">
             <div class="col-md-12">
                 <div class="tile">
@@ -9,26 +9,34 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th>书本</th>
-                                <th>章节</th>
-                                <th>分类</th>
+                                @if($results['detail']['type'] == 1)
+                                    <th>书本</th>
+                                    <th>作者</th>
+                                    <th>分类</th>
+                                @else
+                                    <th>书本</th>
+                                    <th>分类</th>
+                                    <th>章节</th>
+                                @endif
                             </tr>
                             </thead>
                             <tbody>
-                                @foreach($results['data']['list'] as $v)
+                                @foreach($results['book'] as $v)
                                     <tr>
-                                        <td>{{ $v['number'] }}</td>
-                                        <td>{{ \App\Models\ImportLog::$typeMap[$v['type']] }}</td>
-                                        <td>{{ $v['created_at'] }}</td>
-                                        <td width="130">
-                                            <a href="javascript:show_detail('{{ route('admin.import_log.show', ['import_log_id' => $v['id']]) }}')"><i class="fa fa-clone" aria-hidden="true"></i> 详细</a>
-                                        </td>
+                                        @if($results['detail']['type'] == 1)
+                                            <td>{{ $v['title'] }}</td>
+                                            <td>{{ $v['author'] }}</td>
+                                            <td>{{ $v['category_name'] }}</td>
+                                        @else
+                                            <td>{{ $v['book_title'] }}</td>
+                                            <td>{{ $v['category_name'] }}</td>
+                                            <td>{{ $v['title'] }}</td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-                    {{--@include('admin.common.paging')--}}
                 </div>
             </div>
         </div>
