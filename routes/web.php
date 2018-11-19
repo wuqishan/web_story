@@ -86,6 +86,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
     Route::get('/image', 'ImageController@index')->name('image.index');
     Route::post('/image/check', 'ImageController@check')->name('image.check');
     Route::post('/image/update', 'ImageController@update')->name('image.update');
+    Route::post('/image/update_image_url', 'ImageController@updateImageOriginUrl')->name('image.update_image_url');
 
     // 设置
     Route::get('/setting/banner', 'SettingController@banner')->name('setting.banner');

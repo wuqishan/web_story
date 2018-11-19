@@ -54,10 +54,12 @@
                             @foreach($results['check']['books'] as $v)
                                 <tr>
                                     <td><a target="_blank" href="{{ $v['url'] }}">{{ $v['title'] }}</a></td>
-                                    <td><a target="_blank" href="{{ $v['image_origin_url'] }}">{{ $v['image_origin_url'] }}</a></td>
+                                    <td id="image_local_url_{{ $v['id'] }}"><a target="_blank" href="{{ $v['image_origin_url'] }}">{{ $v['image_origin_url'] }}</a></td>
                                     <td>{{ $v['image_local_url'] }}</td>
                                     <td>
                                         <a href="javascript:updateImage('{{ $v['id'] }}');"><i class="fa fa-cloud-download" aria-hidden="true"></i> 更新</a>
+                                        &nbsp;|&nbsp;
+                                        <a href="javascript:updateImageOriginUrl(this, '{{ $v['id'] }}', '{{ $v['image_origin_url'] }}');"><i class="fa fa-edit" aria-hidden="true"></i> 编辑源</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -103,5 +105,24 @@
                 layer.alert(msg, {icon: 6});
             }, 'json');
         }
+
+        function updateImageOriginUrl(obj, book_id, url)
+        {
+            var data = {};
+            data._token = '{{ csrf_token() }}';
+            data.book_id = book_id;
+            layer.prompt({
+                value: url,
+                title: '编辑源图片URL'
+            }, function(val, index) {
+                data.image_origin_url = val;
+                $.post('{{ route('admin.image.update_image_url') }}', data, function (results) {
+                    $('#image_local_url_' + book_id).find('a').attr('href', val);
+                    $('#image_local_url_' + book_id).find('a').text(val);
+                    layer.close(index);
+                }, 'json');
+            });
+        }
+        // https://www.xbiquge6.com/cover/84/84483/84483s.jpg
     </script>
 @endsection

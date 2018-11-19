@@ -84,6 +84,19 @@ class ImageService extends Service
         return $results;
     }
 
+    public function updateImageOriginUrl($book_id, $image_origin_url)
+    {
+        if (intval($book_id) > 0) {
+            $book = Book::find($book_id);
+            if (! empty($book)) {
+                $book->image_origin_url = $image_origin_url;
+                $book->save();
+            }
+        }
+
+        return true;
+    }
+
     public function download($image_url, $save_path, $save_name)
     {
         $full_path = public_path($save_path);

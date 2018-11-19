@@ -32,4 +32,15 @@ class ImageController extends Controller
 
         return $results;
     }
+
+    public function updateImageOriginUrl(Request $request, ImageService $service)
+    {
+        $results = ['status' => false];
+        $book_id = $request->get('book_id', 0);
+        $image_origin_url = $request->get('image_origin_url');
+
+        $results['status'] = $service->updateImageOriginUrl($book_id, $image_origin_url);
+
+        return $results;
+    }
 }

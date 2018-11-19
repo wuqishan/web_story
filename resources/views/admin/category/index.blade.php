@@ -55,7 +55,7 @@
                                         <td><a href="{{ $v['url'] }}">查看</a> </td>
                                         <td width="130">
                                             <a href="{{ route('admin.category.edit', ['category_id' => $v['id']]) }}"><i class="fa fa-edit" aria-hidden="true"></i> 编辑</a>
-                                            &nbsp;&nbsp;
+                                            &nbsp;|&nbsp;
                                             <a href="javascript:del_record('{{ route('admin.category.destroy', ['category_id' => $v['id']]) }}', '{{ route('admin.category.index') }}');"><i class="fa fa-trash-o" aria-hidden="true"></i> 删除</a>
                                         </td>
                                     </tr>
