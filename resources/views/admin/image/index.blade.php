@@ -47,7 +47,7 @@
                                 <th>书名</th>
                                 <th>图片源URL</th>
                                 <th>本地图片URL</th>
-                                <th width="135">操作</th>
+                                <th width="155">操作</th>
                             </tr>
                             </thead>
                             <tbody>
