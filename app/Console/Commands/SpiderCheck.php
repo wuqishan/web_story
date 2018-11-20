@@ -178,6 +178,7 @@ class SpiderCheck extends Command
     {
         if (!empty($this->errors)) {
             $need_insert = 0;
+            $message = [];
             foreach ($this->errors as $v) {
                 $checkBook = CheckBookInfo::where('book_id', $v['data']['id'])
                     ->where('status', 1)
@@ -198,9 +199,13 @@ class SpiderCheck extends Command
 //                    print_r($insert);
                     CheckBookInfo::insert($insert);
                     $need_insert++;
+                    $message[] = $v['msg'];
                 }
             }
-            echo "可能有问题的书本有 " . count($this->errors) . " 条, 需要插入的书本为 {$need_insert} 条，已插入待处理表\n";
+            echo "可能有问题的书本有 " . count($this->errors) . " 条, 需要插入的书本为 {$need_insert} 条\n";
+            if (count($message) > 0) {
+                echo "分别为：\n" . implode("\n", array_unique($message)) . "\n";
+            }
         }
     }
 
