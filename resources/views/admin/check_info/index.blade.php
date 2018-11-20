@@ -44,6 +44,7 @@
                                     <option value="">选择状态</option>
                                     <option @if(request()->get('status') == 1) selected @endif value="1">未解决</option>
                                     <option @if(request()->get('status') == 2) selected @endif value="2">已解决</option>
+                                    <option @if(request()->get('status') == 3) selected @endif value="3">已忽略</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-1 align-self-end">
@@ -52,12 +53,24 @@
                             <div class="form-group col-md-1 align-self-end">
                                 <a class="btn btn-outline-secondary pull-right" href="{{ route('admin.check_info.index') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>重置</a>
                             </div>
+                            {{--<div class="form-group col-md-1 align-self-end">--}}
+                                {{--<a class="btn btn-outline-warning pull-right" href="javascript:update_record('{{ route('admin.check_info.update') }}', '{{ route('admin.check_info.index') }}');"><i class="fa fa-fw fa-lg fa-check-circle"></i>解决</a>--}}
+                            {{--</div>--}}
+                            {{--<div class="form-group col-md-1 align-self-end">--}}
+                                {{--<a class="btn btn-outline-warning pull-right" href="javascript:del_record('{{ route('admin.check_info.delete') }}', '{{ route('admin.check_info.index') }}');"><i class="fa fa-fw fa-lg fa-trash-o"></i>删除</a>--}}
+                            {{--</div>--}}
+
                             <div class="form-group col-md-1 align-self-end">
-                                <a class="btn btn-outline-warning pull-right" href="javascript:update_record('{{ route('admin.check_info.update') }}', '{{ route('admin.check_info.index') }}');"><i class="fa fa-fw fa-lg fa-check-circle"></i>解决</a>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-danger dropdown-toggle btn-outline-warning pull-right" id="btnGroupDrop4" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-fw fa-lg fa-check-circle"></i> 操作</button>
+                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="width: 80px;">
+                                        <a class="dropdown-item" href="javascript:update_record('{{ route('admin.check_info.update') }}', '{{ route('admin.check_info.index') }}', 2);">解决</a>
+                                        <a class="dropdown-item" href="javascript:update_record('{{ route('admin.check_info.update') }}', '{{ route('admin.check_info.index') }}', 3);">忽略</a>
+                                        <a class="dropdown-item" href="javascript:del_record('{{ route('admin.check_info.delete') }}', '{{ route('admin.check_info.index') }}');">删除</a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group col-md-1 align-self-end">
-                                <a class="btn btn-outline-warning pull-right" href="javascript:del_record('{{ route('admin.check_info.delete') }}', '{{ route('admin.check_info.index') }}');"><i class="fa fa-fw fa-lg fa-trash-o"></i>删除</a>
-                            </div>
+
                             <input type="hidden" name="length" value="{{ request()->get('length') }}">
                         </form>
                     </div>
@@ -92,6 +105,8 @@
                                                     未解决
                                                 @elseif($v['status'] == 2)
                                                     已解决
+                                                @elseif($v['status'] == 3)
+                                                    已忽略
                                                 @else
                                                     状态异常
                                                 @endif
@@ -156,7 +171,7 @@
             });
         }
 
-        function update_record(url, gotoUrl)
+        function update_record(url, gotoUrl, status)
         {
             $ids = [];
             $('.check-id').each(function () {
@@ -165,14 +180,14 @@
                 }
             });
 
-            layer.confirm('确定已选中的设置为已解决？', {
+            layer.confirm('确定更新已选中的数据？', {
                 skin: 'layui-layer-molv',
                 btn: ['确定','取消']
             }, function() {
                 $.ajax({
                     'url': url,
                     'type': 'post',
-                    'data': {'_token': '{{ csrf_token() }}', 'ids': $ids, 'status': 2},
+                    'data': {'_token': '{{ csrf_token() }}', 'ids': $ids, 'status': status},
                     'dataType': 'json',
                     'success': function (results) {
 //                        if (results.status) {

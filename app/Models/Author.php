@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helper\CacheHelper;
 use Illuminate\Database\Eloquent\Model;
 
 class Author extends Model
@@ -23,5 +24,18 @@ class Author extends Model
         }
 
         return $author_id;
+    }
+
+    public static function getAll()
+    {
+        $cache_key = 'author_all';
+        if (CacheHelper::has($cache_key)) {
+            $author = CacheHelper::get($cache_key);
+        } else {
+            $author = self::all(['id', 'name'])->toArray();
+            CacheHelper::set($cache_key, $author);
+        }
+
+        return $author;
     }
 }

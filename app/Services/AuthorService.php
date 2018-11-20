@@ -3,15 +3,18 @@
 namespace App\Services;
 
 use App\Models\Author;
+use App\Models\Book;
+use Illuminate\Support\Facades\DB;
 
 class AuthorService extends Service
 {
     public function get($params = [])
     {
         $model = new Author();
+
         if (isset($params['name']) && ! empty($params['name'])) {
             $params['name'] = trim($params['name']);
-            $model = $model->where('name', 'like', "%". strip_tags($params['name']) ."%");
+            $model = $model->where('author.name', 'like', "%". strip_tags($params['name']) ."%");
         }
 
         $results['list'] = [];
@@ -64,6 +67,9 @@ class AuthorService extends Service
 
     public function formatter($rows)
     {
+        foreach ($rows as $k => $v) {
+            $rows[$k]['book_number'] = Book::where('author_id', $v['id'])->count();
+        }
 
         return $rows;
     }

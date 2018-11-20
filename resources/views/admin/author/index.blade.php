@@ -39,16 +39,20 @@
                             <thead>
                             <tr>
                                 <th>名称</th>
-                                <th>操作</th>
+                                <th>作品数量</th>
+                                <th width="230">操作</th>
                             </tr>
                             </thead>
                             <tbody>
                                 @foreach($results['data']['list'] as $v)
                                     <tr>
                                         <td>{{ $v['name'] }}</td>
-                                        <td width="130">
+                                        <td>{{ $v['book_number'] }}</td>
+                                        <td>
+                                            <a target="_blank" href="{{ route('admin.book.index', ['author_id' => $v['id']]) }}"><i class="fa fa-book" aria-hidden="true"></i> 对应书本</a>
+                                            &nbsp;|&nbsp;
                                             <a href="{{ route('admin.author.edit', ['author_id' => $v['id']]) }}"><i class="fa fa-edit" aria-hidden="true"></i> 编辑</a>
-                                            &nbsp;&nbsp;
+                                            &nbsp;|&nbsp;
                                             <a href="javascript:del_record('{{ route('admin.author.destroy', ['author_id' => $v['id']]) }}', '{{ route('admin.author.index') }}');"><i class="fa fa-trash-o" aria-hidden="true"></i> 删除</a>
                                         </td>
                                     </tr>

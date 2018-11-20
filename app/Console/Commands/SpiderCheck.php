@@ -151,7 +151,7 @@ class SpiderCheck extends Command
     /**
      * @param $book
      * @param $exception_id
-     *       '1' => 'Category ID 分类异常',
+     *       '1' => 'CategoryID分类异常',
      *       '2' => '书本无章节信息',
      *       '3' => '书本抓取章节排序异常',
      *       '4' => '书本章节连表异常',
@@ -181,7 +181,9 @@ class SpiderCheck extends Command
             $message = [];
             foreach ($this->errors as $v) {
                 $checkBook = CheckBookInfo::where('book_id', $v['data']['id'])
-                    ->where('status', 1)
+                    ->whereIn('status', [1, 3])
+                    ->where('newest_chapter', $v['data']['newest_chapter'])
+                    ->where('message', $v['msg'])
                     ->first();
                 if (empty($checkBook)) {
                     $insert = [
@@ -226,5 +228,4 @@ class SpiderCheck extends Command
 
         return $results;
     }
-
 }

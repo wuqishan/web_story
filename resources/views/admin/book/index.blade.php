@@ -20,42 +20,56 @@
             <div class="col-md-12">
                 <div class="tile">
                     <div class="tile-body">
-                        <form class="row" id="search-form" action="{{ route('admin.book.index') }}" method="get">
-                            <div class="form-group col-md-2">
-                                <input class="form-control" autocomplete="off" type="text" name="title" value="{{ request()->get('title') }}" placeholder="标题">
+                        <form id="search-form" action="{{ route('admin.book.index') }}" method="get">
+                            <div class="row">
+                                <div class="form-group col-md-2">
+                                    <input class="form-control" autocomplete="off" type="text" name="title" value="{{ request()->get('title') }}" placeholder="标题">
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <select class="form-control" name="category_id">
+                                        <option value="">选择书本分类</option>
+                                        <option @if(request()->get('category_id') == 1) selected @endif value="1">玄幻奇幻</option>
+                                        <option @if(request()->get('category_id') == 2) selected @endif value="2">武侠仙侠</option>
+                                        <option @if(request()->get('category_id') == 3) selected @endif value="3">都市言情</option>
+                                        <option @if(request()->get('category_id') == 4) selected @endif value="4">历史军事</option>
+                                        <option @if(request()->get('category_id') == 5) selected @endif value="5">科幻灵异</option>
+                                        <option @if(request()->get('category_id') == 6) selected @endif value="6">网游竞技</option>
+                                        <option @if(request()->get('category_id') == 7) selected @endif value="7">女频频道</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <select class="form-control" name="finished">
+                                        <option value="">选择完本状态</option>
+                                        <option @if(request()->get('finished') == '0') selected @endif value="0">未完本</option>
+                                        <option @if(request()->get('finished') == '1') selected @endif value="1">完本</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <input class="form-control data-range" autocomplete="off" type="text" name="last_update_start" id="last_update_start" value="{{ request()->get('last_update_start') }}" placeholder="最近更新日期">
+                                    -
+                                    <input class="form-control data-range" autocomplete="off" type="text" name="last_update_end" id="last_update_end" value="{{ request()->get('last_update_end') }}" placeholder="最近更新日期">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <select class="js-example-basic-single form-control" name="author_id">
+                                        <option value="">选择作者</option>
+                                        @foreach(\App\Models\Author::getAll() as $v)
+                                            <option @if(request()->get('author_id') == $v['id']) selected @endif value="{{ $v['id'] }}">{{ $v['name'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                            <div class="form-group col-md-2">
-                                <select class="form-control" name="category_id">
-                                    <option value="">选择书本分类</option>
-                                    <option @if(request()->get('category_id') == 1) selected @endif value="1">玄幻奇幻</option>
-                                    <option @if(request()->get('category_id') == 2) selected @endif value="2">武侠仙侠</option>
-                                    <option @if(request()->get('category_id') == 3) selected @endif value="3">都市言情</option>
-                                    <option @if(request()->get('category_id') == 4) selected @endif value="4">历史军事</option>
-                                    <option @if(request()->get('category_id') == 5) selected @endif value="5">科幻灵异</option>
-                                    <option @if(request()->get('category_id') == 6) selected @endif value="6">网游竞技</option>
-                                    <option @if(request()->get('category_id') == 7) selected @endif value="7">女频频道</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <select class="form-control" name="finished">
-                                    <option value="">选择完本状态</option>
-                                    <option @if(request()->get('finished') == '0') selected @endif value="0">未完本</option>
-                                    <option @if(request()->get('finished') == '1') selected @endif value="1">完本</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <input class="form-control data-range" autocomplete="off" type="text" name="last_update_start" id="last_update_start" value="{{ request()->get('last_update_start') }}" placeholder="最近更新日期">
-                                -
-                                <input class="form-control data-range" autocomplete="off" type="text" name="last_update_end" id="last_update_end" value="{{ request()->get('last_update_end') }}" placeholder="最近更新日期">
-                            </div>
-                            <div class="form-group col-md-1 align-self-end">
-                                <a class="btn btn-outline-info pull-right" href="javascript:$('#search-form').submit();"><i class="fa fa-fw fa-lg fa-check-circle"></i>搜索</a>
-                            </div>
-                            <div class="form-group col-md-1 align-self-end">
-                                <a class="btn btn-outline-secondary pull-right" href="{{ route('admin.book.index') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>重置</a>
-                            </div>
-                            <div class="form-group col-md-1 align-self-end">
-                                <a class="btn btn-outline-success pull-right" href="{{ route('admin.book.create') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>新增</a>
+                            <div class="row">
+                                <div class="form-group col-md-9 align-self-end">
+                                </div>
+                                <div class="form-group col-md-1 align-self-end">
+                                    <a class="btn btn-outline-info pull-right" href="javascript:$('#search-form').submit();"><i class="fa fa-fw fa-lg fa-check-circle"></i>搜索</a>
+                                </div>
+                                <div class="form-group col-md-1 align-self-end">
+                                    <a class="btn btn-outline-secondary pull-right" href="{{ route('admin.book.index') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>重置</a>
+                                </div>
+                                <div class="form-group col-md-1 align-self-end">
+                                    <a class="btn btn-outline-success pull-right" href="{{ route('admin.book.create') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>新增</a>
+                                </div>
                             </div>
                             <input type="hidden" name="length" value="{{ request()->get('length') }}">
                         </form>
@@ -140,6 +154,8 @@
                     }
                 }, 'json');
             });
+
+            $('.js-example-basic-single').select2();
         });
     </script>
 @endsection
