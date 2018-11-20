@@ -42,6 +42,7 @@ class CheckHelper
                 // category_id 异常
                 if ($book['category_id'] < 1 || $book['category_id'] > 7) {
                     $this->delete($book);
+                    unset($books[$key]);
                     $continue_check = true;
                     continue;
                 }
@@ -55,6 +56,7 @@ class CheckHelper
                 $count = count($chapter);
                 if ($count == 0) {
                     $this->delete($book);
+                    unset($books[$key]);
                     $continue_check = true;
                     continue;
                 }
@@ -62,6 +64,7 @@ class CheckHelper
                     // 排序异常
                     if ($i != $chapter[$i]['orderby']) {
                         $this->delete($book);
+                        unset($books[$key]);
                         $continue_check = true;
                         break;
                     }
@@ -72,6 +75,7 @@ class CheckHelper
                             $chapter[$i]['next_unique_code'] != $chapter[$i + 1]['unique_code']
                         ) {
                             $this->delete($book);
+                            unset($books[$key]);
                             $continue_check = true;
                             break;
                         }
@@ -80,6 +84,7 @@ class CheckHelper
                     $content = NewChapterContent::find($chapter[$i]['id']);
                     if (empty($content->content)) {
                         $this->delete($book);
+                        unset($books[$key]);
                         $continue_check = true;
                         break;
                     }
@@ -88,12 +93,13 @@ class CheckHelper
                         if ($chapter[$i]['unique_code'] != $book['newest_chapter']) {
                             $continue_check = true;
                             $this->delete($book);
+                            unset($books[$key]);
                         }
                     }
                 }
-                echo "进度： {$booksNumber} / " . ($key + 1) . " \n";
+                echo "书本正确性进度： {$booksNumber} / " . ($key + 1) . " \n";
             }
-        } while ($continue_check || $booksNumber === 0);
+        } while ($continue_check && $booksNumber > 0);
 
         return null;
     }

@@ -49,7 +49,7 @@ class ContentHelper
                         $number_of_words = ToolsHelper::calcWords($temp['content']);
                         $number_of_words = $number_of_words == 0 ? -1 : $number_of_words;
                         NewChapter::where('id', $chapter_id)->update(['number_of_words' => $number_of_words]);
-                        echo "进度: {$update_chapters_length} / {$update_chapters_current}  \n";
+                        echo "抓取章节内容进度: {$update_chapters_length} / {$update_chapters_current}  \n";
                     } catch (\Exception $e) {
                         // todo somethings
                     }
