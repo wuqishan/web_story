@@ -181,7 +181,7 @@ class SpiderCheck extends Command
             $message = [];
             foreach ($this->errors as $v) {
                 $checkBook = CheckBookInfo::where('book_id', $v['data']['id'])
-                    ->whereIn('status', [1, 3])
+                    ->whereIn('status', [1, 2, 3])
                     ->where('newest_chapter', $v['data']['newest_chapter'])
                     ->where('message', $v['msg'])
                     ->first();
