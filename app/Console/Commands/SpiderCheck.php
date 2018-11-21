@@ -52,19 +52,6 @@ class SpiderCheck extends Command
     public $errors = [];
 
     /**
-     * @var array
-     */
-    public $exceptions = [
-        '1' => 'Category ID 分类异常',
-        '2' => '书本无章节信息',
-        '3' => '书本抓取章节排序异常',
-        '4' => '书本章节连表异常',
-        '5' => '书本章节内容记录不存在',
-        '6' => '书本最新章节错误异常',
-        '7' => '书本可能已经完本',
-    ];
-
-    /**
      * Execute the console command.
      *
      * @return mixed
@@ -150,7 +137,8 @@ class SpiderCheck extends Command
 
     /**
      * @param $book
-     * @param $exception_id
+     * @param $orderby
+     * @param $message_id
      *       '1' => 'CategoryID分类异常',
      *       '2' => '书本无章节信息',
      *       '3' => '书本抓取章节排序异常',
@@ -161,9 +149,10 @@ class SpiderCheck extends Command
      *
      * @return array
      */
-    public function logErrorBook($book, $orderby, $exception_id)
+    public function logErrorBook($book, $orderby, $message_id)
     {
-        $error['msg'] = $this->exceptions[$exception_id];
+        $error['message'] = CheckBookInfo::$messageIdMap[$message_id];
+        $error['message_id'] = $message_id;
         $error['data'] = $book;
         $error['orderby'] = $orderby;
         $this->errors[] = $error;
@@ -183,7 +172,7 @@ class SpiderCheck extends Command
                 $checkBook = CheckBookInfo::where('book_id', $v['data']['id'])
                     ->whereIn('status', [1, 2, 3])
                     ->where('newest_chapter', $v['data']['newest_chapter'])
-                    ->where('message', $v['msg'])
+                    ->where('message_id', $v['message_id'])
                     ->first();
                 if (empty($checkBook)) {
                     $insert = [
@@ -194,7 +183,8 @@ class SpiderCheck extends Command
                         'book_unique_code' => $v['data']['unique_code'],
                         'newest_chapter' => $v['data']['newest_chapter'],
                         'chapter_orderby' => $v['orderby'],
-                        'message' => $v['msg'],
+                        'message' => $v['message'],
+                        'message_id' => $v['message_id'],
                         'status' => 1,
                         'created_at' => date('Y-m-d H:i:s'),
                     ];
