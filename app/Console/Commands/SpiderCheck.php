@@ -191,7 +191,7 @@ class SpiderCheck extends Command
 //                    print_r($insert);
                     CheckBookInfo::insert($insert);
                     $need_insert++;
-                    $message[] = $v['msg'];
+                    $message[] = $v['message'];
                 }
             }
             echo "可能有问题的书本有 " . count($this->errors) . " 条, 需要插入的书本为 {$need_insert} 条\n";
