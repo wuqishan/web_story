@@ -15,7 +15,7 @@ class ChapterContentController extends Controller
     {
         $content_id = $request->content_id;
         $category_id = $request->category_id;
-        if (intval($content_id) != $content_id) {
+        if (intval($content_id) == $content_id) {
             $key = 'id';
         } else {
             $key = 'unique_code';

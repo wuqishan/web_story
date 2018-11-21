@@ -135,7 +135,7 @@ class SpiderCheck extends Command
                     }
                 }
             }
-            echo "进度： {$books_number} / " . ($key + 1) . " \n";
+            echo "书本检测进度： {$books_number} / " . ($key + 1) . " \n";
         }
 
         if (count($this->errors) > 0) {

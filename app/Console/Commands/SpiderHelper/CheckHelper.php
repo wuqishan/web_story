@@ -97,7 +97,7 @@ class CheckHelper
                         }
                     }
                 }
-                echo "书本正确性进度： {$booksNumber} / " . ($key + 1) . " \n";
+                echo "书本正确性进度： {$booksNumber} / " . ($key + 1) . ", Book Title: {$book['title']} \n";
             }
         } while ($continue_check && $booksNumber > 0);
 

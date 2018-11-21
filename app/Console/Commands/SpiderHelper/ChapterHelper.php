@@ -82,7 +82,7 @@ class ChapterHelper
                         NewBook::where('id', $book_id)->update(['newest_chapter' => $temp['unique_code']]);
                     }
 
-                    echo "进度：{$book_number} / {$book_current}, category_id: {$category_id}, book title: {$book_title}, Url: {$temp['url']}\n";
+                    echo "进度：{$book_number} / {$book_current}, category_id: {$category_id}, {$book_title} => {$temp['title']}, Url: {$temp['url']}\n";
                 } catch (\Exception $e) {
                     // todo something
                 }

@@ -101,7 +101,7 @@ class ChapterUpdateHelper
                     // 插入章节
                     UpdateChapter::insert($temp);
 
-                    echo "进度：{$book_number} / {$book_current}, category_id: {$category_id}, title: {$temp['title']}, Url: {$temp['url']}\n";
+                    echo "进度：{$book_number} / {$book_current}, category_id: {$category_id}, {$book_title} => {$temp['title']}, Url: {$temp['url']}\n";
                 } catch (\Exception $e) {
                     // todo something
                 }

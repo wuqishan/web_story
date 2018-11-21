@@ -130,7 +130,7 @@
                                                 <a target="_blank" href="{{ $v['url'] }}">源网站</a>
                                             </td>
                                             <td>
-                                                <a href="{{ route('admin.content.detail', ['content_id' => $v['id'], 'category_id' => $v['category_id']]) }}"><i class="fa fa-clone" aria-hidden="true"></i> 内容</a>
+                                                <a target="_blank" href="{{ route('admin.content.detail', ['content_id' => $v['id'], 'category_id' => $v['category_id']]) }}"><i class="fa fa-clone" aria-hidden="true"></i> 内容</a>
                                                 &nbsp;|&nbsp;
                                                 <a target="_blank" href="javascript:updateContent('{{ $v['id'] }}', '{{ $v['category_id'] }}', '{{ $v['url'] }}');"><i class="fa fa-refresh" aria-hidden="true"></i> 更新</a>
                                             </td>

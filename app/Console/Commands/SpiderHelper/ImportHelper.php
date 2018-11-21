@@ -38,9 +38,9 @@ class ImportHelper
                 $insert_ids[] = (int) Book::insertGetId($book);
                 if (min($insert_ids) === 0) {
                     DB::rollBack();
-                    echo "书本导入进度：{$book_number} / " . ($key + 1) . ",插入失败,已经回滚 \n";
+                    echo "书本导入进度：{$book_number} / " . ($key + 1) . ", Book Title: {$book['title']}, 插入失败,已经回滚 \n";
                 } else {
-                    echo "书本导入进度：{$book_number} / " . ($key + 1) . ", 导入成功 \n";
+                    echo "书本导入进度：{$book_number} / " . ($key + 1) . ", Book Title: {$book['title']}, 导入成功 \n";
                     DB::commit();
                 }
             }
