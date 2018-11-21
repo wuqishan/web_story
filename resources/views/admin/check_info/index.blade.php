@@ -75,7 +75,7 @@
                         </form>
                     </div>
                     <div class="tile-body">
-                        <table class="table">
+                        <table class="table table-hover">
                             <thead>
                             <tr>
                                 <th>
@@ -86,14 +86,14 @@
                                 <th>信息</th>
                                 <th>状态</th>
                                 <th>时间</th>
-                                <th width="120">操作</th>
+                                <th width="200">操作</th>
                             </tr>
                             </thead>
                             <tbody>
                                 @if(isset($results['data']['list']))
 
                                     @foreach($results['data']['list'] as $v)
-                                        <tr>
+                                        <tr class="every-record">
                                             <td>
                                                 <input style="margin-left:0px;" class="form-check-input check-id" value="{{ $v['id'] }}" type="checkbox">
                                             </td>
@@ -113,9 +113,12 @@
                                             </td>
                                             <td>{{ $v['created_at'] }}</td>
                                             <td>
-                                                <a href="{{ route('admin.chapter.index', ['book_unique_code' => $v['book_unique_code']]) }}"><i class="fa fa-clone" aria-hidden="true"></i> 章节列表</a>
-                                                {{--&nbsp;|&nbsp;--}}
-                                                {{--<a href="javascript:del_record('{{ route('admin.check_info.delete', ['id' => $v['id']]) }}', '{{ route('admin.check_info.index') }}')"><i class="fa fa-trash-o" aria-hidden="true"></i> 删除</a>--}}
+                                                <a href="{{ route('admin.chapter.index', ['book_unique_code' => $v['book_unique_code']]) }}"><i class="fa fa-list-ul" aria-hidden="true"></i> 章节列表</a>
+                                                {{-- 如果本书可能已经完本则提供最新章节查看 --}}
+                                                @if($v['message_id'] == 7)
+                                                    &nbsp;|&nbsp;
+                                                    <a href="javascript:show_detail('{{ route('admin.check_info.content.show', ['category_id' => $v['book_category_id'], 'unique_code' => $v['newest_chapter'], 'book_id' => $v['book_id']]) }}', '{{ $v['book_title'] }}')"><i class="fa fa-clone" aria-hidden="true"></i> 最新章节</a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -134,6 +137,11 @@
     <script type="text/javascript">
 
         $(function () {
+            $('.every-record').click(function () {
+                var checked = $(this).find('input[type="checkbox"]').prop('checked');
+                $(this).find('input[type="checkbox"]').prop('checked', ! checked);
+            });
+            // 全选
             $('.checkbox-select-all').change(function () {
                 var checked = $(this).prop('checked');
                 $('.check-id').each(function () {
@@ -141,6 +149,20 @@
                 });
             });
         });
+
+        function show_detail(url, book_title)
+        {
+            layer.open({
+                title: '《' + book_title + '》最新章节内容信息',
+                type: 2,
+                area: ['80%', '70%'],
+                fixed: false, //不固定
+                shadeClose: true,
+                maxmin: true,
+                resize:true,
+                content: url
+            });
+        }
 
         function del_record(url, gotoUrl)
         {
