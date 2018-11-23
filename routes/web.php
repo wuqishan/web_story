@@ -11,12 +11,9 @@
 |
 */
 
-// 登陆
-Route::get('/admin/admin/login', 'Admin\AdminController@login')->name('admin.admin.login');
-Route::post('/admin/admin/dologin', 'Admin\AdminController@doLogin')->name('admin.admin.do_login');
-Route::get('/admin/admin/logout', 'Admin\AdminController@logout')->name('admin.admin.logout');
 
-Route::group(['namespace' => 'Home', 'middleware' => 'app.servicing'], function () {
+/*********************************** 所有前台操作 *************************************/
+Route::group(['namespace' => 'Home', 'middleware' => ['app.servicing', 'check.mobile']], function () {
     Route::get('/', 'IndexController@index')->name('index');
 
     Route::get('/article/{category_id}', 'ArticleController@index')->name('article-index');
@@ -25,16 +22,24 @@ Route::group(['namespace' => 'Home', 'middleware' => 'app.servicing'], function 
 
     Route::get('/updateView', 'ArticleController@updateView')->name('update-view');
 });
+/*********************************** //所有前台操作 *************************************/
 
+
+/*************************************************************************************/
+/*********************************** 宇宙无敌大裂缝 ************************************/
+/*************************************************************************************/
+
+
+/*********************************** 所有后台操作 *************************************/
+// 登陆
+Route::get('/admin/admin/login', 'Admin\AdminController@login')->name('admin.admin.login');
+Route::post('/admin/admin/dologin', 'Admin\AdminController@doLogin')->name('admin.admin.do_login');
+Route::get('/admin/admin/logout', 'Admin\AdminController@logout')->name('admin.admin.logout');
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin.login.check'], function () {
 
-
+    // dashboard页面
     Route::get('/index', 'IndexController@index')->name('admin.index');
     Route::get('/table', 'IndexController@table')->name('admin.table');
-
-    // 附件
-//    Route::get('upload/delete/{id}', 'UploadController@delete')->name('upload.delete');
-//    Route::post('upload', 'UploadController@upload')->name('upload');
 
     // 分类
     Route::resource('category', 'CategoryController', [
@@ -69,7 +74,6 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
     // 章节
     Route::get('/chapter/{book_unique_code}', 'ChapterController@index')->name('chapter.index');    // 书本点击过去的章节
     Route::get('/chapter/list/all', 'ChapterController@listAll')->name('chapter.list.all');    // 所有章节的列表
-//    Route::get('/chapter/{chapter_id}/{category_id}', 'ChapterController@edit')->name('chapter.edit');
     Route::post('/chapter/update', 'ChapterController@update')->name('chapter.update');
     Route::post('/chapter/delete/all', 'ChapterController@deleteAllChapter')->name('chapter.delete.all');
 
@@ -103,3 +107,4 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
     Route::get('/import_log/index', 'ImportLogController@index')->name('import_log.index');
     Route::get('/import_log/show/{import_log_id}', 'ImportLogController@show')->name('import_log.show');
 });
+/*********************************** //所有后台操作 *************************************/
