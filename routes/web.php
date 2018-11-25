@@ -16,7 +16,7 @@
 Route::group(['namespace' => 'Home', 'middleware' => ['app.servicing', 'check.mobile']], function () {
     Route::get('/', 'IndexController@index')->name('index');
 
-    Route::get('/article/{category_id}', 'ArticleController@index')->name('article-index');
+    Route::get('/article', 'ArticleController@index')->name('article-index');
     Route::get('/chapter/{unique_code}', 'ArticleController@chapter')->name('chapter-list');
     Route::get('/detail/{category_id}/{unique_code}', 'ArticleController@detail')->name('chapter-detail');
 

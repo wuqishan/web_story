@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Home;
+namespace App\Http\Controllers\Mobile;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
@@ -12,22 +12,35 @@ class ArticleController extends  Controller
 {
     public function index(Request $request, BookService $service, FriendLinkService $friendLinkService)
     {
-        $params['title'] = $request->get('keyword', null);
+        $params['length'] = 15;
         $params['category_id'] = $request->get('category_id', 0);
+        $params['title'] = $request->get('keyword', null);
+        if ($request->ajax()) {
 
-        $params['sort'] = ['last_update', 'desc'];
-        $results['book_update'] = $service->get($params);
+            $params['sort'] = [$request->get('orderby', 'view'), 'desc'];
+            $temp = $service->get($params);
+            $results['category_id'] = $params['category_id'];
+            $results['books'] = $temp['list'];
 
-        $params['sort'] = ['view', 'desc'];
-        $results['book_popular'] = $service->get($params);
+            $view = 'mobile.common.section';
+        } else {
 
-        // 友链
-        $results['friend_link'] = $friendLinkService->get();
+            $params['sort'] = ['view', 'desc'];
+            $results['books'][$params['category_id']] = $service->get($params);
+
+            $view = 'mobile.article.index';
+        }
+        // 显示图文的记录数目
+        $results['image_show'] = 3;
 
         // seo
-        $results['seo.title'] = Category::categoryMap($request->category_id);
-
-        return view('home.article.index', ['results' => $results]);
+        if ($params['category_id'] > 0) {
+            $results['seo.title'] = Category::categoryMap($params['category_id']);
+        } else {
+            $results['seo.title'] = '搜索';
+        }
+//dd($results);
+        return view($view, $results);
     }
 
     public function chapter(Request $request, BookService $service, ChapterService $chapterService)

@@ -39,10 +39,9 @@ class BookService extends Service
         }
 
         $results['list'] = [];
-        $results['length'] = $this->_length;
-        $results['page'] = $this->_page;
-        $results['offset'] = $this->_offset;
+        $results = $this->pageInit($results, $params);  // 重写分页信息
         $results['total'] = $model->count();
+
         $dataModel = $model->offset($this->_offset)->limit($this->_length)->get();
         if (! empty($dataModel)) {
             $results['list'] = $dataModel->toArray();

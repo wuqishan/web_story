@@ -64,5 +64,6 @@ class Kernel extends HttpKernel
         'admin.login.check' => \App\Http\Middleware\LoginCheck::class,
         'app.servicing' => \App\Http\Middleware\AppServicing::class,
         'check.mobile' => \App\Http\Middleware\CheckMobile::class,
+        'check.pc' => \App\Http\Middleware\CheckPc::class,
     ];
 }

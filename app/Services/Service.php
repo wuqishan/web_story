@@ -18,4 +18,22 @@ class Service
         $this->_offset = ($this->_page - 1) * $this->_length;
     }
 
+    public function pageInit($results, $params)
+    {
+        if (isset($params['page']) && intval($params['page']) > 0) {
+            $this->_page = intval($params['page']);
+        }
+
+        if (isset($params['length']) && intval($params['length']) > 0) {
+            $this->_length = intval($params['length']);
+        }
+
+        $this->_offset = ($this->_page - 1) * $this->_length;
+
+        $results['length'] = $this->_length;
+        $results['page'] = $this->_page;
+        $results['offset'] = $this->_offset;
+
+        return $results;
+    }
 }
