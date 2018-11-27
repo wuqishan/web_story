@@ -93,6 +93,7 @@ class BookHelper
                 $temp['finished'] = mb_strrpos($temp['finished'], '已完结') !== false ? 1 : 0;
                 $temp['view'] = 0;
                 $temp['newest_chapter'] = '';
+                $temp['number_of_words'] = 0;
                 $temp['unique_code'] = md5($temp['author'] . $temp['title']);
                 $temp['is_new'] = 1;
                 $temp['created_at'] = date('Y-m-d H:i:s');

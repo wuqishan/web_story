@@ -27,6 +27,7 @@ class ImportUpdateHelper
 
                 DB::beginTransaction();
                 $insert_ids = [];
+                $add_words_number = 0;
                 foreach ($chapter as $k => $c) {
                     $content = UpdateChapterContent::find($c['id'])->toArray();
 
@@ -53,10 +54,19 @@ class ImportUpdateHelper
                             ->update(['next_unique_code' => $c['unique_code']]);
                     }
 
+                    // 新更新的章节总字数，用来更新书本的总字数
+                    $add_words_number += $c['number_of_words'] > 0 ? $c['number_of_words'] : 0;
+
                     // 更新书本最新章节
                     if ($k === count($chapter) - 1) {
                         $insert_ids[] = Book::where('unique_code', $c['book_unique_code'])
-                            ->update(['newest_chapter' => $c['unique_code'], 'last_update' => $last_update]);
+                            ->update(
+                                [
+                                    'newest_chapter' => $c['unique_code'],
+                                    'last_update' => $last_update,
+                                    'number_of_words' => DB::raw('number_of_words + ' . $add_words_number)
+                                ]
+                            );
                     }
                 }
                 // 更新书本

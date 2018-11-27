@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{{ asset('/mobile/static/bootstrap/css/bootstrap.min.css') }}">
 {{--    <link rel="stylesheet" href="{{ asset('/mobile/static/layer/need/layer.css') }}">--}}
     <link rel="stylesheet" href="{{ asset('/mobile/static/css/style.css') }}">
+    <script src="{{ asset('/mobile/static/js/jquery.min.js') }}"></script>
 
     @yield('otherStaticFirst')
 </head>
@@ -24,7 +25,7 @@
 
 @yield('content')
 
-<script src="{{ asset('/mobile/static/js/jquery.min.js') }}"></script>
+
 <script src="{{ asset('/mobile/static/bootstrap/js/bootstrap.min.js') }}"></script>
 {{--<script src="{{ asset('/mobile/static/layer/layer.js') }}"></script>--}}
 <script src="{{ asset('/mobile/static/js/common.js') }}"></script>

@@ -10,51 +10,35 @@ class IndexController extends  Controller
 {
     public function index(Request $request, BookService $service, FriendLinkService $friendLinkService)
     {
-
-        $view = '';
-        $params = ['length' => 6];
-        if ($request->ajax()) {
-
-
-            $params['category_id'] = $request->get('category_id', 1);
-            $params['sort'] = [$request->get('orderby', 'view'), 'desc'];
-            $temp = $service->get($params);
-
-            $results['category_id'] = $params['category_id'];
-            $results['books'] = $temp['list'];
-
-            $view = 'mobile.common.section';
-        } else {
-            $params['category_id'] = 1;
-            $params['sort'] = ['view', 'desc'];
-            $results['books'][1] = $service->get($params);
-
-            $params['category_id'] = 2;
-            $results['books'][2] = $service->get($params);
-
-            $params['category_id'] = 3;
-            $results['books'][3] = $service->get($params);
-
-            /*
-            $params['category_id'] = 4;
-            $results['book'][4] = $service->get($params);
-
-            $params['category_id'] = 5;
-            $results['book'][5] = $service->get($params);
-
-            $params['category_id'] = 6;
-            $results['book'][6] = $service->get($params);
-
-            $params['category_id'] = 7;
-            $results['book'][7] = $service->get($params);
-            */
-            $view = 'mobile.index.index';
-        }
-
-        $results['image_show'] = 2;
         // seo
         $results['seo.title'] = '首页';
 
-        return view($view, $results);
+        return view('mobile.index.index', $results);
+    }
+
+    public function bookList(Request $request, BookService $service)
+    {
+        $params['length'] = 6;
+        $params['category_id'] = $request->get('category_id', 1);
+        $params['sort'] = [$request->get('orderby', 'view'), 'desc'];
+        $results = $service->get($params);
+
+        $results['books'] = $results['list'];
+        $results['sort'] = $params['sort'][0];
+        $results['category_id'] = $params['category_id'];
+        $results['image_show'] = 2;
+        unset($results['list']);
+
+        return view('mobile.common.book_show', $results);
+    }
+
+    public function moreBook(Request $request)
+    {
+        $params['page'] = $request->get('page', 1) + 1;
+        $params['length'] = $request->get('length', 1);
+        $params['category_id'] = $request->get('category_id', 1);
+        $params['orderby'] = $request->get('orderby', 1);
+
+
     }
 }

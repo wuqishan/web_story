@@ -5,10 +5,9 @@
     @include('mobile.common.search')
     @include('mobile.common.nav')
 
-    @foreach($books as $k => $v)
-    <div class="section-content">
-        @include('mobile.common.section', ['books' => $v['list'], 'category_id' => $k, 'image_show' => $image_show])
-    </div>
-    @endforeach
+    {{-- 首页展示2个分类的数据 --}}
+    @include('mobile.common.section', ['category_id' => 1])
+    @include('mobile.common.section', ['category_id' => 2])
+
     @include('mobile.common.footer')
 @endsection

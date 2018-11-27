@@ -19,6 +19,8 @@ class ImportHelper
                 $chapters = NewChapter::where('book_unique_code', $book['unique_code'])->get()->toArray();
                 DB::beginTransaction();
                 $insert_ids = [];
+
+                $book_words_number = 0;
                 foreach ($chapters as $chapter) {
                     $content = NewChapterContent::find($chapter['id'])->toArray();
 
@@ -31,10 +33,14 @@ class ImportHelper
                     unset($content['id']);
                     $content['id'] = $new_id;
                     $insert_ids[] = (int) DB::table('chapter_content_' . $chapter['category_id'])->insertGetId($content);
+
+                    // 书本总字数记录
+                    $book_words_number += $chapter['number_of_words'] > 0 ? $chapter['number_of_words'] : 0;
                 }
 
                 // 插入书本
                 unset($book['id']);
+                $book['number_of_words'] = $book_words_number;
                 $insert_ids[] = (int) Book::insertGetId($book);
                 if (min($insert_ids) === 0) {
                     DB::rollBack();

@@ -16,4 +16,9 @@ Route::group(['namespace' => 'Mobile', 'middleware' => ['app.servicing', 'check.
     Route::get('/detail/{category_id}/{unique_code}', 'ArticleController@detail')->name('chapter-detail');
 
     Route::get('/updateView', 'ArticleController@updateView')->name('update-view');
+
+    //ajax
+    Route::get('/book/list', 'IndexController@bookList')->name('book-list');
+    Route::get('/book/more', 'IndexController@moreBook')->name('book-more');
+
 });

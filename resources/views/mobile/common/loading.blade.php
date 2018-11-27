@@ -4,7 +4,7 @@
         height: 100px;
         position: relative;
         margin: 0 auto;
-        margin-top:100px;
+        /*margin-top:100px;*/
     }
     .loading span{
         display: inline-block;

@@ -9,18 +9,25 @@
 
     // 扩展方法
     $.extend({
-        "loading": function (paraents, show) {
+        "loading": function (parents, show) {
             if (show) {
-                $(paraents).find('.loading-show').show();
+                $(parents).find('.loading-show').show();
             } else {
-                $(paraents).find('.loading-show').hide();
+                $(parents).find('.loading-show').hide();
             }
         },
         "getSectionInfo": function (url, el, data) {
-            $.loading($(el), 1);
+            $.loading($(el), true);
             $.get(url, data, function (results) {
-                $.loading($(el), 1);
-                $(el).html(results);
+                $.loading($(el), false);
+                $(el).find('.book_list').append(results);
+            }, 'html');
+        },
+        "getBookMore": function ($url, el, data) {
+            $.loading($(el), true);
+            $.get(url, data, function (results) {
+                $.loading($(el), false);
+                $(el).before(results);
             }, 'html');
         }
     });
