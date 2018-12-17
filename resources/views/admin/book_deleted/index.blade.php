@@ -8,19 +8,19 @@
     <main class="app-content">
         <div class="app-title">
             <div>
-                <h1><i class="fa fa-th-list"></i> 书本列表</h1>
+                <h1><i class="fa fa-th-list"></i> 已删除的书本列表</h1>
             </div>
             <ul class="app-breadcrumb breadcrumb side">
                 <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-                <li class="breadcrumb-item">书本管理</li>
-                <li class="breadcrumb-item active"><a href="#">书本列表</a></li>
+                <li class="breadcrumb-item">已删除的书本管理</li>
+                <li class="breadcrumb-item active"><a href="#">已删除的书本列表</a></li>
             </ul>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="tile">
                     <div class="tile-body">
-                        <form id="search-form" action="{{ route('admin.book.index') }}" method="get">
+                        <form id="search-form" action="{{ route('admin.book_deleted.index') }}" method="get">
                             <div class="row">
                                 <div class="form-group col-md-2">
                                     <input class="form-control" autocomplete="off" type="text" name="title" value="{{ request()->get('title') }}" placeholder="标题">
@@ -59,16 +59,13 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-9 align-self-end">
+                                <div class="form-group col-md-10 align-self-end">
                                 </div>
                                 <div class="form-group col-md-1 align-self-end">
                                     <a class="btn btn-outline-info pull-right" href="javascript:$('#search-form').submit();"><i class="fa fa-fw fa-lg fa-check-circle"></i>搜索</a>
                                 </div>
                                 <div class="form-group col-md-1 align-self-end">
-                                    <a class="btn btn-outline-secondary pull-right" href="{{ route('admin.book.index') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>重置</a>
-                                </div>
-                                <div class="form-group col-md-1 align-self-end">
-                                    <a class="btn btn-outline-success pull-right" href="{{ route('admin.book.create') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>新增</a>
+                                    <a class="btn btn-outline-secondary pull-right" href="{{ route('admin.book_deleted.index') }}"><i class="fa fa-fw fa-lg fa-check-circle"></i>重置</a>
                                 </div>
                             </div>
                             <input type="hidden" name="length" value="{{ request()->get('length') }}">
@@ -83,9 +80,9 @@
                                 <th>分类</th>
                                 <th width="165">最近更新日期</th>
                                 <th width="70">点击数</th>
-                                <th width="55">完本</th>
+                                <th width="70">完本</th>
                                 <th width="70">源网站</th>
-                                <th width="210">操作</th>
+                                {{--<th width="210">操作</th>--}}
                             </tr>
                             </thead>
                             <tbody>
@@ -98,22 +95,14 @@
                                             <td>{{ $v['last_update'] }}</td>
                                             <td>{{ $v['view'] }}</td>
                                             <td>
-                                                <div class="toggle">
-                                                    <label>
-                                                        <input class="finished-toggle" data-book-id="{{ $v['id'] }}" type="checkbox" @if($v['finished'] == 1) checked @endif><span class="button-indecator"></span>
-                                                    </label>
-                                                </div>
+                                                @if($v['finished'] == 1) 已完本 @else 未完本 @endif
                                             </td>
                                             <td>
                                                 <a target="_blank" href="{{ $v['url'] }}">源网站</a>
                                             </td>
-                                            <td>
-                                                <a target="_blank" href="{{ route('admin.chapter.index', ['book_unique_code' => $v['unique_code']]) }}"><i class="fa fa-clone" aria-hidden="true"></i> 章节</a>
-                                                &nbsp;|&nbsp;
-                                                <a href="{{ route('admin.book.edit', ['book_id' => $v['id']]) }}"><i class="fa fa fa-edit" aria-hidden="true"></i> 编辑</a>
-                                                &nbsp;|&nbsp;
-                                                <a href="javascript:del_record('{{ route('admin.book.destroy', ['book_id' => $v['id']]) }}', '{{ route('admin.book.index') }}');"><i class="fa fa-trash-o" aria-hidden="true"></i> 删除</a>
-                                            </td>
+                                            {{--<td>--}}
+                                                {{--<a href="javascript:del_record('{{ route('admin.book.destroy', ['book_id' => $v['id']]) }}', '{{ route('admin.book.index') }}');"><i class="fa fa-trash-o" aria-hidden="true"></i> 删除</a>--}}
+                                            {{--</td>--}}
                                         </tr>
                                     @endforeach
                                 @endif
@@ -143,43 +132,7 @@
                 language: 'zh-CN'
             });
 
-            $('.finished-toggle').change(function () {
-                var book_id = $(this).attr('data-book-id');
-                var finished = 0;
-                if ($(this).prop('checked')) {
-                    finished = 1;
-                }
-                var data = {'book_id': book_id, 'finished': finished, '_token': '{{ csrf_token() }}'};
-                $.post('{{ route('admin.book.update.finished') }}', data, function (results) {
-                    if (results.status) {
-                        layer.msg('更新成功!');
-                    }
-                }, 'json');
-            });
-
             $('.js-example-basic-single').select2();
         });
-
-        function del_record(url, gotoUrl)
-        {
-            layer.confirm('确定删除该该本书（以后也将不会抓取该本小说）？', {
-                skin: 'layui-layer-molv',
-                btn: ['确定','取消']
-            }, function() {
-                $.ajax({
-                    'url': url,
-                    'type': 'post',
-                    'data': {'_method': 'DELETE', '_token': '{{ csrf_token() }}'},
-                    'dataType': 'json',
-                    'success': function (results) {
-                        if (results.status) {
-                            layer.msg('删除成功！', {'anim': -1, 'time': 4,}, function () {
-                                location.href = gotoUrl;
-                            });
-                        }
-                    }
-                });
-            });
-        }
     </script>
 @endsection

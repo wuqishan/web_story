@@ -69,7 +69,11 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'mi
     Route::post('/book/store', 'BookController@store')->name('book.store');
     Route::get('/book/{book_id}/edit', 'BookController@edit')->name('book.edit');
     Route::put('/book/{book_id}/update', 'BookController@update')->name('book.update');
+    Route::delete('/book/{book_id}', 'BookController@destroy')->name('book.destroy');
     Route::post('/book/finished', 'BookController@updateFinished')->name('book.update.finished');
+
+    // 删除的书本
+    Route::get('/book_deleted', 'BookDeletedController@index')->name('book_deleted.index');
 
     // 章节
     Route::get('/chapter/{book_unique_code}', 'ChapterController@index')->name('chapter.index');    // 书本点击过去的章节

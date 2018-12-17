@@ -51,10 +51,17 @@ class BookController extends Controller
 
     public function updateFinished(BookRequest $request, BookService $service)
     {
-        $params = $request->all();
         $book_id = intval($request->get('book_id'));
         $finished = intval($request->get('finished'));
         $results['status'] = (bool) $service->updateFinished($book_id, $finished);
+
+        return $results;
+    }
+
+    public function destroy(Request $request, BookService $service)
+    {
+        $book_id = intval($request->book_id);
+        $results['status'] = (bool) $service->deleteBook($book_id);
 
         return $results;
     }

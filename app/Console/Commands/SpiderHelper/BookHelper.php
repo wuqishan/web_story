@@ -5,6 +5,7 @@ namespace App\Console\Commands\SpiderHelper;
 use App\Helper\HttpHelper;
 use App\Models\Author;
 use App\Models\Book;
+use App\Models\BookDeleted;
 use App\Models\Category;
 use App\Helper\CurlMultiHelper;
 use App\Models\NewBook;
@@ -50,16 +51,24 @@ class BookHelper
             return array_merge($url1, $url2);
         });
 
+        // 目前所有书本的url
         $bookExists = Book::all(['url']);
         if (! empty($bookExists)) {
             $bookExists = $bookExists->toArray();
             $bookExists = array_column($bookExists, 'url');
         }
-
-        if (! empty($bookExists)) {
+        // 目前所有删除的书本url
+        $bookDeletedExists = BookDeleted::all(['url']);
+        if (! empty($bookDeletedExists)) {
+            $bookDeletedExists = $bookDeletedExists->toArray();
+            $bookDeletedExists = array_column($bookDeletedExists, 'url');
+        }
+        $bookAllUrlExists = array_merge((array) $bookExists, (array) $bookDeletedExists);
+        
+        if (! empty($bookAllUrlExists)) {
             foreach ($book_urls as $key => $val) {
 
-                $temp = array_diff($val, $bookExists);
+                $temp = array_diff($val, $bookAllUrlExists);
                 if (! empty($temp)) {
                     $book_urls[$key] = $temp;
                 } else {

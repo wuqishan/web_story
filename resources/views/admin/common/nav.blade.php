@@ -28,6 +28,7 @@
             </a>
             <ul class="treeview-menu">
                 <li><a class="treeview-item" data-nav="admin.book.index" href="{{ route('admin.book.index') }}"><i class="icon fa fa-circle-o"></i> 书本列表</a></li>
+                <li><a class="treeview-item" data-nav="admin.book_deleted.index" href="{{ route('admin.book_deleted.index') }}"><i class="icon fa fa-circle-o"></i> 删除书本列表</a></li>
                 <li><a class="treeview-item" data-nav="admin.chapter.list.all" href="{{ route('admin.chapter.list.all') }}"><i class="icon fa fa-circle-o"></i> 章节管理</a></li>
                 {{--<li><a class="treeview-item" data-nav="admin.goods_import.index" href="{{ route('admin.goods_import.index') }}"><i class="icon fa fa-circle-o"></i> 进库列表</a></li>--}}
                 {{--<li><a class="treeview-item" data-nav="admin.goods_export.index" href="{{ route('admin.goods_export.index') }}"><i class="icon fa fa-circle-o"></i> 出库列表</a></li>--}}
