@@ -20,7 +20,7 @@ class CheckMobile
 
         if (ToolsHelper::isMobile()) {
 //            $route_name = Route::currentRouteName();
-            return redirect()->route('mobile-index');
+//            return redirect()->route('mobile-index');
         }
 
         return $next($request);
