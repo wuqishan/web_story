@@ -29,8 +29,11 @@ class ImportUpdateHelper
                 $insert_ids = [];
                 $add_words_number = 0;
                 foreach ($chapter as $k => $c) {
-                    $content = UpdateChapterContent::find($c['id'])->toArray();
-
+                    $content = UpdateChapterContent::find($c['id']);
+                    if (empty($content)) {
+                        continue;
+                    }
+                    $content = $content->toArray();
                     // 最新更新日期存放在view中带过来
                     // 插入章节
                     if ($c <= strtotime('1970-01-01 00:00:00')) {
